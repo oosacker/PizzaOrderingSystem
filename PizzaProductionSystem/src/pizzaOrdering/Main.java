@@ -2,8 +2,10 @@ package pizzaOrdering;
 
 public class Main {
 
-	public Main() {
-		// TODO Auto-generated constructor stub
+	private String name;
+	
+	public Main(String name) {
+      this.name = name;
 	}
 
 	public static void main(String[] args) {

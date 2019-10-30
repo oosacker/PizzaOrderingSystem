@@ -25,18 +25,19 @@ public class Order {
 	private int status;
 
 	public Order(
-			int order_id, 
-			int pizza_size, 
-			int customer_id, 
-			Timestamp order_time, 
-			int pizza_topping_0_id,
-			int pizza_topping_1_id, 
-			int pizza_topping_2_id, 
-			int pizza_sauce_0_id, 
-			int pizza_sauce_1_id,
-			int pizza_cheese_0_id, 
-			int pizza_cheese_1_id, 
-			int status) {
+				int order_id, 
+				int pizza_size, 
+				int customer_id, 
+				Timestamp order_time, 
+				int pizza_topping_0_id,
+				int pizza_topping_1_id, 
+				int pizza_topping_2_id, 
+				int pizza_sauce_0_id, 
+				int pizza_sauce_1_id,
+				int pizza_cheese_0_id, 
+				int pizza_cheese_1_id, 
+				int status
+			) {
 		this.order_id = order_id;
 		this.pizza_size = pizza_size;
 		this.customer_id = customer_id;

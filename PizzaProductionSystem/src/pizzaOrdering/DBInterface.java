@@ -4,6 +4,8 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.util.LinkedList;
+import java.util.Queue;
 
 
 public class DBInterface {
@@ -48,6 +50,18 @@ public class DBInterface {
 			return false;
 		}
 	}
+	
+	public Queue<Order> getOrders() {
+		Queue<Order> orders = new LinkedList<>();
+		
+		orders.offer(null);
+		orders.poll();
+		
+		return orders;
+		
+	}
+	
+	
 	
 	/**
 	 * Read all players from the DB and print out

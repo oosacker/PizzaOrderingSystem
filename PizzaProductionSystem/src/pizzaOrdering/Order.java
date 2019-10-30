@@ -22,7 +22,13 @@ public class Order {
 	private int pizza_cheese_0_id;
 	private int pizza_cheese_1_id;
 	
-	private int status;
+	private int pizza_status;
+	
+	private double pizza_price;
+
+	public double getPizza_price() {
+		return pizza_price;
+	}
 
 	public Order(
 				int order_id, 
@@ -36,7 +42,8 @@ public class Order {
 				int pizza_sauce_1_id,
 				int pizza_cheese_0_id, 
 				int pizza_cheese_1_id, 
-				int status
+				int status,
+				double pizza_price
 			) {
 		this.order_id = order_id;
 		this.pizza_size = pizza_size;
@@ -49,7 +56,8 @@ public class Order {
 		this.pizza_sauce_1_id = pizza_sauce_1_id;
 		this.pizza_cheese_0_id = pizza_cheese_0_id;
 		this.pizza_cheese_1_id = pizza_cheese_1_id;
-		this.status = status;
+		this.pizza_status = status;
+		this.pizza_price = pizza_price;
 	}
 
 	public int getOrder_id() {
@@ -97,7 +105,7 @@ public class Order {
 	}
 
 	public int getStatus() {
-		return status;
+		return pizza_status;
 	}
 	
 

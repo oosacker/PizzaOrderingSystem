@@ -6,8 +6,7 @@ import java.sql.ResultSet;
 import java.sql.Statement;
 
 
-
-public class Main {
+public class DBInterface {
 
 	private static Connection con;
 	private static Statement stmt;
@@ -82,7 +81,7 @@ public class Main {
 		}
 	}
 	
-	public Main() {
+	public DBInterface() {
 		// TODO Auto-generated constructor stub
 		
 		openDB(url, dbUser, usrPass);
@@ -96,7 +95,7 @@ public class Main {
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-		new Main();
+		new DBInterface();
 		
 	}
 

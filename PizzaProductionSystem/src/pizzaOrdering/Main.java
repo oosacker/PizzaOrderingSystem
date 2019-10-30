@@ -64,8 +64,10 @@ public class Main {
 
 			while(rs.next()){
 				
-				String order = rs.getString("orders.test");
-				System.out.println(order);
+				count++;
+				int id = rs.getInt("orders.id");
+				String order = rs.getString("orders.name");
+				System.out.println(id + " " +order);
 					
 			}
 			rs.close();

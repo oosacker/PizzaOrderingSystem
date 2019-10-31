@@ -16,9 +16,14 @@ public class DBInterface {
 	private static Connection con;
 	private static Statement stmt;
 	
-	String url = "jdbc:mysql://10.140.230.135:3306/pizza";
+	//String url = "jdbc:mysql://10.140.230.135:3306/pizza";
+	//String dbUser = "newuser";
+	//String usrPass = "12345";
+	
+	// for local host
+	String url = "jdbc:mysql://localhost:3306/pizza";
 	String dbUser = "newuser";
-	String usrPass = "12345";
+	String usrPass = "1234";
 	
 	/**
 	 * Open the DB connection
@@ -27,12 +32,12 @@ public class DBInterface {
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
 			con = DriverManager.getConnection(url, dbUser, usrPass);
-			System.out.println("Connected to database\n");
+			System.out.println("Connected to database");
 			return true;
 
 		}
 		catch(Exception ex) {
-			System.out.println("Error connecting to database\n");
+			System.out.println("Error connecting to database");
 			ex.printStackTrace();
 			return false;
 		}
@@ -44,11 +49,11 @@ public class DBInterface {
 	public boolean closeDB() {
 		try {
 			con.close();
-			System.out.println("Closed connection to database\n");
+			System.out.println("Closed connection to database");
 			return true;
 		}
 		catch(Exception ex) {
-			System.out.println("Error disconnecting from database\n");
+			System.out.println("Error disconnecting from database");
 			ex.printStackTrace();
 			return false;
 		}
@@ -72,7 +77,7 @@ public class DBInterface {
 				String customer_address = rs.getString("customers.address");
 				int customer_phone = rs.getInt("customers.cellphone");
 				String customer_email = rs.getString("customers.email");
-				String customer_dicount_code = rs.getString("customers.dicount_code");
+				String customer_dicount_code = rs.getString("customers.discount_code");
 				
 				Customer myCustomer = new Customer
 						(
@@ -94,7 +99,7 @@ public class DBInterface {
 			
 		}
 		catch(Exception ex) {
-			System.out.println("Error reading from database\n");
+			System.out.println("Error reading from database");
 			ex.printStackTrace();
 			return null;
 		}
@@ -134,14 +139,19 @@ public class DBInterface {
 	 */
 	public boolean setOrderState(Order order, int newStatus) {
 		try {
-			if ( orderExists(order) ) {
+			if ( orderExists(order) ) {	
 				
 				order.setPizza_status(newStatus);
+				
 				int order_id = order.getOrder_id();
 				
-				// UPDATE `pizza`.`orders` SET `status` = '2' WHERE (`id` = '1');
-				String query = "UPDATE `pizza`.`orders` SET `status` = '2' WHERE (`id` = " + "'" +order_id+ "');";
-
+				String query = "UPDATE `pizza`.`orders` SET `status` = ? WHERE (`id` = ?);";
+				
+				PreparedStatement prep = con.prepareStatement(query);
+				prep.setInt(1, newStatus);
+				prep.setInt(2, order_id);
+				prep.execute();
+				stmt.close();
 				
 				return true;
 			}
@@ -161,9 +171,13 @@ public class DBInterface {
 			boolean orderFound = false;
 			
 			stmt = con.createStatement();
+			
 			String sql = "Select * from orders where orders.id=?";
+			
 			PreparedStatement prep = con.prepareStatement(sql);
+			
 			prep.setInt(1, order.getOrder_id());
+			
 			ResultSet rs = prep.executeQuery();
 			
 			if(rs.next()){
@@ -189,9 +203,15 @@ public class DBInterface {
 		
 		try {
 			stmt = con.createStatement();
+			
 			// ONLY DOWNLOAD IF STATUS IS 0 OR 1 (WAITING OR COOKING)
-			String sql = "Select * from orders where orders.status='0' or orders.status='1'";
-			ResultSet rs = stmt.executeQuery(sql);
+			String sql = "Select * from orders where orders.status=? or orders.status=?";
+			
+			PreparedStatement prep = con.prepareStatement(sql);
+			prep.setInt(1, 0);
+			prep.setInt(2, 1);
+			
+			ResultSet rs = prep.executeQuery();
 
 			Queue<Order> orders = new LinkedList<>();
 			
@@ -256,10 +276,31 @@ public class DBInterface {
 		openDB(url, dbUser, usrPass);
 
 		Queue<Order> orders = getOrders();
-		
 		for(Order order : orders) {
 			System.out.println(order.toString());
 		}
+		
+		
+		ArrayList<Customer> cust = getCustomers();
+		for(Customer customer : cust) {
+			System.out.println(customer.toString());
+		}
+		
+//		setOrderState(
+//				new Order(
+//						0, 
+//						0, 
+//						0, 
+//						null,
+//						0,
+//						0,
+//						0,
+//						0,
+//						0,
+//						0,
+//						0,
+//						0,
+//						0), 99);
 		
 		
 		closeDB();

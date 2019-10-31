@@ -7,7 +7,7 @@ public class Customer {
 	private String customer_address;
 	private int customer_phone;
 	private String customer_email;
-	private String customer_dicount_code;
+	private int customer_discount_code;
 
 	public Customer(
 			int customer_id, 
@@ -15,14 +15,19 @@ public class Customer {
 			String customer_address, 
 			int customer_phone,
 			String customer_email,
-			String customer_dicount_code
+			int customer_discount_code
 			) {
 		this.customer_name = customer_name;
 		this.customer_id = customer_id;
 		this.customer_address = customer_address;
 		this.customer_phone = customer_phone;
 		this.customer_email = customer_email;
-		this.customer_dicount_code = customer_dicount_code;
+		this.customer_discount_code = customer_discount_code;
+	}
+
+
+	public int getCustomer_discount_code() {
+		return customer_discount_code;
 	}
 
 
@@ -54,7 +59,7 @@ public class Customer {
 	public String toString() {
 		return "Customer [customer_name=" + customer_name + ", customer_id=" + customer_id + ", customer_address="
 				+ customer_address + ", customer_phone=" + customer_phone + ", customer_email=" + customer_email
-				+ ", customer_dicount_code=" + customer_dicount_code + "]";
+				+ ", customer_dicount_code=" + customer_discount_code + "]";
 	}
 
 }

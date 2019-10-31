@@ -16,14 +16,15 @@ public class DBInterface {
 	private static Connection con;
 	private static Statement stmt;
 	
-	//String url = "jdbc:mysql://10.140.230.135:3306/pizza";
-	//String dbUser = "newuser";
-	//String usrPass = "12345";
-	
-	// for local host
-	String url = "jdbc:mysql://localhost:3306/pizza";
+	/* For remote host */
+	String url = "jdbc:mysql://10.140.230.135:3306/pizza";
 	String dbUser = "newuser";
-	String usrPass = "1234";
+	String usrPass = "12345";
+	
+	/* For local host */
+//	String url = "jdbc:mysql://localhost:3306/pizza";
+//	String dbUser = "newuser";
+//	String usrPass = "1234";
 	
 	/**
 	 * Open the DB connection
@@ -77,7 +78,7 @@ public class DBInterface {
 				String customer_address = rs.getString("customers.address");
 				int customer_phone = rs.getInt("customers.cellphone");
 				String customer_email = rs.getString("customers.email");
-				String customer_dicount_code = rs.getString("customers.discount_code");
+				int customer_discount_code = rs.getInt("customers.discount_code");
 				
 				Customer myCustomer = new Customer
 						(
@@ -86,7 +87,7 @@ public class DBInterface {
 							customer_address, 
 							customer_phone, 
 							customer_email,
-							customer_dicount_code
+							customer_discount_code
 						);
 				
 				customers.add(myCustomer);

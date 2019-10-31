@@ -20,7 +20,6 @@ public class Order {
 	private int pizza_sauce_1_id;
 	
 	private int pizza_cheese_0_id;
-
 	private int pizza_cheese_1_id;
 	
 	private int pizza_status;

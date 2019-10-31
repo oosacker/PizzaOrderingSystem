@@ -135,9 +135,13 @@ public class DBInterface {
 	public boolean setOrderState(Order order, int newStatus) {
 		try {
 			if ( orderExists(order) ) {
+				
 				order.setPizza_status(newStatus);
+				int order_id = order.getOrder_id();
 				
-				
+				// UPDATE `pizza`.`orders` SET `status` = '2' WHERE (`id` = '1');
+				String query = "UPDATE `pizza`.`orders` SET `status` = '2' WHERE (`id` = " + "'" +order_id+ "');";
+
 				
 				return true;
 			}

@@ -26,9 +26,6 @@ public class Order {
 	
 	private double pizza_price;
 
-	public double getPizza_price() {
-		return pizza_price;
-	}
 
 	public Order(
 				int order_id, 
@@ -42,7 +39,7 @@ public class Order {
 				int pizza_sauce_1_id,
 				int pizza_cheese_0_id, 
 				int pizza_cheese_1_id, 
-				int status,
+				int pizza_status,
 				double pizza_price
 			) {
 		this.order_id = order_id;
@@ -56,7 +53,7 @@ public class Order {
 		this.pizza_sauce_1_id = pizza_sauce_1_id;
 		this.pizza_cheese_0_id = pizza_cheese_0_id;
 		this.pizza_cheese_1_id = pizza_cheese_1_id;
-		this.pizza_status = status;
+		this.pizza_status = pizza_status;
 		this.pizza_price = pizza_price;
 	}
 
@@ -104,10 +101,23 @@ public class Order {
 		return pizza_cheese_1_id;
 	}
 
-	public int getStatus() {
+	public int getPizza_status() {
 		return pizza_status;
 	}
 	
+	public double getPizza_price() {
+		return pizza_price;
+	}
+
+	@Override
+	public String toString() {
+		return "Order [order_id=" + order_id + ", pizza_size=" + pizza_size + ", customer_id=" + customer_id
+				+ ", order_time=" + order_time + ", pizza_topping_0_id=" + pizza_topping_0_id + ", pizza_topping_1_id="
+				+ pizza_topping_1_id + ", pizza_topping_2_id=" + pizza_topping_2_id + ", pizza_sauce_0_id="
+				+ pizza_sauce_0_id + ", pizza_sauce_1_id=" + pizza_sauce_1_id + ", pizza_cheese_0_id="
+				+ pizza_cheese_0_id + ", pizza_cheese_1_id=" + pizza_cheese_1_id + ", pizza_status=" + pizza_status
+				+ ", pizza_price=" + pizza_price + "]";
+	}
 
 
 }

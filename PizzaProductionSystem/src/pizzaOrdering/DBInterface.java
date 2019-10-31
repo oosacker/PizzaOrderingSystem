@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.sql.Timestamp;
 import java.util.LinkedList;
 import java.util.Queue;
 
@@ -50,57 +51,83 @@ public class DBInterface {
 			return false;
 		}
 	}
-	
-	public Queue<Order> getOrders() {
-		Queue<Order> orders = new LinkedList<>();
-		
-		orders.offer(null);
-		orders.poll();
-		
-		return orders;
-		
-	}
-	
-	
-	
-	/**
-	 * Read all players from the DB and print out
-	 */
-	public int readDatabase() {
 
+	
+	private Queue<Order> getOrders() {
+		
 		try {
 			stmt = con.createStatement();
 			String sql = "Select * from orders";
 			ResultSet rs = stmt.executeQuery(sql);
-			int count = 0;
 
-
+			Queue<Order> orders = new LinkedList<>();
+			
 			while(rs.next()){
 				
-				count++;
-				int id = rs.getInt("orders.id");
-				String order = rs.getString("orders.name");
-				System.out.println(id + " " +order);
-					
-			}
+				int order_id = rs.getInt("orders.id");
+				int customer_id = rs.getInt("orders.customer_id");
+				int pizza_status = rs.getInt("orders.status");
+				int pizza_size = rs.getInt("orders.size");
+				
+				int pizza_topping_0_id = rs.getInt("orders.topping_0_id");
+				int pizza_topping_1_id = rs.getInt("orders.topping_1_id");
+				int pizza_topping_2_id = rs.getInt("orders.topping_0_id");
+				
+				int pizza_sauce_0_id = rs.getInt("orders.sauce_0_id");
+				int pizza_sauce_1_id = rs.getInt("orders.sauce_1_id");
+				
+				int pizza_cheese_0_id = rs.getInt("orders.cheese_0_id");
+				int pizza_cheese_1_id = rs.getInt("orders.cheese_1_id");
+				
+				Timestamp order_time = rs.getTimestamp("orders.date_time");
+				
+				double pizza_price = rs.getDouble("orders.price");
+				
+				Order myOrder = new Order
+						(
+							order_id, 
+							pizza_size, 
+							customer_id, 
+							order_time, 
+							pizza_topping_0_id, 
+							pizza_topping_1_id, 
+							pizza_topping_2_id, 
+							pizza_sauce_0_id, 
+							pizza_sauce_1_id, 
+							pizza_cheese_0_id, 
+							pizza_cheese_1_id, 
+							pizza_status, 
+							pizza_price
+						);
+				
+				orders.offer(myOrder);
+				
+				}
+			
 			rs.close();
 			stmt.close();
-			System.out.println("Fetched " +count + " orders from database\n");
-			return count;
+			return orders;
+			
 		}
 		catch(Exception ex) {
 			System.out.println("Error reading from database\n");
 			ex.printStackTrace();
-			return -1;
+			return null;
 		}
 	}
+
 	
 	public DBInterface() {
 		// TODO Auto-generated constructor stub
 		
 		openDB(url, dbUser, usrPass);
+
+		Queue<Order> orders = getOrders();
 		
-		readDatabase();
+		for(Order order : orders) {
+			System.out.println(order.toString());
+		}
+		
 		
 		closeDB();
 		

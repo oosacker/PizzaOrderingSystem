@@ -26,6 +26,8 @@ public class DBInterface {
 //	String dbUser = "newuser";
 //	String usrPass = "1234";
 	
+	
+	
 	/**
 	 * Open the DB connection
 	 */
@@ -44,6 +46,8 @@ public class DBInterface {
 		}
 	}
 
+	
+	
 	/**
 	 * Close the DB connection
 	 */
@@ -105,33 +109,8 @@ public class DBInterface {
 			return null;
 		}
 	}
+
 	
-	/**
-	 * Add a new pizza order to the database
-	 * @param newOrder
-	 * @return
-	 */
-//	public boolean addNewOrder(Order newOrder) {
-//		try {
-//			stmt = con.createStatement();
-//			String sql = "Select * from orders";
-//			ResultSet rs = stmt.executeQuery(sql);
-//
-//			
-//			
-//			rs.close();
-//			stmt.close();
-//
-//			return true;
-//			
-//		}
-//		catch(Exception ex) {
-//			System.out.println("Error reading from database\n");
-//			ex.printStackTrace();
-//			return false;
-//		}
-//		
-//	}
 	
 	/**
 	 * Change the state of an order on the database
@@ -166,6 +145,14 @@ public class DBInterface {
 		}
 	}
 	
+	
+	
+	
+	/**
+	 * Check if an order exists in the database
+	 * @param order
+	 * @return
+	 */
 	public boolean orderExists(Order order) {
 		try {
 			
@@ -200,7 +187,13 @@ public class DBInterface {
 		}
 	}
 	
-	public Queue<Order> getOrders() {
+	
+	
+	/**
+	 * Fetch the current orders from database
+	 * @return
+	 */
+	public ArrayList<Order> getOrders() {
 		
 		try {
 			stmt = con.createStatement();
@@ -214,7 +207,7 @@ public class DBInterface {
 			
 			ResultSet rs = prep.executeQuery();
 
-			Queue<Order> orders = new LinkedList<>();
+			ArrayList<Order> orders = new ArrayList<>();
 			
 			while(rs.next()){
 				
@@ -254,7 +247,7 @@ public class DBInterface {
 							pizza_price
 						);
 				
-				orders.offer(myOrder);
+				orders.add(myOrder);
 				
 				}
 			
@@ -271,12 +264,15 @@ public class DBInterface {
 	}
 
 	
+	/**
+	 * Create database connection
+	 */
 	public DBInterface() {
 		// TODO Auto-generated constructor stub
 		
 		openDB(url, dbUser, usrPass);
 
-		Queue<Order> orders = getOrders();
+		ArrayList<Order> orders = getOrders();
 		for(Order order : orders) {
 			System.out.println(order.toString());
 		}

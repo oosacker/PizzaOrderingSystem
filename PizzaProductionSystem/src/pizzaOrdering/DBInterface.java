@@ -2,9 +2,11 @@ package pizzaOrdering;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Queue;
 
@@ -53,11 +55,138 @@ public class DBInterface {
 	}
 
 	
-	private Queue<Order> getOrders() {
+	
+	
+	public ArrayList<Customer> getCustomers() {
+		try {
+			stmt = con.createStatement();
+			String sql = "Select * from customers";
+			ResultSet rs = stmt.executeQuery(sql);
+
+			ArrayList<Customer> customers = new ArrayList<>();
+			
+			while(rs.next()){
+				
+				int customer_id = rs.getInt("customers.id");
+				String customer_name = rs.getString("customers.name");
+				String customer_address = rs.getString("customers.address");
+				int customer_phone = rs.getInt("customers.cellphone");
+				String customer_email = rs.getString("customers.email");
+				String customer_dicount_code = rs.getString("customers.dicount_code");
+				
+				Customer myCustomer = new Customer
+						(
+							customer_id, 
+							customer_name, 
+							customer_address, 
+							customer_phone, 
+							customer_email,
+							customer_dicount_code
+						);
+				
+				customers.add(myCustomer);
+				
+			}
+			
+			rs.close();
+			stmt.close();
+			return customers;
+			
+		}
+		catch(Exception ex) {
+			System.out.println("Error reading from database\n");
+			ex.printStackTrace();
+			return null;
+		}
+	}
+	
+	/**
+	 * Add a new pizza order to the database
+	 * @param newOrder
+	 * @return
+	 */
+//	public boolean addNewOrder(Order newOrder) {
+//		try {
+//			stmt = con.createStatement();
+//			String sql = "Select * from orders";
+//			ResultSet rs = stmt.executeQuery(sql);
+//
+//			
+//			
+//			rs.close();
+//			stmt.close();
+//
+//			return true;
+//			
+//		}
+//		catch(Exception ex) {
+//			System.out.println("Error reading from database\n");
+//			ex.printStackTrace();
+//			return false;
+//		}
+//		
+//	}
+	
+	/**
+	 * Change the state of an order on the database
+	 * @param state
+	 * @return
+	 */
+	public boolean setOrderState(Order order, int newStatus) {
+		try {
+			if ( orderExists(order) ) {
+				order.setPizza_status(newStatus);
+				
+				
+				
+				return true;
+			}
+			else {
+				return false;
+			}
+		}
+		catch(Exception ex) {
+			ex.printStackTrace();
+			return false;
+		}
+	}
+	
+	public boolean orderExists(Order order) {
+		try {
+			
+			boolean orderFound = false;
+			
+			stmt = con.createStatement();
+			String sql = "Select * from orders where orders.id=?";
+			PreparedStatement prep = con.prepareStatement(sql);
+			prep.setInt(1, order.getOrder_id());
+			ResultSet rs = prep.executeQuery();
+			
+			if(rs.next()){
+				orderFound = true;
+				System.out.println("Order found");
+			}
+			
+			else if(!orderFound) {
+				System.out.println("Order not found");
+			}
+			
+			rs.close();
+			stmt.close();
+			return orderFound;
+		}
+		catch(Exception ex) {
+			ex.printStackTrace();
+			return false;
+		}
+	}
+	
+	public Queue<Order> getOrders() {
 		
 		try {
 			stmt = con.createStatement();
-			String sql = "Select * from orders";
+			// ONLY DOWNLOAD IF STATUS IS 0 OR 1 (WAITING OR COOKING)
+			String sql = "Select * from orders where orders.status='0' or orders.status='1'";
 			ResultSet rs = stmt.executeQuery(sql);
 
 			Queue<Order> orders = new LinkedList<>();

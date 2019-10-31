@@ -20,6 +20,7 @@ public class Order {
 	private int pizza_sauce_1_id;
 	
 	private int pizza_cheese_0_id;
+
 	private int pizza_cheese_1_id;
 	
 	private int pizza_status;
@@ -103,6 +104,10 @@ public class Order {
 
 	public int getPizza_status() {
 		return pizza_status;
+	}
+	
+	public void setPizza_status(int pizza_status) {
+		this.pizza_status = pizza_status;
 	}
 	
 	public double getPizza_price() {

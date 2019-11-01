@@ -109,6 +109,10 @@ public class Order {
 		return pizza_status;
 	}
 	
+	public void setPizza_status(int pizza_status) {
+		this.pizza_status = pizza_status;
+	}
+	
 	public double getPizza_price() {
 		return pizza_price;
 	}

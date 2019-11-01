@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
+import java.util.Map;
 import java.util.Queue;
 
 
@@ -19,14 +20,14 @@ public class DBInterface {
 	private static Statement stmt;
 	
 	/* For remote host */
-	String url = "jdbc:mysql://10.140.230.135:3306/pizza";
-	String dbUser = "newuser";
-	String usrPass = "12345";
+//	String url = "jdbc:mysql://10.140.230.135:3306/pizza";
+//	String dbUser = "newuser";
+//	String usrPass = "12345";
 	
 	/* For local host */
-//	String url = "jdbc:mysql://localhost:3306/pizza";
-//	String dbUser = "newuser";
-//	String usrPass = "1234";
+	String url = "jdbc:mysql://localhost:3306/pizza";
+	String dbUser = "newuser";
+	String usrPass = "1234";
 	
 	
 	
@@ -666,42 +667,80 @@ public class DBInterface {
 	
 	
 	
+	/**
+	 * Fetch all sauces from database
+	 * @return
+	 */
+	public HashMap<Integer, Sauce> getAllSauces() {
+		
+		try {
+			stmt = con.createStatement();
+			String sql = "Select * from sauces";
+			ResultSet rs = stmt.executeQuery(sql);
+
+			HashMap<Integer, Sauce> sauces = new HashMap<>();
+			
+			while(rs.next()){
+				
+				int sauce_id = rs.getInt("sauces.id");
+				String sauce_name = rs.getString("sauces.name");
+				int sauce_stock_level = rs.getInt("sauces.stock_level");
+				
+				Sauce mySauce = new Sauce
+						(
+							sauce_id, 
+							sauce_name, 
+							sauce_stock_level
+						);
+				
+				sauces.put(sauce_id, mySauce);
+				
+			}
+			
+			rs.close();
+			stmt.close();
+			return sauces;
+			
+		}
+		catch(Exception ex) {
+			System.out.println("Error reading from database");
+			ex.printStackTrace();
+			return null;
+		}
+
+	}
+
+	
+	private void printAllOrders(HashMap<Integer, Order> orders) {
+		
+		for (Map.Entry<Integer, Order> e : orders.entrySet()) { 
+			
+			System.out.println(e.getKey() +" "+ e.getValue().toString());
+
+		} 
+	}
+	
+	
+	
+	private void printAllCustomers(HashMap<Integer, Customer> customers) {
+		
+		for (Map.Entry<Integer, Customer> e : customers.entrySet()) { 
+			
+			System.out.println(e.getKey() +" "+ e.getValue().toString());
+
+		} 
+	}
+	
 	
 	public DBInterface() {
 		// TODO Auto-generated constructor stub
 		
 		openDB(url, dbUser, usrPass);
 
-//		ArrayList<Order> orders = getOrders();
-//		for(Order order : orders) {
-//			System.out.println(order.toString());
-//		}
-//		
+
+		printAllCustomers(getAllCustomers());
 		
-		System.out.println(verifyStaffLogin("staff","password"));
-		
-//		ArrayList<Customer> cust = getCustomers();
-//		for(Customer customer : cust) {
-//			System.out.println(customer.toString());
-//		}
-		
-//		System.out.println(findCustomer(1).toString());
-//		System.out.println(findOrder(1).toString());
-//		setOrderState(
-//				new Order(
-//						0, 
-//						0, 
-//						0, 
-//						null,
-//						0,
-//						0,
-//						0,
-//						0,
-//						0,
-//						0,
-//						0,
-//						0,
-//						0), 99);
+		printAllOrders(getAllOrders());
 		
 		
 		closeDB();

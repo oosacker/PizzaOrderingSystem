@@ -618,7 +618,7 @@ public class DBInterface {
 	
 	
 	/**
-	 * Fetch all toppings from database
+	 * Fetch all cheese from database
 	 * @return
 	 */
 	//public ArrayList<Order> getOrders() {

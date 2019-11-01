@@ -91,6 +91,12 @@ public static void main(String[] args) {
        
 //        table.getColumns().addAll(ingredientsCol, QTYCol);
 //   
+        
+        TableColumn<String, Ingredient> IngredientsCol = new TableColumn<>("Ingredients");
+        IngredientsCol.setMinWidth(50);
+        IngredientsCol.setCellValueFactory(new PropertyValueFactory<>("ingredient"));
+        
+        
         TableColumn<String, Ingredient> customerIdCol = new TableColumn<>("Customer ID");
         customerIdCol.setMinWidth(50);
         customerIdCol.setCellValueFactory(new PropertyValueFactory<>("customerId"));

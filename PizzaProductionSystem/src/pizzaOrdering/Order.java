@@ -27,6 +27,10 @@ public class Order {
 	private double pizza_price;
 
 
+//	public Order()
+//	{
+//		
+//	}
 	public Order(
 				int order_id, 
 				int pizza_size, 

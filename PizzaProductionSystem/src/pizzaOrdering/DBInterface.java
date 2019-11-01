@@ -7,6 +7,8 @@ import java.sql.ResultSet;
 import java.sql.Statement;
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.Queue;
 
@@ -356,53 +358,7 @@ public class DBInterface {
 	 */
 	
 	
-	/**
-	 * Fetch all customers from the database
-	 * @return
-	 */
-	public ArrayList<Customer> getAllCustomers() {
-		try {
-			stmt = con.createStatement();
-			String sql = "Select * from customers";
-			ResultSet rs = stmt.executeQuery(sql);
-
-			ArrayList<Customer> customers = new ArrayList<>();
-			
-			while(rs.next()){
-				
-				int customer_id = rs.getInt("customers.id");
-				String customer_name = rs.getString("customers.name");
-				String customer_address = rs.getString("customers.address");
-				int customer_phone = rs.getInt("customers.cellphone");
-				String customer_email = rs.getString("customers.email");
-				int customer_discount_code = rs.getInt("customers.discount_code");
-				
-				Customer myCustomer = new Customer
-						(
-							customer_id, 
-							customer_name, 
-							customer_address, 
-							customer_phone, 
-							customer_email,
-							customer_discount_code
-						);
-				
-				customers.add(myCustomer);
-				
-			}
-			
-			rs.close();
-			stmt.close();
-			return customers;
-			
-		}
-		catch(Exception ex) {
-			System.out.println("Error reading from database");
-			ex.printStackTrace();
-			return null;
-		}
-	}
-
+	
 	
 	
 	/**
@@ -486,7 +442,8 @@ public class DBInterface {
 	 * Fetch the current orders from database
 	 * @return
 	 */
-	public ArrayList<Order> getOrders() {
+	//public ArrayList<Order> getOrders() {
+	public HashMap<Integer, Order> getAllOrders() {
 		
 		try {
 			stmt = con.createStatement();
@@ -500,7 +457,8 @@ public class DBInterface {
 			
 			ResultSet rs = prep.executeQuery();
 
-			ArrayList<Order> orders = new ArrayList<>();
+			//ArrayList<Order> orders = new ArrayList<>();
+			HashMap<Integer, Order> orders = new HashMap<>();
 			
 			while(rs.next()){
 				
@@ -540,7 +498,8 @@ public class DBInterface {
 							pizza_price
 						);
 				
-				orders.add(myOrder);
+				//orders.add(myOrder);
+				orders.put(order_id, myOrder);
 				
 				}
 			
@@ -555,7 +514,156 @@ public class DBInterface {
 			return null;
 		}
 	}
+	
+	
+	/**
+	 * Fetch all customers from the database
+	 * @return
+	 */
+	//public ArrayList<Customer> getAllCustomers() {
+	public HashMap<Integer, Customer> getAllCustomers() {
+		
+		try {
+			stmt = con.createStatement();
+			String sql = "Select * from customers";
+			ResultSet rs = stmt.executeQuery(sql);
 
+			//ArrayList<Customer> customers = new ArrayList<>();
+			HashMap<Integer, Customer> customers = new HashMap<>();
+			
+			while(rs.next()){
+				
+				int customer_id = rs.getInt("customers.id");
+				String customer_name = rs.getString("customers.name");
+				String customer_address = rs.getString("customers.address");
+				int customer_phone = rs.getInt("customers.cellphone");
+				String customer_email = rs.getString("customers.email");
+				int customer_discount_code = rs.getInt("customers.discount_code");
+				
+				Customer myCustomer = new Customer
+						(
+							customer_id, 
+							customer_name, 
+							customer_address, 
+							customer_phone, 
+							customer_email,
+							customer_discount_code
+						);
+				
+				//customers.add(myCustomer);
+				customers.put(customer_id, myCustomer);
+				
+			}
+			
+			rs.close();
+			stmt.close();
+			return customers;
+			
+		}
+		catch(Exception ex) {
+			System.out.println("Error reading from database");
+			ex.printStackTrace();
+			return null;
+		}
+	}
+
+
+	
+	/**
+	 * Fetch all toppings from database
+	 * @return
+	 */
+	//public ArrayList<Order> getOrders() {
+	public HashMap<Integer, Topping> getAllToppings() {
+		
+		try {
+			stmt = con.createStatement();
+			String sql = "Select * from toppings";
+			ResultSet rs = stmt.executeQuery(sql);
+
+			//ArrayList<Customer> customers = new ArrayList<>();
+			HashMap<Integer, Topping> toppings = new HashMap<>();
+			
+			while(rs.next()){
+				
+				int topping_id = rs.getInt("toppings.id");
+				String topping_name = rs.getString("toppings.name");
+				int topping_stock_level = rs.getInt("toppings.stock_level");
+				
+				Topping myTopping = new Topping
+						(
+							topping_id, 
+							topping_name, 
+							topping_stock_level
+						);
+				
+				//customers.add(myCustomer);
+				toppings.put(topping_id, myTopping);
+				
+			}
+			
+			rs.close();
+			stmt.close();
+			return toppings;
+			
+		}
+		catch(Exception ex) {
+			System.out.println("Error reading from database");
+			ex.printStackTrace();
+			return null;
+		}
+
+	}
+
+	
+	
+	/**
+	 * Fetch all toppings from database
+	 * @return
+	 */
+	//public ArrayList<Order> getOrders() {
+	public HashMap<Integer, Cheese> getAllCheeses() {
+		
+		try {
+			stmt = con.createStatement();
+			String sql = "Select * from toppings";
+			ResultSet rs = stmt.executeQuery(sql);
+
+			//ArrayList<Customer> customers = new ArrayList<>();
+			HashMap<Integer, Cheese> cheeses = new HashMap<>();
+			
+			while(rs.next()){
+				
+				int cheese_id = rs.getInt("toppings.id");
+				String cheese_name = rs.getString("toppings.name");
+				int cheese_stock_level = rs.getInt("toppings.stock_level");
+				
+				Cheese myCheese = new Cheese
+						(
+							cheese_id, 
+							cheese_name, 
+							cheese_stock_level
+						);
+				
+				//customers.add(myCustomer);
+				cheeses.put(cheese_id, myCheese);
+				
+			}
+			
+			rs.close();
+			stmt.close();
+			return cheeses;
+			
+		}
+		catch(Exception ex) {
+			System.out.println("Error reading from database");
+			ex.printStackTrace();
+			return null;
+		}
+
+	}
+
+	
 	
 	
 	

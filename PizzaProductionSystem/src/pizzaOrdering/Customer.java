@@ -59,7 +59,7 @@ public class Customer {
 	public String toString() {
 		return "Customer [customer_name=" + customer_name + ", customer_id=" + customer_id + ", customer_address="
 				+ customer_address + ", customer_phone=" + customer_phone + ", customer_email=" + customer_email
-				+ ", customer_dicount_code=" + customer_discount_code + "]";
+				+ ", customer_discount_code=" + customer_discount_code + "]";
 	}
 
 }

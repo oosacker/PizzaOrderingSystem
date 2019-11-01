@@ -63,11 +63,255 @@ public class DBInterface {
 			return false;
 		}
 	}
+	
+	
+	/**
+	 * Find cheese on database based on id; return null if not found
+	 * @return
+	 */
+	public Cheese findCheese(int cheese_id_input) {
+		
+		try {
+			
+			Cheese myCheese = null;
+			
+			stmt = con.createStatement();
+			String sql = "Select * from cheeses where cheeses.id = ?";
+			PreparedStatement prep = con.prepareStatement(sql);
+			
+			prep.setInt(1, cheese_id_input);
+			
+			ResultSet rs = prep.executeQuery();
+			
+			if(rs.next()){
+				
+				int cheese_id = rs.getInt("cheeses.id");
+				String cheese_name = rs.getString("cheeses.name");
+				int cheese_stock_level = rs.getInt("cheeses.stock_level");
+				
+				myCheese = new Cheese(cheese_id, cheese_name, cheese_stock_level);
+				
+			}
 
+			rs.close();
+			stmt.close();
+			
+			return myCheese;
+		}
+		
+		catch(Exception ex) {
+			System.out.println("Error reading from database");
+			ex.printStackTrace();
+			return null;
+		}
+	}
+	
+
+	/**
+	 * Find sauce on database based on id; return null if not found
+	 * @return
+	 */
+	public Sauce findSauce(int sauce_id_input) {
+		
+		try {
+			
+			Sauce mySauce = null;
+			
+			stmt = con.createStatement();
+			String sql = "Select * from sauces where sauces.id = ?";
+			PreparedStatement prep = con.prepareStatement(sql);
+			
+			prep.setInt(1, sauce_id_input);
+			
+			ResultSet rs = prep.executeQuery();
+			
+			if(rs.next()){
+				
+				int sauce_id = rs.getInt("toppings.id");
+				String sauce_name = rs.getString("toppings.name");
+				int sauce_stock_level = rs.getInt("toppings.stock_level");
+				
+				mySauce = new Sauce(sauce_id, sauce_name, sauce_stock_level);
+				
+			}
+
+			rs.close();
+			stmt.close();
+			
+			return mySauce;
+		}
+		
+		catch(Exception ex) {
+			System.out.println("Error reading from database");
+			ex.printStackTrace();
+			return null;
+		}
+	}
 	
 	
+	/**
+	 * Find topping on database based on id; return null if not found
+	 * @return
+	 */
+	public Topping findTopping(int topping_id_input) {
+		
+		try {
+			
+			Topping myTopping = null;
+			
+			stmt = con.createStatement();
+			String sql = "Select * from toppings where toppings.id = ?";
+			PreparedStatement prep = con.prepareStatement(sql);
+			
+			prep.setInt(1, topping_id_input);
+			
+			ResultSet rs = prep.executeQuery();
+			
+			if(rs.next()){
+				
+				int topping_id = rs.getInt("toppings.id");
+				String topping_name = rs.getString("toppings.name");
+				int topping_stock_level = rs.getInt("toppings.stock_level");
+				
+				myTopping = new Topping(topping_id, topping_name, topping_stock_level);
+				
+			}
+
+			rs.close();
+			stmt.close();
+			
+			return myTopping;
+		}
+		
+		catch(Exception ex) {
+			System.out.println("Error reading from database");
+			ex.printStackTrace();
+			return null;
+		}
+	}
 	
-	public ArrayList<Customer> getCustomers() {
+	/**
+	 * Find customer on database based on id; return null if not found
+	 * @return
+	 */
+	public Customer findCustomer(int customer_id_input) {
+		
+		try {
+			
+			Customer myCustomer = null;
+			
+			stmt = con.createStatement();
+			String sql = "Select * from customers where customers.id = ?";
+			PreparedStatement prep = con.prepareStatement(sql);
+			
+			prep.setInt(1, customer_id_input);
+			
+			ResultSet rs = prep.executeQuery();
+			
+			if(rs.next()){
+				
+				int customer_id = rs.getInt("customers.id");
+				String customer_name = rs.getString("customers.name");
+				String customer_address = rs.getString("customers.address");
+				int customer_phone = rs.getInt("customers.cellphone");
+				String customer_email = rs.getString("customers.email");
+				int customer_discount_code = rs.getInt("customers.discount_code");
+				
+				myCustomer = new Customer(customer_id, customer_name, customer_address, customer_phone, customer_email, customer_discount_code);
+				
+			}
+
+			rs.close();
+			stmt.close();
+			
+			return myCustomer;
+			
+			
+		}
+		catch(Exception ex) {
+			System.out.println("Error reading from database");
+			ex.printStackTrace();
+			return null;
+		}
+	}
+	
+	
+	/**
+	 * Find order on database based on id; return null if not found
+	 * @return
+	 */
+	public Order findOrder(int order_id_input) {
+		
+		try {
+			
+			Order myOrder = null;
+			
+			stmt = con.createStatement();
+			String sql = "Select * from orders where orders.id = ?";
+			PreparedStatement prep = con.prepareStatement(sql);
+			
+			prep.setInt(1, order_id_input);
+			
+			ResultSet rs = prep.executeQuery();
+			
+			if(rs.next()){
+				
+				int order_id = rs.getInt("orders.id");
+				int customer_id = rs.getInt("orders.customer_id");
+				int pizza_status = rs.getInt("orders.status");
+				int pizza_size = rs.getInt("orders.size");
+				
+				int pizza_topping_0_id = rs.getInt("orders.topping_0_id");
+				int pizza_topping_1_id = rs.getInt("orders.topping_1_id");
+				int pizza_topping_2_id = rs.getInt("orders.topping_0_id");
+				
+				int pizza_sauce_0_id = rs.getInt("orders.sauce_0_id");
+				int pizza_sauce_1_id = rs.getInt("orders.sauce_1_id");
+				
+				int pizza_cheese_0_id = rs.getInt("orders.cheese_0_id");
+				int pizza_cheese_1_id = rs.getInt("orders.cheese_1_id");
+				
+				Timestamp order_time = rs.getTimestamp("orders.date_time");
+				
+				double pizza_price = rs.getDouble("orders.price");
+				
+				myOrder = new Order(
+							order_id, 
+							pizza_size, 
+							customer_id, 
+							order_time, 
+							pizza_topping_0_id, 
+							pizza_topping_1_id, 
+							pizza_topping_2_id, 
+							pizza_sauce_0_id, 
+							pizza_sauce_1_id, 
+							pizza_cheese_0_id, 
+							pizza_cheese_1_id, 
+							pizza_status, 
+							pizza_price
+						);
+				
+			}
+
+			rs.close();
+			stmt.close();
+			return myOrder;
+			
+			
+		}
+		catch(Exception ex) {
+			System.out.println("Error reading from database");
+			ex.printStackTrace();
+			return null;
+		}
+	}
+	
+	
+	/**
+	 * Fetch all customers from the database
+	 * @return
+	 */
+	public ArrayList<Customer> getAllCustomers() {
 		try {
 			stmt = con.createStatement();
 			String sql = "Select * from customers";
@@ -264,25 +508,26 @@ public class DBInterface {
 	}
 
 	
-	/**
-	 * Create database connection
-	 */
+	
+	
 	public DBInterface() {
 		// TODO Auto-generated constructor stub
 		
 		openDB(url, dbUser, usrPass);
 
-		ArrayList<Order> orders = getOrders();
-		for(Order order : orders) {
-			System.out.println(order.toString());
-		}
+//		ArrayList<Order> orders = getOrders();
+//		for(Order order : orders) {
+//			System.out.println(order.toString());
+//		}
+//		
+//		
+//		ArrayList<Customer> cust = getCustomers();
+//		for(Customer customer : cust) {
+//			System.out.println(customer.toString());
+//		}
 		
-		
-		ArrayList<Customer> cust = getCustomers();
-		for(Customer customer : cust) {
-			System.out.println(customer.toString());
-		}
-		
+		System.out.println(findCustomer(1).toString());
+		System.out.println(findOrder(1).toString());
 //		setOrderState(
 //				new Order(
 //						0, 

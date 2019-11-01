@@ -66,6 +66,50 @@ public class DBInterface {
 	
 	
 	/**
+	 * Check if username and password exist on database
+	 * @param userName_input
+	 * @param userPass_input
+	 * @return
+	 */
+	public boolean verifyStaffLogin(String userName_input, String userPass_input) {
+		
+		try {
+			
+			stmt = con.createStatement();
+			String sql = "Select * from staff_accounts where staff_accounts.id = ? and staff_accounts.password = ?";
+			PreparedStatement prep = con.prepareStatement(sql);
+			
+			boolean user_verified = false;
+			
+			prep.setString(1, userName_input);
+			prep.setString(2, userPass_input);
+			
+			ResultSet rs = prep.executeQuery();
+			
+			if(rs.next()){
+				user_verified = true;
+			}
+			
+			else {
+				user_verified = false;
+			}
+
+			rs.close();
+			stmt.close();
+			
+			return user_verified;
+		}
+		
+		catch(Exception ex) {
+			System.out.println("Error reading from database");
+			ex.printStackTrace();
+			return false;
+		}
+
+	}
+	
+	
+	/**
 	 * Find cheese on database based on id; return null if not found
 	 * @return
 	 */
@@ -308,6 +352,11 @@ public class DBInterface {
 	
 	
 	/**
+	 * Fetch all ingredients 
+	 */
+	
+	
+	/**
 	 * Fetch all customers from the database
 	 * @return
 	 */
@@ -520,14 +569,16 @@ public class DBInterface {
 //			System.out.println(order.toString());
 //		}
 //		
-//		
+		
+		System.out.println(verifyStaffLogin("staff","password"));
+		
 //		ArrayList<Customer> cust = getCustomers();
 //		for(Customer customer : cust) {
 //			System.out.println(customer.toString());
 //		}
 		
-		System.out.println(findCustomer(1).toString());
-		System.out.println(findOrder(1).toString());
+//		System.out.println(findCustomer(1).toString());
+//		System.out.println(findOrder(1).toString());
 //		setOrderState(
 //				new Order(
 //						0, 

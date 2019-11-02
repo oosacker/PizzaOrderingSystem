@@ -119,7 +119,7 @@ public static void main(String[] args) {
         saucesCol.setMinWidth(100);
         saucesCol.setCellValueFactory(new PropertyValueFactory<>("sauces"));
 
-        TableColumn<String, OrderInfo> cheeseCol = new TableColumn<>("Cheese");
+        TableColumn<String, Cheese> cheeseCol = new TableColumn<>("Cheese");
         cheeseCol.setMinWidth(100);
         cheeseCol.setCellValueFactory(new PropertyValueFactory<>("Cheese"));
         
@@ -148,6 +148,9 @@ public static void main(String[] args) {
         stokeTable.getColumns().add(QTYCol);
 
         orderTable.getItems().add(new OrderInfo("5", "L", "Beef", "Tomato", "Chidder", "9", "15", "cooking"));
+        stokeTable.getItems().add(new Ingredient( "Tomato", "100"));
+        
+        orderTable.getItems().add(new OrderInfo("5", "L", "Beef", "Onion", "Chidder", "9", "15", "cooking"));
         stokeTable.getItems().add(new Ingredient( "Tomato", "100"));
         
         

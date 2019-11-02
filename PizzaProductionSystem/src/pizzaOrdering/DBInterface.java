@@ -20,14 +20,14 @@ public class DBInterface {
 	private static Statement stmt;
 	
 	/* For remote host */
-//	String url = "jdbc:mysql://10.140.230.135:3306/pizza";
-//	String dbUser = "newuser";
-//	String usrPass = "12345";
+	String url = "jdbc:mysql://10.140.230.135:3306/pizza";
+	String dbUser = "newuser";
+	String usrPass = "12345";
 	
 	/* For local host */
-	String url = "jdbc:mysql://localhost:3306/pizza";
-	String dbUser = "newuser";
-	String usrPass = "1234";
+//	String url = "jdbc:mysql://localhost:3306/pizza";
+//	String dbUser = "newuser";
+//	String usrPass = "1234";
 	
 	
 	

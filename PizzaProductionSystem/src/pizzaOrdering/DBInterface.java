@@ -352,15 +352,7 @@ public class DBInterface {
 			return null;
 		}
 	}
-	
-	
-	/**
-	 * Fetch all ingredients 
-	 */
-	
-	
-	
-	
+
 	
 	/**
 	 * Change the state of an order on the database

@@ -17,7 +17,7 @@ import java.util.Queue;
 public class DBInterface {
 
 	private static Connection con;
-	private static Statement stmt;
+	//private static Statement stmt;
 	
 	/* For remote host */
 	String url = "jdbc:mysql://10.140.230.135:3306/pizza";
@@ -78,7 +78,7 @@ public class DBInterface {
 		
 		try {
 			
-			stmt = con.createStatement();
+			//stmt = con.createStatement();
 			String sql = "Select * from staff_accounts where staff_accounts.id = ? and staff_accounts.password = ?";
 			PreparedStatement prep = con.prepareStatement(sql);
 			
@@ -98,7 +98,7 @@ public class DBInterface {
 			}
 
 			rs.close();
-			stmt.close();
+			//stmt.close();
 			
 			return user_verified;
 		}
@@ -112,6 +112,9 @@ public class DBInterface {
 	}
 	
 	
+
+	
+	
 	/**
 	 * Find cheese on database based on id; return null if not found
 	 * @return
@@ -122,7 +125,7 @@ public class DBInterface {
 			
 			Cheese myCheese = null;
 			
-			stmt = con.createStatement();
+			//stmt = con.createStatement();
 			String sql = "Select * from cheeses where cheeses.id = ?";
 			PreparedStatement prep = con.prepareStatement(sql);
 			
@@ -141,7 +144,7 @@ public class DBInterface {
 			}
 
 			rs.close();
-			stmt.close();
+			//stmt.close();
 			
 			return myCheese;
 		}
@@ -164,7 +167,7 @@ public class DBInterface {
 			
 			Sauce mySauce = null;
 			
-			stmt = con.createStatement();
+			//stmt = con.createStatement();
 			String sql = "Select * from sauces where sauces.id = ?";
 			PreparedStatement prep = con.prepareStatement(sql);
 			
@@ -183,7 +186,7 @@ public class DBInterface {
 			}
 
 			rs.close();
-			stmt.close();
+			//stmt.close();
 			
 			return mySauce;
 		}
@@ -206,7 +209,7 @@ public class DBInterface {
 			
 			Topping myTopping = null;
 			
-			stmt = con.createStatement();
+			//stmt = con.createStatement();
 			String sql = "Select * from toppings where toppings.id = ?";
 			PreparedStatement prep = con.prepareStatement(sql);
 			
@@ -225,7 +228,7 @@ public class DBInterface {
 			}
 
 			rs.close();
-			stmt.close();
+			//stmt.close();
 			
 			return myTopping;
 		}
@@ -247,7 +250,7 @@ public class DBInterface {
 			
 			Customer myCustomer = null;
 			
-			stmt = con.createStatement();
+			//stmt = con.createStatement();
 			String sql = "Select * from customers where customers.id = ?";
 			PreparedStatement prep = con.prepareStatement(sql);
 			
@@ -269,7 +272,7 @@ public class DBInterface {
 			}
 
 			rs.close();
-			stmt.close();
+			//stmt.close();
 			
 			return myCustomer;
 			
@@ -293,7 +296,7 @@ public class DBInterface {
 			
 			Order myOrder = null;
 			
-			stmt = con.createStatement();
+			//stmt = con.createStatement();
 			String sql = "Select * from orders where orders.id = ?";
 			PreparedStatement prep = con.prepareStatement(sql);
 			
@@ -341,7 +344,7 @@ public class DBInterface {
 			}
 
 			rs.close();
-			stmt.close();
+			//stmt.close();
 			return myOrder;
 			
 			
@@ -359,7 +362,7 @@ public class DBInterface {
 	 * @param state
 	 * @return
 	 */
-	public boolean setOrderState(Order order, int newStatus) {
+	public boolean updateOrderState(Order order, int newStatus) {
 		try {
 			if ( orderExists(order) ) {	
 				
@@ -373,7 +376,7 @@ public class DBInterface {
 				prep.setInt(1, newStatus);
 				prep.setInt(2, order_id);
 				prep.execute();
-				stmt.close();
+				//stmt.close();
 				
 				return true;
 			}
@@ -388,6 +391,75 @@ public class DBInterface {
 	}
 	
 	
+	public boolean updateIngredient(Ingredient ingredient) {
+		
+		try {
+		
+			String sql = "";
+			
+			if(ingredient instanceof Topping) {
+				sql = "UPDATE `pizza`.`toppings` SET `stock_level` = ? WHERE `id` = ?;";
+			}
+			
+			else if(ingredient instanceof Sauce) {
+				sql = "UPDATE `pizza`.`sauces` SET `stock_level` = ? WHERE `id` = ?;";
+			}
+			
+			else if(ingredient instanceof Cheese) {
+				sql = "UPDATE `pizza`.`cheeses` SET `stock_level` = ? WHERE `id` = ?;";
+			}
+			
+			PreparedStatement prep = con.prepareStatement(sql);
+			prep.setInt(1, 100);
+			prep.setInt(2, ingredient.getId());
+			int res = prep.executeUpdate();
+			
+			return true;
+			
+		}
+		
+		catch(Exception ex) {
+			ex.printStackTrace();
+			return false;
+		}
+		
+		
+	}
+	
+	
+	public boolean updateAllToppings() {
+		
+		try {
+			
+			Statement stmt = con.createStatement();
+			
+			String query = 	"select count(*) as topping_count from toppings;";
+			ResultSet rs = stmt.executeQuery(query);
+			
+			if(rs.next()) {
+				int rowNum = rs.getInt("topping_count");
+				System.out.println(rowNum);
+				
+				query = "";
+				
+				for(int i=0; i<rowNum; i++) {
+					query = "UPDATE `pizza`.`toppings` SET `stock_level` = '100' WHERE (`id` = '" +i+ "');";
+					System.out.println(query);
+					int ret = stmt.executeUpdate(query);
+				}
+
+			}
+			
+			stmt.close();
+			return true;
+		}
+		
+		catch(Exception ex) {
+			ex.printStackTrace();
+			return false;
+		}
+	}
+	
 	
 	
 	/**
@@ -400,7 +472,7 @@ public class DBInterface {
 			
 			boolean orderFound = false;
 			
-			stmt = con.createStatement();
+			//stmt = con.createStatement();
 			
 			String sql = "Select * from orders where orders.id=?";
 			
@@ -420,7 +492,7 @@ public class DBInterface {
 			}
 			
 			rs.close();
-			stmt.close();
+			//stmt.close();
 			return orderFound;
 		}
 		catch(Exception ex) {
@@ -439,14 +511,12 @@ public class DBInterface {
 	public HashMap<Integer, Order> getAllOrders() {
 		
 		try {
-			stmt = con.createStatement();
+			//stmt = con.createStatement();
 			
-			// ONLY DOWNLOAD IF STATUS IS 0 OR 1 (WAITING OR COOKING)
-			String sql = "Select * from orders where orders.status=? or orders.status=?";
-			
+			// ONLY DOWNLOAD IF STATUS IS 0
+			String sql = "Select * from orders where orders.status=?";
 			PreparedStatement prep = con.prepareStatement(sql);
 			prep.setInt(1, 0);
-			prep.setInt(2, 1);
 			
 			ResultSet rs = prep.executeQuery();
 
@@ -497,7 +567,7 @@ public class DBInterface {
 				}
 			
 			rs.close();
-			stmt.close();
+			//stmt.close();
 			return orders;
 			
 		}
@@ -517,7 +587,7 @@ public class DBInterface {
 	public HashMap<Integer, Customer> getAllCustomers() {
 		
 		try {
-			stmt = con.createStatement();
+			Statement stmt = con.createStatement();
 			String sql = "Select * from customers";
 			ResultSet rs = stmt.executeQuery(sql);
 
@@ -570,7 +640,7 @@ public class DBInterface {
 	public HashMap<Integer, Topping> getAllToppings() {
 		
 		try {
-			stmt = con.createStatement();
+			Statement stmt = con.createStatement();
 			String sql = "Select * from toppings";
 			ResultSet rs = stmt.executeQuery(sql);
 
@@ -618,7 +688,7 @@ public class DBInterface {
 	public HashMap<Integer, Cheese> getAllCheeses() {
 		
 		try {
-			stmt = con.createStatement();
+			Statement stmt = con.createStatement();
 			String sql = "Select * from toppings";
 			ResultSet rs = stmt.executeQuery(sql);
 
@@ -666,7 +736,7 @@ public class DBInterface {
 	public HashMap<Integer, Sauce> getAllSauces() {
 		
 		try {
-			stmt = con.createStatement();
+			Statement stmt = con.createStatement();
 			String sql = "Select * from sauces";
 			ResultSet rs = stmt.executeQuery(sql);
 
@@ -740,15 +810,18 @@ public class DBInterface {
 		openDB(url, dbUser, usrPass);
 
 
-		printAllCustomers(getAllCustomers());
+//		printAllCustomers(getAllCustomers());
+//		
+//		printAllToppings(getAllToppings());
+//		
+//		printAllCheeses(getAllCheeses());
+//		
+//		printAllSauces(getAllSauces());
+//		
+//		printAllOrders(getAllOrders());
 		
-		printAllToppings(getAllToppings());
 		
-		printAllCheeses(getAllCheeses());
-		
-		printAllSauces(getAllSauces());
-		
-		printAllOrders(getAllOrders());
+		updateAllToppings();
 		
 		
 		closeDB();

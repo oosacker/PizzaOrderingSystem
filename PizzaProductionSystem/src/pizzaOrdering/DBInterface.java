@@ -7,14 +7,17 @@ import java.sql.ResultSet;
 import java.sql.Statement;
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedList;
+import java.util.Map;
 import java.util.Queue;
 
 
 public class DBInterface {
 
 	private static Connection con;
-	private static Statement stmt;
+	//private static Statement stmt;
 	
 	/* For remote host */
 	String url = "jdbc:mysql://10.140.230.135:3306/pizza";
@@ -66,6 +69,53 @@ public class DBInterface {
 	
 	
 	/**
+	 * Check if username and password exist on database
+	 * @param userName_input
+	 * @param userPass_input
+	 * @return
+	 */
+	public boolean verifyStaffLogin(String userName_input, String userPass_input) {
+		
+		try {
+			
+			//stmt = con.createStatement();
+			String sql = "Select * from staff_accounts where staff_accounts.id = ? and staff_accounts.password = ?";
+			PreparedStatement prep = con.prepareStatement(sql);
+			
+			boolean user_verified = false;
+			
+			prep.setString(1, userName_input);
+			prep.setString(2, userPass_input);
+			
+			ResultSet rs = prep.executeQuery();
+			
+			if(rs.next()){
+				user_verified = true;
+			}
+			
+			else {
+				user_verified = false;
+			}
+
+			rs.close();
+			//stmt.close();
+			
+			return user_verified;
+		}
+		
+		catch(Exception ex) {
+			System.out.println("Error reading from database");
+			ex.printStackTrace();
+			return false;
+		}
+
+	}
+	
+	
+
+	
+	
+	/**
 	 * Find cheese on database based on id; return null if not found
 	 * @return
 	 */
@@ -75,7 +125,7 @@ public class DBInterface {
 			
 			Cheese myCheese = null;
 			
-			stmt = con.createStatement();
+			//stmt = con.createStatement();
 			String sql = "Select * from cheeses where cheeses.id = ?";
 			PreparedStatement prep = con.prepareStatement(sql);
 			
@@ -94,7 +144,7 @@ public class DBInterface {
 			}
 
 			rs.close();
-			stmt.close();
+			//stmt.close();
 			
 			return myCheese;
 		}
@@ -117,7 +167,7 @@ public class DBInterface {
 			
 			Sauce mySauce = null;
 			
-			stmt = con.createStatement();
+			//stmt = con.createStatement();
 			String sql = "Select * from sauces where sauces.id = ?";
 			PreparedStatement prep = con.prepareStatement(sql);
 			
@@ -136,7 +186,7 @@ public class DBInterface {
 			}
 
 			rs.close();
-			stmt.close();
+			//stmt.close();
 			
 			return mySauce;
 		}
@@ -159,7 +209,7 @@ public class DBInterface {
 			
 			Topping myTopping = null;
 			
-			stmt = con.createStatement();
+			//stmt = con.createStatement();
 			String sql = "Select * from toppings where toppings.id = ?";
 			PreparedStatement prep = con.prepareStatement(sql);
 			
@@ -178,7 +228,7 @@ public class DBInterface {
 			}
 
 			rs.close();
-			stmt.close();
+			//stmt.close();
 			
 			return myTopping;
 		}
@@ -200,7 +250,7 @@ public class DBInterface {
 			
 			Customer myCustomer = null;
 			
-			stmt = con.createStatement();
+			//stmt = con.createStatement();
 			String sql = "Select * from customers where customers.id = ?";
 			PreparedStatement prep = con.prepareStatement(sql);
 			
@@ -222,7 +272,7 @@ public class DBInterface {
 			}
 
 			rs.close();
-			stmt.close();
+			//stmt.close();
 			
 			return myCustomer;
 			
@@ -246,7 +296,7 @@ public class DBInterface {
 			
 			Order myOrder = null;
 			
-			stmt = con.createStatement();
+			//stmt = con.createStatement();
 			String sql = "Select * from orders where orders.id = ?";
 			PreparedStatement prep = con.prepareStatement(sql);
 			
@@ -294,7 +344,7 @@ public class DBInterface {
 			}
 
 			rs.close();
-			stmt.close();
+			//stmt.close();
 			return myOrder;
 			
 			
@@ -305,63 +355,14 @@ public class DBInterface {
 			return null;
 		}
 	}
-	
-	
-	/**
-	 * Fetch all customers from the database
-	 * @return
-	 */
-	public ArrayList<Customer> getAllCustomers() {
-		try {
-			stmt = con.createStatement();
-			String sql = "Select * from customers";
-			ResultSet rs = stmt.executeQuery(sql);
 
-			ArrayList<Customer> customers = new ArrayList<>();
-			
-			while(rs.next()){
-				
-				int customer_id = rs.getInt("customers.id");
-				String customer_name = rs.getString("customers.name");
-				String customer_address = rs.getString("customers.address");
-				int customer_phone = rs.getInt("customers.cellphone");
-				String customer_email = rs.getString("customers.email");
-				int customer_discount_code = rs.getInt("customers.discount_code");
-				
-				Customer myCustomer = new Customer
-						(
-							customer_id, 
-							customer_name, 
-							customer_address, 
-							customer_phone, 
-							customer_email,
-							customer_discount_code
-						);
-				
-				customers.add(myCustomer);
-				
-			}
-			
-			rs.close();
-			stmt.close();
-			return customers;
-			
-		}
-		catch(Exception ex) {
-			System.out.println("Error reading from database");
-			ex.printStackTrace();
-			return null;
-		}
-	}
-
-	
 	
 	/**
 	 * Change the state of an order on the database
 	 * @param state
 	 * @return
 	 */
-	public boolean setOrderState(Order order, int newStatus) {
+	public boolean updateOrderState(Order order, int newStatus) {
 		try {
 			if ( orderExists(order) ) {	
 				
@@ -375,7 +376,7 @@ public class DBInterface {
 				prep.setInt(1, newStatus);
 				prep.setInt(2, order_id);
 				prep.execute();
-				stmt.close();
+				//stmt.close();
 				
 				return true;
 			}
@@ -390,6 +391,75 @@ public class DBInterface {
 	}
 	
 	
+	public boolean updateIngredient(Ingredient ingredient) {
+		
+		try {
+		
+			String sql = "";
+			
+			if(ingredient instanceof Topping) {
+				sql = "UPDATE `pizza`.`toppings` SET `stock_level` = ? WHERE `id` = ?;";
+			}
+			
+			else if(ingredient instanceof Sauce) {
+				sql = "UPDATE `pizza`.`sauces` SET `stock_level` = ? WHERE `id` = ?;";
+			}
+			
+			else if(ingredient instanceof Cheese) {
+				sql = "UPDATE `pizza`.`cheeses` SET `stock_level` = ? WHERE `id` = ?;";
+			}
+			
+			PreparedStatement prep = con.prepareStatement(sql);
+			prep.setInt(1, 100);
+			prep.setInt(2, ingredient.getId());
+			int res = prep.executeUpdate();
+			
+			return true;
+			
+		}
+		
+		catch(Exception ex) {
+			ex.printStackTrace();
+			return false;
+		}
+		
+		
+	}
+	
+	
+	public boolean updateAllToppings() {
+		
+		try {
+			
+			Statement stmt = con.createStatement();
+			
+			String query = 	"select count(*) as topping_count from toppings;";
+			ResultSet rs = stmt.executeQuery(query);
+			
+			if(rs.next()) {
+				int rowNum = rs.getInt("topping_count");
+				System.out.println(rowNum);
+				
+				query = "";
+				
+				for(int i=0; i<rowNum; i++) {
+					query = "UPDATE `pizza`.`toppings` SET `stock_level` = '100' WHERE (`id` = '" +i+ "');";
+					System.out.println(query);
+					int ret = stmt.executeUpdate(query);
+				}
+
+			}
+			
+			stmt.close();
+			return true;
+		}
+		
+		catch(Exception ex) {
+			ex.printStackTrace();
+			return false;
+		}
+	}
+	
 	
 	
 	/**
@@ -402,7 +472,7 @@ public class DBInterface {
 			
 			boolean orderFound = false;
 			
-			stmt = con.createStatement();
+			//stmt = con.createStatement();
 			
 			String sql = "Select * from orders where orders.id=?";
 			
@@ -422,7 +492,7 @@ public class DBInterface {
 			}
 			
 			rs.close();
-			stmt.close();
+			//stmt.close();
 			return orderFound;
 		}
 		catch(Exception ex) {
@@ -437,21 +507,21 @@ public class DBInterface {
 	 * Fetch the current orders from database
 	 * @return
 	 */
-	public ArrayList<Order> getOrders() {
+	//public ArrayList<Order> getOrders() {
+	public HashMap<Integer, Order> getAllOrders() {
 		
 		try {
-			stmt = con.createStatement();
+			//stmt = con.createStatement();
 			
-			// ONLY DOWNLOAD IF STATUS IS 0 OR 1 (WAITING OR COOKING)
-			String sql = "Select * from orders where orders.status=? or orders.status=?";
-			
+			// ONLY DOWNLOAD IF STATUS IS 0
+			String sql = "Select * from orders where orders.status=?";
 			PreparedStatement prep = con.prepareStatement(sql);
 			prep.setInt(1, 0);
-			prep.setInt(2, 1);
 			
 			ResultSet rs = prep.executeQuery();
 
-			ArrayList<Order> orders = new ArrayList<>();
+			//ArrayList<Order> orders = new ArrayList<>();
+			HashMap<Integer, Order> orders = new HashMap<>();
 			
 			while(rs.next()){
 				
@@ -491,12 +561,13 @@ public class DBInterface {
 							pizza_price
 						);
 				
-				orders.add(myOrder);
+				//orders.add(myOrder);
+				orders.put(order_id, myOrder);
 				
 				}
 			
 			rs.close();
-			stmt.close();
+			//stmt.close();
 			return orders;
 			
 		}
@@ -506,46 +577,254 @@ public class DBInterface {
 			return null;
 		}
 	}
+	
+	
+	/**
+	 * Fetch all customers from the database
+	 * @return
+	 */
+	//public ArrayList<Customer> getAllCustomers() {
+	public HashMap<Integer, Customer> getAllCustomers() {
+		
+		try {
+			Statement stmt = con.createStatement();
+			String sql = "Select * from customers";
+			ResultSet rs = stmt.executeQuery(sql);
+
+			//ArrayList<Customer> customers = new ArrayList<>();
+			HashMap<Integer, Customer> customers = new HashMap<>();
+			
+			while(rs.next()){
+				
+				int customer_id = rs.getInt("customers.id");
+				String customer_name = rs.getString("customers.name");
+				String customer_address = rs.getString("customers.address");
+				int customer_phone = rs.getInt("customers.cellphone");
+				String customer_email = rs.getString("customers.email");
+				int customer_discount_code = rs.getInt("customers.discount_code");
+				
+				Customer myCustomer = new Customer
+						(
+							customer_id, 
+							customer_name, 
+							customer_address, 
+							customer_phone, 
+							customer_email,
+							customer_discount_code
+						);
+				
+				//customers.add(myCustomer);
+				customers.put(customer_id, myCustomer);
+				
+			}
+			
+			rs.close();
+			stmt.close();
+			return customers;
+			
+		}
+		catch(Exception ex) {
+			System.out.println("Error reading from database");
+			ex.printStackTrace();
+			return null;
+		}
+	}
+
 
 	
+	/**
+	 * Fetch all toppings from database
+	 * @return
+	 */
+	//public ArrayList<Order> getOrders() {
+	public HashMap<Integer, Topping> getAllToppings() {
+		
+		try {
+			Statement stmt = con.createStatement();
+			String sql = "Select * from toppings";
+			ResultSet rs = stmt.executeQuery(sql);
+
+			//ArrayList<Customer> customers = new ArrayList<>();
+			HashMap<Integer, Topping> toppings = new HashMap<>();
+			
+			while(rs.next()){
+				
+				int topping_id = rs.getInt("toppings.id");
+				String topping_name = rs.getString("toppings.name");
+				int topping_stock_level = rs.getInt("toppings.stock_level");
+				
+				Topping myTopping = new Topping
+						(
+							topping_id, 
+							topping_name, 
+							topping_stock_level
+						);
+				
+				//customers.add(myCustomer);
+				toppings.put(topping_id, myTopping);
+				
+			}
+			
+			rs.close();
+			stmt.close();
+			return toppings;
+			
+		}
+		catch(Exception ex) {
+			System.out.println("Error reading from database");
+			ex.printStackTrace();
+			return null;
+		}
+
+	}
+
+	
+	
+	/**
+	 * Fetch all cheese from database
+	 * @return
+	 */
+	//public ArrayList<Order> getOrders() {
+	public HashMap<Integer, Cheese> getAllCheeses() {
+		
+		try {
+			Statement stmt = con.createStatement();
+			String sql = "Select * from toppings";
+			ResultSet rs = stmt.executeQuery(sql);
+
+			//ArrayList<Customer> customers = new ArrayList<>();
+			HashMap<Integer, Cheese> cheeses = new HashMap<>();
+			
+			while(rs.next()){
+				
+				int cheese_id = rs.getInt("toppings.id");
+				String cheese_name = rs.getString("toppings.name");
+				int cheese_stock_level = rs.getInt("toppings.stock_level");
+				
+				Cheese myCheese = new Cheese
+						(
+							cheese_id, 
+							cheese_name, 
+							cheese_stock_level
+						);
+				
+				//customers.add(myCustomer);
+				cheeses.put(cheese_id, myCheese);
+				
+			}
+			
+			rs.close();
+			stmt.close();
+			return cheeses;
+			
+		}
+		catch(Exception ex) {
+			System.out.println("Error reading from database");
+			ex.printStackTrace();
+			return null;
+		}
+
+	}
+
+	
+	
+	
+	/**
+	 * Fetch all sauces from database
+	 * @return
+	 */
+	public HashMap<Integer, Sauce> getAllSauces() {
+		
+		try {
+			Statement stmt = con.createStatement();
+			String sql = "Select * from sauces";
+			ResultSet rs = stmt.executeQuery(sql);
+
+			HashMap<Integer, Sauce> sauces = new HashMap<>();
+			
+			while(rs.next()){
+				
+				int sauce_id = rs.getInt("sauces.id");
+				String sauce_name = rs.getString("sauces.name");
+				int sauce_stock_level = rs.getInt("sauces.stock_level");
+				
+				Sauce mySauce = new Sauce
+						(
+							sauce_id, 
+							sauce_name, 
+							sauce_stock_level
+						);
+				
+				sauces.put(sauce_id, mySauce);
+				
+			}
+			
+			rs.close();
+			stmt.close();
+			return sauces;
+			
+		}
+		catch(Exception ex) {
+			System.out.println("Error reading from database");
+			ex.printStackTrace();
+			return null;
+		}
+
+	}
+
+	
+	private void printAllOrders(HashMap<Integer, Order> orders) {
+		for (Map.Entry<Integer, Order> e : orders.entrySet()) { 
+			System.out.println(e.getKey() +" "+ e.getValue().toString());
+		} 
+	}
+	
+	private void printAllCustomers(HashMap<Integer, Customer> customers) {
+		for (Map.Entry<Integer, Customer> e : customers.entrySet()) { 
+			System.out.println(e.getKey() +" "+ e.getValue().toString());
+		} 
+	}
+	
+	private void printAllToppings(HashMap<Integer, Topping> toppings) {
+		for (Map.Entry<Integer, Topping> e : toppings.entrySet()) { 
+			System.out.println(e.getKey() +" "+ e.getValue().toString());
+		} 
+	}
+	
+	private void printAllSauces(HashMap<Integer, Sauce> sauces) {
+		for (Map.Entry<Integer, Sauce> e : sauces.entrySet()) { 
+			System.out.println(e.getKey() +" "+ e.getValue().toString());
+		} 
+	}	
+	
+	private void printAllCheeses(HashMap<Integer, Cheese> cheeses) {
+		for (Map.Entry<Integer, Cheese> e : cheeses.entrySet()) { 
+			System.out.println(e.getKey() +" "+ e.getValue().toString());
+		} 
+	}	
 	
 	
 	public DBInterface() {
 		// TODO Auto-generated constructor stub
 		
-		openDB(url, dbUser, usrPass);
+		//openDB(url, dbUser, usrPass);
 
-//		ArrayList<Order> orders = getOrders();
-//		for(Order order : orders) {
-//			System.out.println(order.toString());
-//		}
+
+//		printAllCustomers(getAllCustomers());
 //		
+//		printAllToppings(getAllToppings());
 //		
-//		ArrayList<Customer> cust = getCustomers();
-//		for(Customer customer : cust) {
-//			System.out.println(customer.toString());
-//		}
-		
-		System.out.println(findCustomer(1).toString());
-		System.out.println(findOrder(1).toString());
-//		setOrderState(
-//				new Order(
-//						0, 
-//						0, 
-//						0, 
-//						null,
-//						0,
-//						0,
-//						0,
-//						0,
-//						0,
-//						0,
-//						0,
-//						0,
-//						0), 99);
+//		printAllCheeses(getAllCheeses());
+//		
+//		printAllSauces(getAllSauces());
+//		
+//		printAllOrders(getAllOrders());
 		
 		
-		closeDB();
+		//updateAllToppings();
+		
+		
+		//closeDB();
 		
 		
 	}

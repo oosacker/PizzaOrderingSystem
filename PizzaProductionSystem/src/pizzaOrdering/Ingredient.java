@@ -1,7 +1,7 @@
 package pizzaOrdering;
 
 public class Ingredient {
-
+	
 	private int id;
 	private String name;
 	private int stock_level;
@@ -26,6 +26,11 @@ public class Ingredient {
 
 	public int getId() {
 		return id;
+	}
+	
+	@Override
+	public String toString() {
+		return "Ingredient [id=" + id + ", name=" + name + ", stock_level=" + stock_level + "]";
 	}
 
 }

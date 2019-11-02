@@ -1,6 +1,7 @@
 package application;
 	
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import javafx.application.Application;
 import javafx.collections.FXCollections;
@@ -9,7 +10,11 @@ import javafx.geometry.Insets;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import pizzaOrdering.Cheese;
+import pizzaOrdering.Customer;
+import pizzaOrdering.DBInterface;
 import pizzaOrdering.Order;
+import pizzaOrdering.Sauce;
+import pizzaOrdering.Topping;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
@@ -46,6 +51,21 @@ public static void main(String[] args) {
 	
 	@Override
     public void start(Stage stage) {
+		
+		String url = "jdbc:mysql://10.140.230.135:3306/pizza";
+		String dbUser = "newuser";
+		String usrPass = "12345";
+		
+		DBInterface dbi = new DBInterface();
+		dbi.openDB(url, dbUser, usrPass);
+		
+		HashMap<Integer, Order> orderlist = dbi.getAllOrders();
+		HashMap<Integer, Customer> customerlist = dbi.getAllCustomers();
+		HashMap<Integer, Topping> toppinglist = dbi.getAllToppings();
+		HashMap<Integer, Cheese> cheeselist = dbi.getAllCheeses();
+		HashMap<Integer, Sauce> saucelist = dbi.getAllSauces();
+		
+		
         Scene scene = new Scene(new Group());
         stage.setTitle("Prodiction Line");
         stage.setWidth(1100);

@@ -59,6 +59,7 @@ public class ProductionLine extends Application {
 		HashMap<Integer, Cheese> cheeselist = dbi.getAllCheeses();
 		HashMap<Integer, Sauce> saucelist = dbi.getAllSauces();
 
+		dbi.closeDB();
 
 		Scene scene = new Scene(new Group());
 		stage.setTitle("Production Line");

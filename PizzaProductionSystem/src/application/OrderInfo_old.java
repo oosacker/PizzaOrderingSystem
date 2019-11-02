@@ -1,7 +1,7 @@
 package application;
 
 
-public class OrderInfo {
+public class OrderInfo_old {
 
 	
 	private String customerId = null;
@@ -13,10 +13,10 @@ public class OrderInfo {
     private String status = null;
     private String price = null;
 
-    public OrderInfo() {
+    public OrderInfo_old() {
     }
     
-    public OrderInfo(String customerId, String size, String topping, String sauces, String cheese, String time
+    public OrderInfo_old(String customerId, String size, String topping, String sauces, String cheese, String time
     		, String price, String status) {
 		super();
 		this.customerId = customerId;
@@ -84,7 +84,7 @@ public class OrderInfo {
 		this.price = price;
 	}
 
-	public OrderInfo(String topping, String sauces) {
+	public OrderInfo_old(String topping, String sauces) {
 		
 		this.topping = topping;
 		this.sauces = sauces;

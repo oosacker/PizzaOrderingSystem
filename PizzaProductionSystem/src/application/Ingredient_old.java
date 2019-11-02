@@ -1,7 +1,7 @@
 package application;
 
 
-public class Ingredient {
+public class Ingredient_old {
 
 	
 	private String ingredient = null;
@@ -11,7 +11,7 @@ public class Ingredient {
 	public String toString() {
 		return "Ingredient [ingredient=" + ingredient + ", Qty=" + Qty + "]";
 	}
-	public Ingredient(String ingredient, String qty) {
+	public Ingredient_old(String ingredient, String qty) {
 		super();
 		this.ingredient = ingredient;
 		Qty = qty;

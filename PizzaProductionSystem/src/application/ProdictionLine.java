@@ -150,8 +150,8 @@ public static void main(String[] args) {
         orderTable.getItems().add(new OrderInfo("5", "L", "Beef", "Tomato", "Chidder", "9", "15", "cooking"));
         stokeTable.getItems().add(new Ingredient( "Tomato", "100"));
         
-        orderTable.getItems().add(new OrderInfo("5", "L", "Beef", "Onion", "Chidder", "9", "15", "cooking"));
-        stokeTable.getItems().add(new Ingredient( "Tomato", "100"));
+        orderTable.getItems().add(new OrderInfo("4", "S", "Chicken", "Onion", "mozzarella", "12", "14", "Ready"));
+        stokeTable.getItems().add(new Ingredient( "Onion", "99"));
         
         
         

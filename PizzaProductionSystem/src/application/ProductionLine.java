@@ -26,7 +26,9 @@ import javafx.scene.text.Font;
 
 public class ProductionLine extends Application {
 
+	@SuppressWarnings("rawtypes")
 	private TableView orderTable = new TableView();
+	@SuppressWarnings("rawtypes")
 	private TableView stockTable = new TableView();
 
 	public static void main(String[] args) {

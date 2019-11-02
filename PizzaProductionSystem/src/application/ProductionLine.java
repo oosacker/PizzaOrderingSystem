@@ -2,6 +2,7 @@ package application;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 
 import javafx.application.Application;
 import javafx.collections.FXCollections;
@@ -37,6 +38,7 @@ public class ProductionLine extends Application {
 
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public void start(Stage stage) {
 
@@ -80,6 +82,7 @@ public class ProductionLine extends Application {
 		IngredientsCol.setMinWidth(100);
 		IngredientsCol.setCellValueFactory(new PropertyValueFactory<>("name"));
 
+		
 		TableColumn<String, Ingredient> QTYCol = new TableColumn<>("QTY");
 		QTYCol.setMinWidth(100);
 		QTYCol.setCellValueFactory(new PropertyValueFactory<>("stock_level"));
@@ -125,22 +128,25 @@ public class ProductionLine extends Application {
 		statusCol.setCellValueFactory(new PropertyValueFactory<>("pizza_status"));
 
 		
-		orderTable.getColumns().add(customerIdCol);
-		orderTable.getColumns().add(sizegCol);
-		orderTable.getColumns().add(toppingCol);
-		orderTable.getColumns().add(saucesCol);
-		orderTable.getColumns().add(cheeseCol);
-		orderTable.getColumns().add(timeCol);
-		orderTable.getColumns().add(priceCol);
-		orderTable.getColumns().add(statusCol);
 
-		stockTable.getColumns().add(IngredientsCol);
-		stockTable.getColumns().add(QTYCol);
+		
+		orderTable.getColumns().addAll(customerIdCol, sizegCol, toppingCol, saucesCol, cheeseCol, timeCol, priceCol, statusCol);
+		for (Map.Entry<Integer, Order> e : orderlist.entrySet()) { 
+			orderTable.getItems().add(e.getValue());
+		}
+		
+		
+		stockTable.getColumns().addAll(IngredientsCol, QTYCol);
+		for (Map.Entry<Integer, Topping> e : toppinglist.entrySet()) { 
+			stockTable.getItems().add(e.getValue());
+		}
+		for (Map.Entry<Integer, Sauce> e : saucelist.entrySet()) { 
+			stockTable.getItems().add(e.getValue());
+		}
+		for (Map.Entry<Integer, Cheese> e : cheeselist.entrySet()) { 
+			stockTable.getItems().add(e.getValue());
+		}
 
-		orderTable.getItems().add(orderlist.get(0));
-		stockTable.getItems().add(toppinglist.get(0));
-
-		orderTable.getColumns().addAll(customerIdCol, sizegCol, toppingCol,saucesCol, cheeseCol, timeCol,priceCol,statusCol, IngredientsCol, QTYCol);
 
 
 		final VBox stockbox = new VBox();

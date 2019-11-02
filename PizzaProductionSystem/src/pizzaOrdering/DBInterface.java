@@ -712,24 +712,34 @@ public class DBInterface {
 
 	
 	private void printAllOrders(HashMap<Integer, Order> orders) {
-		
 		for (Map.Entry<Integer, Order> e : orders.entrySet()) { 
-			
 			System.out.println(e.getKey() +" "+ e.getValue().toString());
-
 		} 
 	}
-	
-	
 	
 	private void printAllCustomers(HashMap<Integer, Customer> customers) {
-		
 		for (Map.Entry<Integer, Customer> e : customers.entrySet()) { 
-			
 			System.out.println(e.getKey() +" "+ e.getValue().toString());
-
 		} 
 	}
+	
+	private void printAllToppings(HashMap<Integer, Topping> toppings) {
+		for (Map.Entry<Integer, Topping> e : toppings.entrySet()) { 
+			System.out.println(e.getKey() +" "+ e.getValue().toString());
+		} 
+	}
+	
+	private void printAllSauces(HashMap<Integer, Sauce> sauces) {
+		for (Map.Entry<Integer, Sauce> e : sauces.entrySet()) { 
+			System.out.println(e.getKey() +" "+ e.getValue().toString());
+		} 
+	}	
+	
+	private void printAllCheeses(HashMap<Integer, Cheese> cheeses) {
+		for (Map.Entry<Integer, Cheese> e : cheeses.entrySet()) { 
+			System.out.println(e.getKey() +" "+ e.getValue().toString());
+		} 
+	}	
 	
 	
 	public DBInterface() {
@@ -739,6 +749,12 @@ public class DBInterface {
 
 
 		printAllCustomers(getAllCustomers());
+		
+		printAllToppings(getAllToppings());
+		
+		printAllCheeses(getAllCheeses());
+		
+		printAllSauces(getAllSauces());
 		
 		printAllOrders(getAllOrders());
 		

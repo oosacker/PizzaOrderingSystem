@@ -807,7 +807,7 @@ public class DBInterface {
 	public DBInterface() {
 		// TODO Auto-generated constructor stub
 		
-		openDB(url, dbUser, usrPass);
+		//openDB(url, dbUser, usrPass);
 
 
 //		printAllCustomers(getAllCustomers());
@@ -821,10 +821,10 @@ public class DBInterface {
 //		printAllOrders(getAllOrders());
 		
 		
-		updateAllToppings();
+		//updateAllToppings();
 		
 		
-		closeDB();
+		//closeDB();
 		
 		
 	}

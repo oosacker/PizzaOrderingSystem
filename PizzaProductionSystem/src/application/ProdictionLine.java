@@ -17,12 +17,14 @@ import pizzaOrdering.Sauce;
 import pizzaOrdering.Topping;
 import javafx.scene.Group;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 
 
@@ -51,6 +53,7 @@ public static void main(String[] args) {
 	
 	@Override
     public void start(Stage stage) {
+		try {
 		
 		String url = "jdbc:mysql://10.140.230.135:3306/pizza";
 		String dbUser = "newuser";
@@ -74,6 +77,23 @@ public static void main(String[] args) {
 //        stage.setX(200);
 //        stage.setY(50);
         
+        
+//      Stoke update button
+    	Button stokebtn = new Button();
+    	stokebtn.setText("Update Stoke");
+    	stokebtn.setTextFill(Color.RED);
+//		btn.borderProperty();
+    	stokebtn.setLayoutX(20);
+    	stokebtn.setLayoutY(100);
+    	
+//      Stoke update button
+    	Button orderbtn = new Button();
+    	orderbtn.setText("Update Oreder");
+    	orderbtn.setTextFill(Color.RED);
+//		btn.borderProperty();
+    	orderbtn.setLayoutX(20);
+    	orderbtn.setLayoutY(100);
+
 
         final Label stoke = new Label("Stoke");
         stoke.setFont(new Font("Arial", 20));
@@ -83,36 +103,7 @@ public static void main(String[] args) {
  
         orderTable.setEditable(true);
         stokeTable.setEditable(true);
-//        buyCol.setVisible(false);
-        
-//        TableColumn ingredientsCol = new TableColumn("Ingredients");
-//        ingredientsCol.setMinWidth(100);
-//        ingredientsCol.setCellValueFactory(
-//                new PropertyValueFactory<>("Ingredients"));
-//        
-//        TableColumn QTYCol = new TableColumn("QTY");
-//        QTYCol.setMinWidth(100);
-//        QTYCol.setCellValueFactory(
-//                new PropertyValueFactory<>("QTY"));
-//        
-//      
-//      TableColumn toppingCol = new TableColumn("topping");
-//      toppingCol.setMinWidth(100);
-//      toppingCol.setCellValueFactory(
-//              new PropertyValueFactory<>("topping"));
-//      
-//      TableColumn saucesCol = new TableColumn("sauces");
-//      saucesCol.setMinWidth(100);
-//      saucesCol.setCellValueFactory(
-//              new PropertyValueFactory<>("sauces"));
-//        
-//      TableColumn customerIdCol = new TableColumn("Customer id");
-//      customerIdCol.setMinWidth(100);
-//      customerIdCol.setCellValueFactory(
-//              new PropertyValueFactory<>("Customer id"));
-       
-//        table.getColumns().addAll(ingredientsCol, QTYCol);
-//   
+
         
         TableColumn<String, Ingredient> IngredientsCol = new TableColumn<>("Ingredients");
         IngredientsCol.setMinWidth(100);
@@ -131,35 +122,57 @@ public static void main(String[] args) {
         sizegCol.setMinWidth(50);
         sizegCol.setCellValueFactory(new PropertyValueFactory<>("Size"));
         
-        TableColumn<String, OrderInfo> toppingCol = new TableColumn<>("topping");
-        toppingCol.setMinWidth(100);
-        toppingCol.setCellValueFactory(new PropertyValueFactory<>("topping"));
+        TableColumn<String, OrderInfo> topping1Col = new TableColumn<>("topping 1");
+        topping1Col.setMinWidth(100);
+        topping1Col.setCellValueFactory(new PropertyValueFactory<>("topping_1"));
+        
+        TableColumn<String, OrderInfo> topping2Col = new TableColumn<>("topping 2");
+        topping2Col.setMinWidth(100);
+        topping2Col.setCellValueFactory(new PropertyValueFactory<>("topping_2"));
+        
+        TableColumn<String, OrderInfo> topping3Col = new TableColumn<>("topping 3");
+        topping3Col.setMinWidth(100);
+        topping3Col.setCellValueFactory(new PropertyValueFactory<>("topping_3"));
+        
+        
 
-        TableColumn<String, OrderInfo> saucesCol = new TableColumn<>("sauces");
-        saucesCol.setMinWidth(100);
-        saucesCol.setCellValueFactory(new PropertyValueFactory<>("sauces"));
+        TableColumn<String, OrderInfo> sauces1Col = new TableColumn<>("sauces 1");
+        sauces1Col.setMinWidth(50);
+        sauces1Col.setCellValueFactory(new PropertyValueFactory<>("sauces_1"));
+        
+        TableColumn<String, OrderInfo> sauces2Col = new TableColumn<>("sauces 2");
+        sauces2Col.setMinWidth(50);
+        sauces2Col.setCellValueFactory(new PropertyValueFactory<>("sauces_2"));
 
-        TableColumn<String, Cheese> cheeseCol = new TableColumn<>("Cheese");
-        cheeseCol.setMinWidth(100);
-        cheeseCol.setCellValueFactory(new PropertyValueFactory<>("Cheese"));
+        TableColumn<String, Cheese> cheese1Col = new TableColumn<>("Cheese 1");
+        cheese1Col.setMinWidth(100);
+        cheese1Col.setCellValueFactory(new PropertyValueFactory<>("Cheese_1"));
+        
+        TableColumn<String, Cheese> cheese2Col = new TableColumn<>("Cheese 2");
+        cheese2Col.setMinWidth(100);	
+        cheese2Col.setCellValueFactory(new PropertyValueFactory<>("Cheese_2"));
         
         TableColumn<String, OrderInfo> timeCol = new TableColumn<>("Time");
-        timeCol.setMinWidth(100);
+        timeCol.setMinWidth(50);
         timeCol.setCellValueFactory(new PropertyValueFactory<>("Time"));
         
         TableColumn<String, OrderInfo> priceCol = new TableColumn<>("Price");
-        priceCol.setMinWidth(100);
+        priceCol.setMinWidth(50);
         priceCol.setCellValueFactory(new PropertyValueFactory<>("Price"));
         
         TableColumn<String, OrderInfo> statusCol = new TableColumn<>("Status");
-        statusCol.setMinWidth(100);
+        statusCol.setMinWidth(50);
         statusCol.setCellValueFactory(new PropertyValueFactory<>("Status"));
 
         orderTable.getColumns().add(customerIdCol);
         orderTable.getColumns().add(sizegCol);
-        orderTable.getColumns().add(toppingCol);
-        orderTable.getColumns().add(saucesCol);
-        orderTable.getColumns().add(cheeseCol);
+        orderTable.getColumns().add(topping1Col);
+        orderTable.getColumns().add(topping2Col);
+        orderTable.getColumns().add(topping3Col);
+        orderTable.getColumns().add(sauces1Col);
+        orderTable.getColumns().add(sauces2Col);
+        orderTable.getColumns().add(cheese1Col);
+        orderTable.getColumns().add(cheese2Col);
         orderTable.getColumns().add(timeCol);
         orderTable.getColumns().add(priceCol);
         orderTable.getColumns().add(statusCol);
@@ -192,20 +205,20 @@ public static void main(String[] args) {
 //        table.setItems(data);
         
 //      adding columns to tables
-        orderTable.getColumns().addAll(customerIdCol, sizegCol, toppingCol,saucesCol, cheeseCol, timeCol,priceCol,statusCol, IngredientsCol, QTYCol);
+        orderTable.getColumns().addAll(customerIdCol, sizegCol, topping1Col,topping2Col,topping3Col,sauces1Col,sauces2Col, cheese1Col, cheese2Col,timeCol,priceCol,statusCol, IngredientsCol, QTYCol);
  
 // 
 //      stoke vBox
         final VBox stokebox = new VBox();
         stokebox.setSpacing(5);
         stokebox.setPadding(new Insets(10, 0, 0, 10));
-        stokebox.getChildren().addAll(stoke, stokeTable);
+        stokebox.getChildren().addAll(stoke, stokeTable, stokebtn);
         
 //      orders vBox
         final VBox ordersbox = new VBox();
         ordersbox.setSpacing(5);
         ordersbox.setPadding(new Insets(10, 0, 0, 300));
-        ordersbox.getChildren().addAll(orders, orderTable);
+        ordersbox.getChildren().addAll(orders, orderTable,orderbtn);
  
         ((Group) scene.getRoot()).getChildren().addAll(ordersbox, stokebox);
  
@@ -213,6 +226,10 @@ public static void main(String[] args) {
 //        stage.setFullScreen(true);
         stage.show();
     }
+		catch(Exception e) {
+			e.printStackTrace();
+		}
 
+}
 }
 

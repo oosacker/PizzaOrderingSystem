@@ -5,13 +5,8 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
-import java.sql.Timestamp;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
-import java.util.LinkedList;
 import java.util.Map;
-import java.util.Queue;
 
 
 public class DBInterface {
@@ -425,7 +420,7 @@ public class DBInterface {
 	}
 	
 	
-	public boolean updateAllToppings() {
+	public boolean updateAllToppings(int new_stock_level) {
 		
 		try {
 			
@@ -434,21 +429,124 @@ public class DBInterface {
 			String query = 	"select count(*) as topping_count from toppings;";
 			ResultSet rs = stmt.executeQuery(query);
 			
+			
 			if(rs.next()) {
+				
 				int rowNum = rs.getInt("topping_count");
-				System.out.println(rowNum);
+				//System.out.println(rowNum);
 				
 				query = "";
 				
 				for(int i=0; i<rowNum; i++) {
-					query = "UPDATE `pizza`.`toppings` SET `stock_level` = '100' WHERE (`id` = '" +i+ "');";
-					System.out.println(query);
-					int ret = stmt.executeUpdate(query);
+					query = "UPDATE `pizza`.`toppings` SET `stock_level` = ? WHERE (`id` = ?);";
+					//System.out.println(query);
+	
+					PreparedStatement prep = con.prepareStatement(query);
+					
+					prep.setInt(1, new_stock_level);
+					prep.setInt(2, i);
+					
+					int res = prep.executeUpdate();
+					
+					prep.close();
 				}
 
 			}
 			
 			stmt.close();
+
+			return true;
+		}
+		
+		catch(Exception ex) {
+			ex.printStackTrace();
+			return false;
+		}
+	}
+	
+	
+	
+	public boolean updateAllSauces(int new_stock_level) {
+		
+		try {
+			
+			Statement stmt = con.createStatement();
+			
+			String query = 	"select count(*) as sauce_count from sauces;";
+			ResultSet rs = stmt.executeQuery(query);
+			
+			
+			if(rs.next()) {
+				
+				int rowNum = rs.getInt("sauce_count");
+				//System.out.println(rowNum);
+				
+				query = "";
+				
+				for(int i=0; i<rowNum; i++) {
+					query = "UPDATE `pizza`.`sauces` SET `stock_level` = ? WHERE (`id` = ?);";
+					//System.out.println(query);
+	
+					PreparedStatement prep = con.prepareStatement(query);
+					
+					prep.setInt(1, new_stock_level);
+					prep.setInt(2, i);
+					
+					int res = prep.executeUpdate();
+					
+					prep.close();
+				}
+
+			}
+			
+			stmt.close();
+
+			return true;
+		}
+		
+		catch(Exception ex) {
+			ex.printStackTrace();
+			return false;
+		}
+	}
+	
+	
+	
+	public boolean updateAllCheeses(int new_stock_level) {
+		
+		try {
+			
+			Statement stmt = con.createStatement();
+			
+			String query = 	"select count(*) as cheese_count from cheeses;";
+			ResultSet rs = stmt.executeQuery(query);
+			
+			
+			if(rs.next()) {
+				
+				int rowNum = rs.getInt("cheese_count");
+				//System.out.println(rowNum);
+				
+				query = "";
+				
+				for(int i=0; i<rowNum; i++) {
+					query = "UPDATE `pizza`.`cheeses` SET `stock_level` = ? WHERE (`id` = ?);";
+					//System.out.println(query);
+	
+					PreparedStatement prep = con.prepareStatement(query);
+					
+					prep.setInt(1, new_stock_level);
+					prep.setInt(2, i);
+					
+					int res = prep.executeUpdate();
+					
+					prep.close();
+				}
+
+			}
+			
+			stmt.close();
+
 			return true;
 		}
 		
@@ -822,8 +920,13 @@ public class DBInterface {
 		printAllOrders(getAllOrders());
 		
 		
-		//updateAllToppings();
+		updateAllToppings(0);
 		
+		
+		updateAllCheeses(0);
+		
+		
+		updateAllSauces(0);
 		
 		closeDB();
 		

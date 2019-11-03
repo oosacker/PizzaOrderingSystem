@@ -1,7 +1,5 @@
 package pizzaOrdering;
 
-import java.sql.Timestamp;
-
 public class Order {
 
 	private int order_id;		// auto generated

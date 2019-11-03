@@ -40,13 +40,13 @@ public class ProductionLine extends Application {
 	@Override
 	public void start(Stage stage) {
 
-		//		String url = "jdbc:mysql://10.140.230.135:3306/pizza";
-		//		String dbUser = "newuser";
-		//		String usrPass = "12345";
+				String url = "jdbc:mysql://10.140.230.135:3306/pizza";
+				String dbUser = "newuser";
+				String usrPass = "12345";
 
-		String url = "jdbc:mysql://localhost:3306/pizza";
-		String dbUser = "newuser";
-		String usrPass = "1234";
+//		String url = "jdbc:mysql://localhost:3306/pizza";
+//		String dbUser = "newuser";
+//		String usrPass = "1234";
 
 		DBInterface dbi = new DBInterface();
 		dbi.openDB(url, dbUser, usrPass);

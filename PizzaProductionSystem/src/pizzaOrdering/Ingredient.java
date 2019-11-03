@@ -30,7 +30,28 @@ public class Ingredient {
 	
 	@Override
 	public String toString() {
-		return "Ingredient [id=" + id + ", name=" + name + ", stock_level=" + stock_level + "]";
+		return "id= " + id + "\n" + 
+				"name= " + name + "\n" + 
+				"stock_level= " + stock_level + "\n";
 	}
 
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

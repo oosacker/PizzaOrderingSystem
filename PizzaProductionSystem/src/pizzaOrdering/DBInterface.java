@@ -20,14 +20,14 @@ public class DBInterface {
 	//private static Statement stmt;
 	
 	/* For remote host */
-//	String url = "jdbc:mysql://10.140.230.135:3306/pizza";
-//	String dbUser = "newuser";
-//	String usrPass = "12345";
+	String url = "jdbc:mysql://10.140.230.135:3306/pizza";
+	String dbUser = "newuser";
+	String usrPass = "12345";
 	
 	/* For local host */
-	String url = "jdbc:mysql://localhost:3306/pizza";
-	String dbUser = "newuser";
-	String usrPass = "1234";
+//	String url = "jdbc:mysql://localhost:3306/pizza";
+//	String dbUser = "newuser";
+//	String usrPass = "1234";
 	
 	
 	
@@ -308,20 +308,20 @@ public class DBInterface {
 				
 				int order_id = rs.getInt("orders.id");
 				int customer_id = rs.getInt("orders.customer_id");
-				int pizza_status = rs.getInt("orders.status");
-				int pizza_size = rs.getInt("orders.size");
+				String pizza_status = rs.getString("orders.status");
+				String pizza_size = rs.getString("orders.size");
 				
 				int pizza_topping_0_id = rs.getInt("orders.topping_0_id");
 				int pizza_topping_1_id = rs.getInt("orders.topping_1_id");
 				int pizza_topping_2_id = rs.getInt("orders.topping_0_id");
 				
 				int pizza_sauce_0_id = rs.getInt("orders.sauce_0_id");
-				int pizza_sauce_1_id = rs.getInt("orders.sauce_1_id");
+				//int pizza_sauce_1_id = rs.getInt("orders.sauce_1_id");
 				
 				int pizza_cheese_0_id = rs.getInt("orders.cheese_0_id");
-				int pizza_cheese_1_id = rs.getInt("orders.cheese_1_id");
+				//int pizza_cheese_1_id = rs.getInt("orders.cheese_1_id");
 				
-				Timestamp order_time = rs.getTimestamp("orders.date_time");
+				String order_time = rs.getString("orders.date_time");
 				
 				double pizza_price = rs.getDouble("orders.price");
 				
@@ -334,9 +334,7 @@ public class DBInterface {
 							pizza_topping_1_id, 
 							pizza_topping_2_id, 
 							pizza_sauce_0_id, 
-							pizza_sauce_1_id, 
 							pizza_cheese_0_id, 
-							pizza_cheese_1_id, 
 							pizza_status, 
 							pizza_price
 						);
@@ -362,7 +360,7 @@ public class DBInterface {
 	 * @param state
 	 * @return
 	 */
-	public boolean updateOrderState(Order order, int newStatus) {
+	public boolean updateOrderState(Order order, String newStatus) {
 		try {
 			if ( orderExists(order) ) {	
 				
@@ -373,7 +371,7 @@ public class DBInterface {
 				String query = "UPDATE `pizza`.`orders` SET `status` = ? WHERE (`id` = ?);";
 				
 				PreparedStatement prep = con.prepareStatement(query);
-				prep.setInt(1, newStatus);
+				prep.setString(1, newStatus);
 				prep.setInt(2, order_id);
 				prep.execute();
 				//stmt.close();
@@ -516,7 +514,7 @@ public class DBInterface {
 			// ONLY DOWNLOAD IF STATUS IS 0
 			String sql = "Select * from orders where orders.status=?";
 			PreparedStatement prep = con.prepareStatement(sql);
-			prep.setInt(1, 0);
+			prep.setString(1, "waiting");
 			
 			ResultSet rs = prep.executeQuery();
 
@@ -527,20 +525,20 @@ public class DBInterface {
 				
 				int order_id = rs.getInt("orders.id");
 				int customer_id = rs.getInt("orders.customer_id");
-				int pizza_status = rs.getInt("orders.status");
-				int pizza_size = rs.getInt("orders.size");
+				String pizza_status = rs.getString("orders.status");
+				String pizza_size = rs.getString("orders.size");
 				
 				int pizza_topping_0_id = rs.getInt("orders.topping_0_id");
 				int pizza_topping_1_id = rs.getInt("orders.topping_1_id");
 				int pizza_topping_2_id = rs.getInt("orders.topping_0_id");
 				
 				int pizza_sauce_0_id = rs.getInt("orders.sauce_0_id");
-				int pizza_sauce_1_id = rs.getInt("orders.sauce_1_id");
+				//int pizza_sauce_1_id = rs.getInt("orders.sauce_1_id");
 				
 				int pizza_cheese_0_id = rs.getInt("orders.cheese_0_id");
-				int pizza_cheese_1_id = rs.getInt("orders.cheese_1_id");
+				//int pizza_cheese_1_id = rs.getInt("orders.cheese_1_id");
 				
-				Timestamp order_time = rs.getTimestamp("orders.date_time");
+				String order_time = rs.getString("orders.date_time");
 				
 				double pizza_price = rs.getDouble("orders.price");
 				
@@ -554,9 +552,7 @@ public class DBInterface {
 							pizza_topping_1_id, 
 							pizza_topping_2_id, 
 							pizza_sauce_0_id, 
-							pizza_sauce_1_id, 
 							pizza_cheese_0_id, 
-							pizza_cheese_1_id, 
 							pizza_status, 
 							pizza_price
 						);
@@ -774,32 +770,37 @@ public class DBInterface {
 
 	
 	private void printAllOrders(HashMap<Integer, Order> orders) {
+		System.out.println("~order list~");
 		for (Map.Entry<Integer, Order> e : orders.entrySet()) { 
-			System.out.println(e.getKey() +" "+ e.getValue().toString());
+			System.out.println(e.getValue().toString());
 		} 
 	}
 	
 	private void printAllCustomers(HashMap<Integer, Customer> customers) {
+		System.out.println("~customer list~");
 		for (Map.Entry<Integer, Customer> e : customers.entrySet()) { 
-			System.out.println(e.getKey() +" "+ e.getValue().toString());
+			System.out.println(e.getValue().toString());
 		} 
 	}
 	
 	private void printAllToppings(HashMap<Integer, Topping> toppings) {
+		System.out.println("~cheese list~");
 		for (Map.Entry<Integer, Topping> e : toppings.entrySet()) { 
-			System.out.println(e.getKey() +" "+ e.getValue().toString());
+			System.out.println(e.getValue().toString());
 		} 
 	}
 	
 	private void printAllSauces(HashMap<Integer, Sauce> sauces) {
+		System.out.println("~sauce list~");
 		for (Map.Entry<Integer, Sauce> e : sauces.entrySet()) { 
-			System.out.println(e.getKey() +" "+ e.getValue().toString());
+			System.out.println(e.getValue().toString());
 		} 
 	}	
 	
 	private void printAllCheeses(HashMap<Integer, Cheese> cheeses) {
+		System.out.println("~cheese list~");
 		for (Map.Entry<Integer, Cheese> e : cheeses.entrySet()) { 
-			System.out.println(e.getKey() +" "+ e.getValue().toString());
+			System.out.println(e.getValue().toString());
 		} 
 	}	
 	
@@ -807,24 +808,24 @@ public class DBInterface {
 	public DBInterface() {
 		// TODO Auto-generated constructor stub
 		
-		//openDB(url, dbUser, usrPass);
+		openDB(url, dbUser, usrPass);
 
 
-//		printAllCustomers(getAllCustomers());
-//		
-//		printAllToppings(getAllToppings());
-//		
-//		printAllCheeses(getAllCheeses());
-//		
-//		printAllSauces(getAllSauces());
-//		
-//		printAllOrders(getAllOrders());
+		printAllCustomers(getAllCustomers());
+		
+		printAllToppings(getAllToppings());
+		
+		printAllCheeses(getAllCheeses());
+		
+		printAllSauces(getAllSauces());
+		
+		printAllOrders(getAllOrders());
 		
 		
 		//updateAllToppings();
 		
 		
-		//closeDB();
+		closeDB();
 		
 		
 	}

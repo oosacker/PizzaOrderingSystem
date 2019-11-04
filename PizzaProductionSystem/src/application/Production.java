@@ -61,7 +61,6 @@ public class Production extends Application {
 	public void Login(Stage primaryStage) throws Exception {
 		dbi = new DBInterface();
 		orderlist = dbi.getAllOrders();
-		customerlist = dbi.getAllCustomers();
 		toppinglist = dbi.getAllToppings();
 		cheeselist = dbi.getAllCheeses();
 		saucelist = dbi.getAllSauces();

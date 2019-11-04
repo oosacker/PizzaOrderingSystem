@@ -8,6 +8,9 @@ import java.sql.Statement;
 import java.util.HashMap;
 import java.util.Map;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+
 
 public class DBInterface {
 
@@ -24,12 +27,24 @@ public class DBInterface {
 	String dbUser = "newuser";
 	String usrPass = "12345";
 	
+	// to return to the GUI
+	ObservableList<Order> orderList;
+	ObservableList<Topping> toppingList;
+	ObservableList<Sauce> sauceList;
+	ObservableList<Cheese> cheeseList;
 	
+	// lookup tables for the ingredients
+	HashMap<Integer, Order> orderMap;
+	HashMap<Integer, Topping> toppingMap;
+	HashMap<Integer, Sauce> sauceMap;
+	HashMap<Integer, Cheese> cheeseMap;
+	HashMap<Integer, Customer> customerMap;
 	
 	/**
+	 * 
 	 * Open the DB connection
 	 */
-	public boolean openDB(String url, String dbUser, String usrPass) {
+	private boolean openDB(String url, String dbUser, String usrPass) {
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
 			con = DriverManager.getConnection(url, dbUser, usrPass);
@@ -49,7 +64,7 @@ public class DBInterface {
 	/**
 	 * Close the DB connection
 	 */
-	public boolean closeDB() {
+	private boolean closeDB() {
 		try {
 			con.close();
 			System.out.println("Closed connection to database");
@@ -73,6 +88,8 @@ public class DBInterface {
 		
 		try {
 			
+			openDB(url, dbUser, usrPass);
+			
 			//stmt = con.createStatement();
 			String sql = "Select * from staff_accounts where staff_accounts.id = ? and staff_accounts.password = ?";
 			PreparedStatement prep = con.prepareStatement(sql);
@@ -95,12 +112,17 @@ public class DBInterface {
 			rs.close();
 			//stmt.close();
 			
+			
+			closeDB();
+			
+			
 			return user_verified;
 		}
 		
 		catch(Exception ex) {
 			System.out.println("Error reading from database");
 			ex.printStackTrace();
+			closeDB();
 			return false;
 		}
 
@@ -117,6 +139,8 @@ public class DBInterface {
 	public Cheese findCheese(int cheese_id_input) {
 		
 		try {
+			
+			openDB(url, dbUser, usrPass);
 			
 			Cheese myCheese = null;
 			
@@ -140,13 +164,14 @@ public class DBInterface {
 
 			rs.close();
 			//stmt.close();
-			
+			closeDB();
 			return myCheese;
 		}
 		
 		catch(Exception ex) {
 			System.out.println("Error reading from database");
 			ex.printStackTrace();
+			closeDB();
 			return null;
 		}
 	}
@@ -159,6 +184,8 @@ public class DBInterface {
 	public Sauce findSauce(int sauce_id_input) {
 		
 		try {
+			
+			openDB(url, dbUser, usrPass);
 			
 			Sauce mySauce = null;
 			
@@ -182,13 +209,14 @@ public class DBInterface {
 
 			rs.close();
 			//stmt.close();
-			
+			closeDB();
 			return mySauce;
 		}
 		
 		catch(Exception ex) {
 			System.out.println("Error reading from database");
 			ex.printStackTrace();
+			closeDB();
 			return null;
 		}
 	}
@@ -201,6 +229,7 @@ public class DBInterface {
 	public Topping findTopping(int topping_id_input) {
 		
 		try {
+			openDB(url, dbUser, usrPass);
 			
 			Topping myTopping = null;
 			
@@ -224,13 +253,14 @@ public class DBInterface {
 
 			rs.close();
 			//stmt.close();
-			
+			closeDB();
 			return myTopping;
 		}
 		
 		catch(Exception ex) {
 			System.out.println("Error reading from database");
 			ex.printStackTrace();
+			closeDB();
 			return null;
 		}
 	}
@@ -242,6 +272,9 @@ public class DBInterface {
 	public Customer findCustomer(int customer_id_input) {
 		
 		try {
+			
+			openDB(url, dbUser, usrPass);
+
 			
 			Customer myCustomer = null;
 			
@@ -268,7 +301,7 @@ public class DBInterface {
 
 			rs.close();
 			//stmt.close();
-			
+			closeDB();
 			return myCustomer;
 			
 			
@@ -276,6 +309,7 @@ public class DBInterface {
 		catch(Exception ex) {
 			System.out.println("Error reading from database");
 			ex.printStackTrace();
+			closeDB();
 			return null;
 		}
 	}
@@ -285,69 +319,71 @@ public class DBInterface {
 	 * Find order on database based on id; return null if not found
 	 * @return
 	 */
-	public Order findOrder(int order_id_input) {
-		
-		try {
-			
-			Order myOrder = null;
-			
-			//stmt = con.createStatement();
-			String sql = "Select * from orders where orders.id = ?";
-			PreparedStatement prep = con.prepareStatement(sql);
-			
-			prep.setInt(1, order_id_input);
-			
-			ResultSet rs = prep.executeQuery();
-			
-			if(rs.next()){
-				
-				int order_id = rs.getInt("orders.id");
-				int customer_id = rs.getInt("orders.customer_id");
-				String pizza_status = rs.getString("orders.status");
-				String pizza_size = rs.getString("orders.size");
-				
-				int pizza_topping_0_id = rs.getInt("orders.topping_0_id");
-				int pizza_topping_1_id = rs.getInt("orders.topping_1_id");
-				int pizza_topping_2_id = rs.getInt("orders.topping_0_id");
-				
-				int pizza_sauce_0_id = rs.getInt("orders.sauce_0_id");
-				//int pizza_sauce_1_id = rs.getInt("orders.sauce_1_id");
-				
-				int pizza_cheese_0_id = rs.getInt("orders.cheese_0_id");
-				//int pizza_cheese_1_id = rs.getInt("orders.cheese_1_id");
-				
-				String order_time = rs.getString("orders.date_time");
-				
-				double pizza_price = rs.getDouble("orders.price");
-				
-				myOrder = new Order(
-							order_id, 
-							pizza_size, 
-							customer_id, 
-							order_time, 
-							pizza_topping_0_id, 
-							pizza_topping_1_id, 
-							pizza_topping_2_id, 
-							pizza_sauce_0_id, 
-							pizza_cheese_0_id, 
-							pizza_status, 
-							pizza_price
-						);
-				
-			}
-
-			rs.close();
-			//stmt.close();
-			return myOrder;
-			
-			
-		}
-		catch(Exception ex) {
-			System.out.println("Error reading from database");
-			ex.printStackTrace();
-			return null;
-		}
-	}
+//	public Order findOrder(int order_id_input) {
+//		
+//		try {
+//			
+//			openDB(url, dbUser, usrPass);
+//			
+//			Order myOrder = null;
+//			
+//			//stmt = con.createStatement();
+//			String sql = "Select * from orders where orders.id = ?";
+//			PreparedStatement prep = con.prepareStatement(sql);
+//			
+//			prep.setInt(1, order_id_input);
+//			
+//			ResultSet rs = prep.executeQuery();
+//			
+//			if(rs.next()){
+//				
+//				int order_id = rs.getInt("orders.id");
+//				int customer_id = rs.getInt("orders.customer_id");
+//				String pizza_status = rs.getString("orders.status");
+//				String pizza_size = rs.getString("orders.size");
+//				
+//				int pizza_topping_0_id = rs.getInt("orders.topping_0_id");
+//				int pizza_topping_1_id = rs.getInt("orders.topping_1_id");
+//				int pizza_topping_2_id = rs.getInt("orders.topping_0_id");
+//				
+//				int pizza_sauce_0_id = rs.getInt("orders.sauce_0_id");
+//				//int pizza_sauce_1_id = rs.getInt("orders.sauce_1_id");
+//				
+//				int pizza_cheese_0_id = rs.getInt("orders.cheese_0_id");
+//				//int pizza_cheese_1_id = rs.getInt("orders.cheese_1_id");
+//				
+//				String order_time = rs.getString("orders.date_time");
+//				
+//				double pizza_price = rs.getDouble("orders.price");
+//				
+//				myOrder = new Order(
+//							order_id, 
+//							pizza_size, 
+//							customer_id, 
+//							order_time, 
+//							pizza_topping_0_id, 
+//							pizza_topping_1_id, 
+//							pizza_topping_2_id, 
+//							pizza_sauce_0_id, 
+//							pizza_cheese_0_id, 
+//							pizza_status, 
+//							pizza_price
+//						);
+//				
+//			}
+//
+//			rs.close();
+//			//stmt.close();
+//			return myOrder;
+//			
+//			
+//		}
+//		catch(Exception ex) {
+//			System.out.println("Error reading from database");
+//			ex.printStackTrace();
+//			return null;
+//		}
+//	}
 
 	
 	/**
@@ -357,6 +393,9 @@ public class DBInterface {
 	 */
 	public boolean updateOrderState(Order order, String newStatus) {
 		try {
+			
+			openDB(url, dbUser, usrPass);
+			
 			if ( orderExists(order) ) {	
 				
 				order.setPizza_status(newStatus);
@@ -371,14 +410,17 @@ public class DBInterface {
 				prep.execute();
 				//stmt.close();
 				
+				closeDB();
 				return true;
 			}
 			else {
+				closeDB();
 				return false;
 			}
 		}
 		catch(Exception ex) {
 			ex.printStackTrace();
+			closeDB();
 			return false;
 		}
 	}
@@ -388,6 +430,8 @@ public class DBInterface {
 		
 		try {
 		
+			openDB(url, dbUser, usrPass);
+			
 			String sql = "";
 			
 			if(ingredient instanceof Topping) {
@@ -407,12 +451,14 @@ public class DBInterface {
 			prep.setInt(2, ingredient.getId());
 			int res = prep.executeUpdate();
 			
+			closeDB();
 			return true;
 			
 		}
 		
 		catch(Exception ex) {
 			ex.printStackTrace();
+			closeDB();
 			return false;
 		}
 		
@@ -423,6 +469,8 @@ public class DBInterface {
 	public boolean updateAllToppings(int new_stock_level) {
 		
 		try {
+			
+			openDB(url, dbUser, usrPass);
 			
 			Statement stmt = con.createStatement();
 			
@@ -454,12 +502,13 @@ public class DBInterface {
 			}
 			
 			stmt.close();
-
+			closeDB();
 			return true;
 		}
 		
 		catch(Exception ex) {
 			ex.printStackTrace();
+			closeDB();
 			return false;
 		}
 	}
@@ -469,6 +518,7 @@ public class DBInterface {
 	public boolean updateAllSauces(int new_stock_level) {
 		
 		try {
+			openDB(url, dbUser, usrPass);
 			
 			Statement stmt = con.createStatement();
 			
@@ -500,12 +550,13 @@ public class DBInterface {
 			}
 			
 			stmt.close();
-
+			closeDB();
 			return true;
 		}
 		
 		catch(Exception ex) {
 			ex.printStackTrace();
+			closeDB();
 			return false;
 		}
 	}
@@ -515,6 +566,8 @@ public class DBInterface {
 	public boolean updateAllCheeses(int new_stock_level) {
 		
 		try {
+			
+			openDB(url, dbUser, usrPass);
 			
 			Statement stmt = con.createStatement();
 			
@@ -546,12 +599,13 @@ public class DBInterface {
 			}
 			
 			stmt.close();
-
+			closeDB();
 			return true;
 		}
 		
 		catch(Exception ex) {
 			ex.printStackTrace();
+			closeDB();
 			return false;
 		}
 	}
@@ -565,6 +619,8 @@ public class DBInterface {
 	 */
 	public boolean orderExists(Order order) {
 		try {
+			
+			openDB(url, dbUser, usrPass);
 			
 			boolean orderFound = false;
 			
@@ -589,10 +645,13 @@ public class DBInterface {
 			
 			rs.close();
 			//stmt.close();
+			
+			closeDB();
 			return orderFound;
 		}
 		catch(Exception ex) {
 			ex.printStackTrace();
+			closeDB();
 			return false;
 		}
 	}
@@ -608,6 +667,8 @@ public class DBInterface {
 		
 		try {
 			//stmt = con.createStatement();
+			
+			openDB(url, dbUser, usrPass);
 			
 			// ONLY DOWNLOAD IF STATUS IS 0
 			String sql = "Select * from orders where orders.status=?";
@@ -644,13 +705,13 @@ public class DBInterface {
 						(
 							order_id, 
 							pizza_size, 
-							customer_id, 
+							customerMap.get(customer_id).getCustomer_name(), 
 							order_time, 
-							pizza_topping_0_id, 
-							pizza_topping_1_id, 
-							pizza_topping_2_id, 
-							pizza_sauce_0_id, 
-							pizza_cheese_0_id, 
+							toppingMap.get(pizza_topping_0_id).getName(), 
+							toppingMap.get(pizza_topping_1_id).getName(), 
+							toppingMap.get(pizza_topping_2_id).getName(), 
+							sauceMap.get(pizza_sauce_0_id).getName(), 
+							cheeseMap.get(pizza_cheese_0_id).getName(), 
 							pizza_status, 
 							pizza_price
 						);
@@ -681,6 +742,9 @@ public class DBInterface {
 	public HashMap<Integer, Customer> getAllCustomers() {
 		
 		try {
+			
+			openDB(url, dbUser, usrPass);
+			
 			Statement stmt = con.createStatement();
 			String sql = "Select * from customers";
 			ResultSet rs = stmt.executeQuery(sql);
@@ -714,12 +778,16 @@ public class DBInterface {
 			
 			rs.close();
 			stmt.close();
+			
+			closeDB();
+			
 			return customers;
 			
 		}
 		catch(Exception ex) {
 			System.out.println("Error reading from database");
 			ex.printStackTrace();
+			closeDB();
 			return null;
 		}
 	}
@@ -734,6 +802,9 @@ public class DBInterface {
 	public HashMap<Integer, Topping> getAllToppings() {
 		
 		try {
+			
+			openDB(url, dbUser, usrPass);
+			
 			Statement stmt = con.createStatement();
 			String sql = "Select * from toppings";
 			ResultSet rs = stmt.executeQuery(sql);
@@ -761,12 +832,16 @@ public class DBInterface {
 			
 			rs.close();
 			stmt.close();
+			
+			closeDB();
+			
 			return toppings;
 			
 		}
 		catch(Exception ex) {
 			System.out.println("Error reading from database");
 			ex.printStackTrace();
+			closeDB();
 			return null;
 		}
 
@@ -782,6 +857,9 @@ public class DBInterface {
 	public HashMap<Integer, Cheese> getAllCheeses() {
 		
 		try {
+			
+			openDB(url, dbUser, usrPass);
+			
 			Statement stmt = con.createStatement();
 			String sql = "Select * from cheeses";
 			ResultSet rs = stmt.executeQuery(sql);
@@ -809,12 +887,17 @@ public class DBInterface {
 			
 			rs.close();
 			stmt.close();
+			
+			closeDB();
+			
 			return cheeses;
 			
 		}
 		catch(Exception ex) {
 			System.out.println("Error reading from database");
 			ex.printStackTrace();
+			
+			closeDB();
 			return null;
 		}
 
@@ -830,6 +913,8 @@ public class DBInterface {
 	public HashMap<Integer, Sauce> getAllSauces() {
 		
 		try {
+			openDB(url, dbUser, usrPass);
+			
 			Statement stmt = con.createStatement();
 			String sql = "Select * from sauces";
 			ResultSet rs = stmt.executeQuery(sql);
@@ -855,12 +940,14 @@ public class DBInterface {
 			
 			rs.close();
 			stmt.close();
+			closeDB();
 			return sauces;
 			
 		}
 		catch(Exception ex) {
 			System.out.println("Error reading from database");
 			ex.printStackTrace();
+			closeDB();
 			return null;
 		}
 
@@ -903,32 +990,61 @@ public class DBInterface {
 	}	
 	
 	
+	public ObservableList<Order> getOrderList(){
+		
+		ObservableList<Order> orderList = FXCollections.observableArrayList();
+		
+		for (Map.Entry<Integer, Order> e : orderMap.entrySet()) { 
+			
+			
+			
+		} 
+		
+		return orderList;
+		
+		
+	}
+	
+	
 	public DBInterface() {
 		// TODO Auto-generated constructor stub
 		
-		openDB(url, dbUser, usrPass);
+		//openDB(url, dbUser, usrPass);
 
-
-		printAllCustomers(getAllCustomers());
 		
-		printAllToppings(getAllToppings());
+		//orderList = FXCollections.observableArrayList();
+		//toppingList = FXCollections.observableArrayList();
+		//sauceList = FXCollections.observableArrayList();
+		//cheeseList = FXCollections.observableArrayList();
 		
-		printAllCheeses(getAllCheeses());
-		
-		printAllSauces(getAllSauces());
-		
-		printAllOrders(getAllOrders());
-		
-		
-		updateAllToppings(100);
+		toppingMap = getAllToppings();
+		sauceMap = getAllSauces();
+		cheeseMap = getAllCheeses();
+		customerMap = getAllCustomers();
+		orderMap = getAllOrders();
 		
 		
-		updateAllCheeses(100);
 		
+//		printAllCustomers(getAllCustomers());
+//		
+//		printAllToppings(getAllToppings());
+//		
+//		printAllCheeses(getAllCheeses());
+//		
+//		printAllSauces(getAllSauces());
+//		
+//		printAllOrders(getAllOrders());
+//		
+//		
+//		updateAllToppings(100);
+//		
+//		
+//		updateAllCheeses(100);
+//		
+//		
+//		updateAllSauces(100);
 		
-		updateAllSauces(100);
-		
-		closeDB();
+		//closeDB();
 		
 		
 	}

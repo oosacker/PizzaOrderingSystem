@@ -4,18 +4,28 @@ public class Order {
 
 	private int order_id;		// auto generated
 	private String pizza_size; 	// small, medium, large
-	private int customer_id;	// auto generated
+	
+	private String customer;	// auto generated
+	
 	private String order_time;	// 
 	
-	private int pizza_topping_0_id;
-	private int pizza_topping_1_id;
-	private int pizza_topping_2_id;
+	//private int pizza_topping_0_id;
+	//private int pizza_topping_1_id;
+	//private int pizza_topping_2_id;
 	
-	private int pizza_sauce_0_id;
+	private String pizza_topping_0;
+	private String pizza_topping_1;
+	private String pizza_topping_2;
+	
+	//private int pizza_sauce_0_id;
 	//private int pizza_sauce_1_id;
 	
-	private int pizza_cheese_0_id;
+	private String pizza_sauce_0;
+	
+	//private int pizza_cheese_0_id;
 	//private int pizza_cheese_1_id;
+	private String pizza_cheese_0;
+	
 	
 	private String pizza_status;	// waiting, cooking, ready, picked up
 	
@@ -25,25 +35,25 @@ public class Order {
 	public Order(
 				int order_id, 
 				String pizza_size, 
-				int customer_id, 
+				String customer, 
 				String order_time, 
-				int pizza_topping_0_id,
-				int pizza_topping_1_id, 
-				int pizza_topping_2_id, 
-				int pizza_sauce_0_id, 
-				int pizza_cheese_0_id, 
+				String pizza_topping_0,
+				String pizza_topping_1, 
+				String pizza_topping_2, 
+				String pizza_sauce_0, 
+				String pizza_cheese_0, 
 				String pizza_status,
 				double pizza_price
 			) {
 		this.order_id = order_id;
 		this.pizza_size = pizza_size;
-		this.customer_id = customer_id;
+		this.customer = customer;
 		this.order_time = order_time;
-		this.pizza_topping_0_id = pizza_topping_0_id;
-		this.pizza_topping_1_id = pizza_topping_1_id;
-		this.pizza_topping_2_id = pizza_topping_2_id;
-		this.pizza_sauce_0_id = pizza_sauce_0_id;
-		this.pizza_cheese_0_id = pizza_cheese_0_id;
+		this.pizza_topping_0 = pizza_topping_0;
+		this.pizza_topping_1 = pizza_topping_1;
+		this.pizza_topping_2 = pizza_topping_2;
+		this.pizza_sauce_0 = pizza_sauce_0;
+		this.pizza_cheese_0 = pizza_cheese_0;
 		this.pizza_status = pizza_status;
 		this.pizza_price = pizza_price;
 	}
@@ -56,33 +66,33 @@ public class Order {
 		return pizza_size;
 	}
 
-	public int getCustomer_id() {
-		return customer_id;
+	public String getCustomer() {
+		return customer;
 	}
 
 	public String getOrder_time() {
 		return order_time;
 	}
 
-	public int getPizza_topping_0_id() {
-		return pizza_topping_0_id;
+	public String getPizza_topping_0() {
+		return pizza_topping_0;
 	}
 
-	public int getPizza_topping_1_id() {
-		return pizza_topping_1_id;
+	public String getPizza_topping_1() {
+		return pizza_topping_1;
 	}
 
-	public int getPizza_topping_2_id() {
-		return pizza_topping_2_id;
+	public String getPizza_topping_2() {
+		return pizza_topping_2;
 	}
 
-	public int getPizza_sauce_0_id() {
-		return pizza_sauce_0_id;
+	public String getPizza_sauce_0() {
+		return pizza_sauce_0;
 	}
 
 
-	public int getPizza_cheese_0_id() {
-		return pizza_cheese_0_id;
+	public String getPizza_cheese_0() {
+		return pizza_cheese_0;
 	}
 
 
@@ -102,13 +112,13 @@ public class Order {
 	public String toString() {
 		return "order_id= " + order_id + "\n" +
 				"pizza_size= " + pizza_size + "\n" +
-				"customer_id= " + customer_id + "\n" +
+				"customer= " + customer + "\n" +
 				"order_time= " + order_time + "\n" +
-				"pizza_topping_0_id= " + pizza_topping_0_id + "\n" +
-				"pizza_topping_1_id= " + pizza_topping_1_id + "\n" +
-				"pizza_topping_2_id= " + pizza_topping_2_id + "\n" +
-				"pizza_sauce_0_id= " + pizza_sauce_0_id + "\n" +
-				"pizza_cheese_0_id= " + pizza_cheese_0_id + "\n" +
+				"pizza_topping_0= " + pizza_topping_0 + "\n" +
+				"pizza_topping_1= " + pizza_topping_1 + "\n" +
+				"pizza_topping_2= " + pizza_topping_2 + "\n" +
+				"pizza_sauce_0= " + pizza_sauce_0 + "\n" +
+				"pizza_cheese_0= " + pizza_cheese_0 + "\n" +
 				"pizza_status= " + pizza_status + "\n" +
 				"pizza_price= " + pizza_price;
 	}

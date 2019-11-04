@@ -249,6 +249,9 @@ public class Production extends Application {
             row.setOnMouseClicked(event -> {
                 if (event.getClickCount() == 2 && (! row.isEmpty()) ) {
                 	Order rowData = row.getItem();
+                	
+                	updateOrderState(rowData);
+                	
                     System.out.println("Double click on: "+rowData.toString());
                 }
             });
@@ -318,6 +321,15 @@ public class Production extends Application {
 			cheeselist.get(ingredient_id).setStock_level(100);
 			dbi.updateIngredient(ing);
 		}
+		
+		updateTables();
+	}
+	
+	private void updateOrderState(Order ord) {
+		int order_id = ord.getOrder_id();
+		
+		orderlist.get(order_id).setPizza_status("changed");
+		dbi.updateOrderState(ord, "changed");
 		
 		updateTables();
 	}

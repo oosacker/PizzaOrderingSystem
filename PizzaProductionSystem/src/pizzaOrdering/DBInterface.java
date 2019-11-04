@@ -783,7 +783,7 @@ public class DBInterface {
 		
 		try {
 			Statement stmt = con.createStatement();
-			String sql = "Select * from toppings";
+			String sql = "Select * from cheeses";
 			ResultSet rs = stmt.executeQuery(sql);
 
 			//ArrayList<Customer> customers = new ArrayList<>();
@@ -791,9 +791,9 @@ public class DBInterface {
 			
 			while(rs.next()){
 				
-				int cheese_id = rs.getInt("toppings.id");
-				String cheese_name = rs.getString("toppings.name");
-				int cheese_stock_level = rs.getInt("toppings.stock_level");
+				int cheese_id = rs.getInt("cheeses.id");
+				String cheese_name = rs.getString("cheeses.name");
+				int cheese_stock_level = rs.getInt("cheeses.stock_level");
 				
 				Cheese myCheese = new Cheese
 						(
@@ -882,7 +882,7 @@ public class DBInterface {
 	}
 	
 	private void printAllToppings(HashMap<Integer, Topping> toppings) {
-		System.out.println("~cheese list~");
+		System.out.println("~toppings list~");
 		for (Map.Entry<Integer, Topping> e : toppings.entrySet()) { 
 			System.out.println(e.getValue().toString());
 		} 

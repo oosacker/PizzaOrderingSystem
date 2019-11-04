@@ -40,22 +40,12 @@ import javafx.scene.text.Text;
 
 public class Production extends Application {
 
-	HashMap<Integer, Order> orderlist;
-	HashMap<Integer, Customer> customerlist;
-	HashMap<Integer, Topping> toppinglist;
-	HashMap<Integer, Cheese> cheeselist;
-	HashMap<Integer, Sauce> saucelist;
+	private HashMap<Integer, Order> orderlist;
+	private HashMap<Integer, Topping> toppinglist;
+	private HashMap<Integer, Cheese> cheeselist;
+	private HashMap<Integer, Sauce> saucelist;
 
-
-//		String url = "jdbc:mysql://10.140.230.135:3306/pizza";
-//		String dbUser = "newuser";
-//		String usrPass = "12345";
-
-//	String url = "jdbc:mysql://localhost:3306/pizza";
-//	String dbUser = "newuser";
-//	String usrPass = "12345";
-
-	static DBInterface dbi = new DBInterface();
+	private static DBInterface dbi = new DBInterface();
 
 	@SuppressWarnings("rawtypes")
 	private TableView orderTable = new TableView();

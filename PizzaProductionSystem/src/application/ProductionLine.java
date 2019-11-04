@@ -37,6 +37,23 @@ import javafx.scene.text.Text;
 
 public class ProductionLine extends Application {
 
+	HashMap<Integer, Order> orderlist;
+	HashMap<Integer, Customer> customerlist;
+	HashMap<Integer, Topping> toppinglist;
+	HashMap<Integer, Cheese> cheeselist;
+	HashMap<Integer, Sauce> saucelist;
+	
+	
+	String url = "jdbc:mysql://10.140.230.135:3306/pizza";
+	String dbUser = "newuser";
+	String usrPass = "12345";
+
+//	String url = "jdbc:mysql://localhost:3306/pizza";
+//	String dbUser = "newuser";
+//	String usrPass = "1234";
+	
+	DBInterface dbi = new DBInterface();
+	
 	@SuppressWarnings("rawtypes")
 	private TableView orderTable = new TableView();
 	@SuppressWarnings("rawtypes")
@@ -49,6 +66,18 @@ public class ProductionLine extends Application {
 	}
 	
 	public void Login(Stage primaryStage) throws Exception {
+		
+		
+		dbi.openDB(url, dbUser, usrPass);
+		
+		orderlist = dbi.getAllOrders();
+		customerlist = dbi.getAllCustomers();
+		toppinglist = dbi.getAllToppings();
+		cheeselist = dbi.getAllCheeses();
+		saucelist = dbi.getAllSauces();
+		
+		dbi.closeDB();
+
 		
 		 primaryStage.setTitle("Staff Login");
 	        GridPane grid = new GridPane();
@@ -85,7 +114,21 @@ public class ProductionLine extends Application {
 	        btn.setOnAction(new EventHandler<ActionEvent>() {
 	            @Override
 	            public void handle(ActionEvent event) {
-	                start();
+	        
+	                  actiontarget.setFill(Color.FIREBRICK);
+	                  actiontarget.setText("Sign in button pressed");
+	                  
+	                  String name = userName.getText();
+	                  String pass = pwBox.getText();
+	                  
+	                  boolean verified =  dbi.verifyStaffLogin(name, pass);
+	                  
+	                  if (verified) {
+	  	                start();
+
+	                  	System.out.println("login successful");
+	                  }
+	                  
 	            }
 	        });
 	        
@@ -100,25 +143,7 @@ public class ProductionLine extends Application {
 	public void start() {
 		Stage stage = new Stage();
 	
-//				String url = "jdbc:mysql://10.140.230.135:3306/pizza";
-//				String dbUser = "newuser";
-//				String usrPass = "12345";
-
-//		String url = "jdbc:mysql://localhost:3306/pizza";
-//		String dbUser = "newuser";
-//		String usrPass = "1234";
-
-//		DBInterface dbi = new DBInterface();
-//		dbi.openDB(url, dbUser, usrPass);
-
-//		HashMap<Integer, Order> orderlist = dbi.getAllOrders();
-//		HashMap<Integer, Customer> customerlist = dbi.getAllCustomers();
-//		HashMap<Integer, Topping> toppinglist = dbi.getAllToppings();
-//		HashMap<Integer, Cheese> cheeselist = dbi.getAllCheeses();
-//		HashMap<Integer, Sauce> saucelist = dbi.getAllSauces();
-//
-//		dbi.closeDB();
-
+				
 		Scene scene = new Scene(new Group());
 		stage.setTitle("Production Line");
 		stage.setWidth(1100);
@@ -206,21 +231,21 @@ public class ProductionLine extends Application {
 		
 		orderTable.getColumns().addAll(customerIdCol, sizegCol, toppingCol, saucesCol, cheeseCol, timeCol, priceCol, statusCol);
 		
-//		for (Map.Entry<Integer, Order> e : orderlist.entrySet()) { 
-//			orderTable.getItems().add(e.getValue());
-//		}
-//		
-//		
-//		stockTable.getColumns().addAll(IngredientsCol, QTYCol);
-//		for (Map.Entry<Integer, Topping> e : toppinglist.entrySet()) { 
-//			stockTable.getItems().add(e.getValue());
-//		}
-//		for (Map.Entry<Integer, Sauce> e : saucelist.entrySet()) { 
-//			stockTable.getItems().add(e.getValue());
-//		}
-//		for (Map.Entry<Integer, Cheese> e : cheeselist.entrySet()) { 
-//			stockTable.getItems().add(e.getValue());
-//		}
+		for (Map.Entry<Integer, Order> e : orderlist.entrySet()) { 
+			orderTable.getItems().add(e.getValue());
+		}
+		
+		
+		stockTable.getColumns().addAll(IngredientsCol, QTYCol);
+		for (Map.Entry<Integer, Topping> e : toppinglist.entrySet()) { 
+			stockTable.getItems().add(e.getValue());
+		}
+		for (Map.Entry<Integer, Sauce> e : saucelist.entrySet()) { 
+			stockTable.getItems().add(e.getValue());
+		}
+		for (Map.Entry<Integer, Cheese> e : cheeselist.entrySet()) { 
+			stockTable.getItems().add(e.getValue());
+		}
 
 
 

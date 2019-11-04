@@ -69,7 +69,11 @@ public class Login extends Application {
         final Text actiontarget = new Text();
         grid.add(actiontarget, 1, 6);
 
+<<<<<<< HEAD
     
+=======
+        //btn.setOnAction(e -> stage.setScene(scene1));
+>>>>>>> refs/remotes/origin/nats
         
 
 //            @Override

@@ -196,7 +196,7 @@ public class Production extends Application {
             row.setOnMouseClicked(event -> {
                 if (event.getClickCount() == 2 && (! row.isEmpty()) ) {
                     Ingredient rowData = row.getItem();
-                    System.out.println("Double click on: "+rowData.getName());
+                    System.out.println("Double click on: "+rowData.toString());
                 }
             });
             return row ;
@@ -252,6 +252,17 @@ public class Production extends Application {
 		statusCol.setCellValueFactory(new PropertyValueFactory<>("pizza_status"));
 
 
+		orderTable.setRowFactory(tv -> {
+            TableRow<Order> row = new TableRow<>();
+            row.setOnMouseClicked(event -> {
+                if (event.getClickCount() == 2 && (! row.isEmpty()) ) {
+                	Order rowData = row.getItem();
+                    System.out.println("Double click on: "+rowData.toString());
+                }
+            });
+            return row ;
+        });
+		
 
 
 		orderTable.getColumns().addAll(customerIdCol, sizeCol, topping0Col, topping1Col, topping2Col, saucesCol, cheeseCol, timeCol, priceCol, statusCol);

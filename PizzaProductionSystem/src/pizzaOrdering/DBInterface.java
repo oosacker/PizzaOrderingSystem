@@ -18,14 +18,14 @@ public class DBInterface {
 	//private static Statement stmt;
 	
 	/* For remote host */
-//	String url = "jdbc:mysql://10.140.230.135:3306/pizza";
-//	String dbUser = "newuser";
-//	String usrPass = "12345";
-	
-	/* For local host */
-	String url = "jdbc:mysql://localhost:3306/pizza";
+	String url = "jdbc:mysql://10.140.230.135:3306/pizza";
 	String dbUser = "newuser";
 	String usrPass = "12345";
+	
+	/* For local host */
+//	String url = "jdbc:mysql://localhost:3306/pizza";
+//	String dbUser = "newuser";
+//	String usrPass = "12345";
 	
 	// to return to the GUI
 	ObservableList<Order> orderList;
@@ -683,7 +683,7 @@ public class DBInterface {
 			while(rs.next()){
 				
 				int order_id = rs.getInt("orders.id");
-				int customer_id = rs.getInt("orders.customer_id");
+				String customer_email = rs.getString("orders.customer_email");
 				String pizza_status = rs.getString("orders.status");
 				String pizza_size = rs.getString("orders.size");
 				
@@ -705,7 +705,7 @@ public class DBInterface {
 						(
 							order_id, 
 							pizza_size, 
-							customerMap.get(customer_id).getCustomer_name(), 
+							customer_email, 
 							order_time, 
 							toppingMap.get(pizza_topping_0_id).getName(), 
 							toppingMap.get(pizza_topping_1_id).getName(), 

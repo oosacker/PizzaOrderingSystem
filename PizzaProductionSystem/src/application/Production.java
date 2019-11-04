@@ -47,13 +47,13 @@ public class Production extends Application {
 	HashMap<Integer, Sauce> saucelist;
 
 
-	//	String url = "jdbc:mysql://10.140.230.135:3306/pizza";
-	//	String dbUser = "newuser";
-	//	String usrPass = "12345";
+//		String url = "jdbc:mysql://10.140.230.135:3306/pizza";
+//		String dbUser = "newuser";
+//		String usrPass = "12345";
 
-	String url = "jdbc:mysql://localhost:3306/pizza";
-	String dbUser = "newuser";
-	String usrPass = "12345";
+//	String url = "jdbc:mysql://localhost:3306/pizza";
+//	String dbUser = "newuser";
+//	String usrPass = "12345";
 
 	static DBInterface dbi = new DBInterface();
 
@@ -65,24 +65,16 @@ public class Production extends Application {
 
 	public static void main(String[] args) {
 		launch(args);
-
 	}
 
 
 	public void Login(Stage primaryStage) throws Exception {
-
-		DBInterface dbi = new DBInterface();
-
-		//dbi.openDB(url, dbUser, usrPass);
-
+		dbi = new DBInterface();
 		orderlist = dbi.getAllOrders();
 		customerlist = dbi.getAllCustomers();
 		toppinglist = dbi.getAllToppings();
 		cheeselist = dbi.getAllCheeses();
 		saucelist = dbi.getAllSauces();
-
-		//dbi.closeDB();
-
 
 		primaryStage.setTitle("Staff Login");
 		GridPane grid = new GridPane();
@@ -147,14 +139,11 @@ public class Production extends Application {
 	public void start() {
 		Stage stage = new Stage();
 
-
 		Scene scene = new Scene(new Group());
 		stage.setTitle("Production Line");
 		stage.setWidth(1500);
 		stage.setHeight(600);
 		stage.initStyle(StageStyle.DECORATED);
-
-
 
 		final Label stock = new Label("Stock");
 		stock.setFont(new Font("Arial", 20));
@@ -196,6 +185,9 @@ public class Production extends Application {
             row.setOnMouseClicked(event -> {
                 if (event.getClickCount() == 2 && (! row.isEmpty()) ) {
                     Ingredient rowData = row.getItem();
+                    
+                    restockIngredient(rowData);
+                    
                     System.out.println("Double click on: "+rowData.toString());
                 }
             });
@@ -206,7 +198,7 @@ public class Production extends Application {
 		
 		TableColumn<String, Order> customerIdCol = new TableColumn<>("Customer name");
 		customerIdCol.setMinWidth(50);
-		customerIdCol.setCellValueFactory(new PropertyValueFactory<>("customer"));
+		customerIdCol.setCellValueFactory(new PropertyValueFactory<>("customer_email"));
 
 
 		TableColumn<String, Order> sizeCol = new TableColumn<>("Size");
@@ -266,23 +258,9 @@ public class Production extends Application {
 
 
 		orderTable.getColumns().addAll(customerIdCol, sizeCol, topping0Col, topping1Col, topping2Col, saucesCol, cheeseCol, timeCol, priceCol, statusCol);
-
-		for (Map.Entry<Integer, Order> e : orderlist.entrySet()) { 
-			orderTable.getItems().add(e.getValue());
-		}
-
-
 		stockTable.getColumns().addAll(IngredientsCol, QTYCol);
-		for (Map.Entry<Integer, Topping> e : toppinglist.entrySet()) { 
-			stockTable.getItems().add(e.getValue());
-		}
-		for (Map.Entry<Integer, Sauce> e : saucelist.entrySet()) { 
-			stockTable.getItems().add(e.getValue());
-		}
-		for (Map.Entry<Integer, Cheese> e : cheeselist.entrySet()) { 
-			stockTable.getItems().add(e.getValue());
-		}
-
+		
+		updateTables();
 
 
 		final VBox stockbox = new VBox();
@@ -302,7 +280,47 @@ public class Production extends Application {
 		stage.show();
 	}
 
+	private void updateTables() {
+		
+		orderTable.getItems().clear();
+		stockTable.getItems().clear();
+		
+		for (Map.Entry<Integer, Order> e : orderlist.entrySet()) { 
+			orderTable.getItems().add(e.getValue());
+		}
+		for (Map.Entry<Integer, Topping> e : toppinglist.entrySet()) { 
+			stockTable.getItems().add(e.getValue());
+		}
+		for (Map.Entry<Integer, Sauce> e : saucelist.entrySet()) { 
+			stockTable.getItems().add(e.getValue());
+		}
+		for (Map.Entry<Integer, Cheese> e : cheeselist.entrySet()) { 
+			stockTable.getItems().add(e.getValue());
+		}
+	}
 
+	
+	private void restockIngredient(Ingredient ing) {
+		int ingredient_id = ing.getId();
+				
+		if ( ing instanceof Topping ) {
+			toppinglist.get(ingredient_id).setStock_level(100);
+			dbi.updateIngredient(ing);
+			
+		}
+		
+		else if( ing instanceof Sauce ) {
+			saucelist.get(ingredient_id).setStock_level(100);
+			dbi.updateIngredient(ing);
+		}
+		
+		else if( ing instanceof Cheese ) {
+			cheeselist.get(ingredient_id).setStock_level(100);
+			dbi.updateIngredient(ing);
+		}
+		
+		updateTables();
+	}
 	
 	@Override
 	public void start(Stage primaryStage) throws Exception {

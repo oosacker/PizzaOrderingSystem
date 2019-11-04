@@ -5,7 +5,7 @@ public class Order {
 	private int order_id;		// auto generated
 	private String pizza_size; 	// small, medium, large
 	
-	private String customer;	// auto generated
+	private String customer_email;	// auto generated
 	
 	private String order_time;	// 
 	
@@ -35,7 +35,7 @@ public class Order {
 	public Order(
 				int order_id, 
 				String pizza_size, 
-				String customer, 
+				String customer_email, 
 				String order_time, 
 				String pizza_topping_0,
 				String pizza_topping_1, 
@@ -47,7 +47,7 @@ public class Order {
 			) {
 		this.order_id = order_id;
 		this.pizza_size = pizza_size;
-		this.customer = customer;
+		this.customer_email = customer_email;
 		this.order_time = order_time;
 		this.pizza_topping_0 = pizza_topping_0;
 		this.pizza_topping_1 = pizza_topping_1;
@@ -66,8 +66,8 @@ public class Order {
 		return pizza_size;
 	}
 
-	public String getCustomer() {
-		return customer;
+	public String getCustomer_email() {
+		return customer_email;
 	}
 
 	public String getOrder_time() {
@@ -112,7 +112,7 @@ public class Order {
 	public String toString() {
 		return "order_id= " + order_id + "\n" +
 				"pizza_size= " + pizza_size + "\n" +
-				"customer= " + customer + "\n" +
+				"customer_email= " + customer_email + "\n" +
 				"order_time= " + order_time + "\n" +
 				"pizza_topping_0= " + pizza_topping_0 + "\n" +
 				"pizza_topping_1= " + pizza_topping_1 + "\n" +

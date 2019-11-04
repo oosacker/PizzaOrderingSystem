@@ -161,7 +161,7 @@ public class ProductionLine extends Application {
 				
 		Scene scene = new Scene(new Group());
 		stage.setTitle("Production Line");
-		stage.setWidth(1100);
+		stage.setWidth(1500);
 		stage.setHeight(600);
 		stage.initStyle(StageStyle.DECORATED);
 
@@ -207,17 +207,25 @@ public class ProductionLine extends Application {
 		customerIdCol.setCellValueFactory(new PropertyValueFactory<>("customer_id"));
 
 		
-		TableColumn<String, Order> sizegCol = new TableColumn<>("Size");
-		sizegCol.setMinWidth(50);
-		sizegCol.setCellValueFactory(new PropertyValueFactory<>("pizza_size"));
+		TableColumn<String, Order> sizeCol = new TableColumn<>("Size");
+		sizeCol.setMinWidth(50);
+		sizeCol.setCellValueFactory(new PropertyValueFactory<>("pizza_size"));
 
 		
-		TableColumn<String, Order> toppingCol = new TableColumn<>("topping");
-		toppingCol.setMinWidth(100);
-		toppingCol.setCellValueFactory(new PropertyValueFactory<>("name"));
+		TableColumn<String, Order> topping0Col = new TableColumn<>("Topping 0");
+		topping0Col.setMinWidth(100);
+		topping0Col.setCellValueFactory(new PropertyValueFactory<>("name"));
+		
+		TableColumn<String, Order> topping1Col = new TableColumn<>("Topping 1");
+		topping1Col.setMinWidth(100);
+		topping1Col.setCellValueFactory(new PropertyValueFactory<>("name"));
+		
+		TableColumn<String, Order> topping2Col = new TableColumn<>("Topping 2");
+		topping2Col.setMinWidth(100);
+		topping2Col.setCellValueFactory(new PropertyValueFactory<>("name"));
 
 		
-		TableColumn<String, Order> saucesCol = new TableColumn<>("sauces");
+		TableColumn<String, Order> saucesCol = new TableColumn<>("Sauces");
 		saucesCol.setMinWidth(100);
 		saucesCol.setCellValueFactory(new PropertyValueFactory<>("name"));
 
@@ -244,7 +252,7 @@ public class ProductionLine extends Application {
 		
 
 		
-		orderTable.getColumns().addAll(customerIdCol, sizegCol, toppingCol, saucesCol, cheeseCol, timeCol, priceCol, statusCol);
+		orderTable.getColumns().addAll(customerIdCol, sizeCol, topping0Col,topping1Col,topping2Col, saucesCol, cheeseCol, timeCol, priceCol, statusCol);
 		
 		for (Map.Entry<Integer, Order> e : orderlist.entrySet()) { 
 			orderTable.getItems().add(e.getValue());

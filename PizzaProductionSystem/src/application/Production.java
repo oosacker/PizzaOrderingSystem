@@ -112,12 +112,14 @@ public class Production extends Application {
 					start();
 
 					System.out.println("login successful");
+					primaryStage.close();
+					
 				}
 
 			}
 		});
 
-		Scene scene = new Scene(grid, 300, 275);
+		Scene scene = new Scene(grid, 400, 400);
 		primaryStage.setScene(scene);
 		primaryStage.show();
 	}
@@ -149,8 +151,14 @@ public class Production extends Application {
 
 		//      Order update button
 		Button orderbtn = new Button();
-		orderbtn.setText("Update Oreder");
+		orderbtn.setText("Clear completed orders");
 		orderbtn.setTextFill(Color.RED);
+		
+		orderbtn.setOnAction(e->{
+			updateOrderTable();
+			System.out.println("clicked");
+		});
+		
 		//		btn.borderProperty();
 		orderbtn.setLayoutX(20);
 		orderbtn.setLayoutY(100);
@@ -185,13 +193,13 @@ public class Production extends Application {
 		
 		
 		
-		TableColumn<String, Order> customerIdCol = new TableColumn<>("Customer name");
-		customerIdCol.setMinWidth(50);
-		customerIdCol.setCellValueFactory(new PropertyValueFactory<>("customer_email"));
+		TableColumn<String, Order> customerIdCol = new TableColumn<>("Customer phone");
+		customerIdCol.setMinWidth(150);
+		customerIdCol.setCellValueFactory(new PropertyValueFactory<>("customer_phone"));
 
 
 		TableColumn<String, Order> sizeCol = new TableColumn<>("Size");
-		sizeCol.setMinWidth(50);
+		sizeCol.setMinWidth(100);
 		sizeCol.setCellValueFactory(new PropertyValueFactory<>("pizza_size"));
 
 
@@ -244,7 +252,7 @@ public class Production extends Application {
                     System.out.println("Double click on: "+rowData.toString());
                 }
             });
-            return row ;
+            return row;
         });
 		
 
@@ -268,19 +276,22 @@ public class Production extends Application {
 		((Group) scene.getRoot()).getChildren().addAll(ordersbox, stockbox);
 
 		stage.setScene(scene);
-
 		stage.show();
 	}
 
 	@SuppressWarnings("unchecked")
 	private void updateTables() {
 		
-		orderTable.getItems().clear();
+		updateStockTable();
+		updateOrderTable();
+		
+	}
+	
+	@SuppressWarnings("unchecked")
+	private void updateStockTable() {
+		
 		stockTable.getItems().clear();
 		
-		for (Map.Entry<Integer, Order> e : orderlist.entrySet()) { 
-			orderTable.getItems().add(e.getValue());
-		}
 		for (Map.Entry<Integer, Topping> e : toppinglist.entrySet()) { 
 			stockTable.getItems().add(e.getValue());
 		}
@@ -289,6 +300,14 @@ public class Production extends Application {
 		}
 		for (Map.Entry<Integer, Cheese> e : cheeselist.entrySet()) { 
 			stockTable.getItems().add(e.getValue());
+		}
+	}
+	
+	@SuppressWarnings("unchecked")
+	private void updateOrderTable() {
+		orderTable.getItems().clear();
+		for (Map.Entry<Integer, Order> e : orderlist.entrySet()) { 
+			orderTable.getItems().add(e.getValue());
 		}
 	}
 
@@ -318,8 +337,8 @@ public class Production extends Application {
 	private void updateOrderState(Order ord) {
 		int order_id = ord.getOrder_id();
 		
-		orderlist.get(order_id).setPizza_status("changed");
-		dbi.updateOrderState(ord, "changed");
+		orderlist.get(order_id).changePizzaStatus();
+		dbi.updateOrderState(ord, orderlist.get(order_id).getPizza_status());
 		
 		updateTables();
 	}

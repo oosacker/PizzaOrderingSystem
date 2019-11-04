@@ -5,7 +5,7 @@ public class Order {
 	private int order_id;		// auto generated
 	private String pizza_size; 	// small, medium, large
 	
-	private String customer_email;	// auto generated
+	private String customer_phone;	// auto generated
 	
 	private String order_time;	// 
 	
@@ -35,7 +35,7 @@ public class Order {
 	public Order(
 				int order_id, 
 				String pizza_size, 
-				String customer_email, 
+				String customer_phone, 
 				String order_time, 
 				String pizza_topping_0,
 				String pizza_topping_1, 
@@ -47,7 +47,7 @@ public class Order {
 			) {
 		this.order_id = order_id;
 		this.pizza_size = pizza_size;
-		this.customer_email = customer_email;
+		this.customer_phone = customer_phone;
 		this.order_time = order_time;
 		this.pizza_topping_0 = pizza_topping_0;
 		this.pizza_topping_1 = pizza_topping_1;
@@ -66,8 +66,8 @@ public class Order {
 		return pizza_size;
 	}
 
-	public String getCustomer_email() {
-		return customer_email;
+	public String getCustomer_phone() {
+		return customer_phone;
 	}
 
 	public String getOrder_time() {
@@ -100,6 +100,29 @@ public class Order {
 		return pizza_status;
 	}
 	
+	public void changePizzaStatus() {
+		
+		if (this.pizza_status.equalsIgnoreCase("Waiting")) {
+			this.pizza_status = "Cooking";
+		}
+		
+		else if (this.pizza_status.equalsIgnoreCase("Cooking")) {
+			this.pizza_status = "Ready";
+		}
+		
+		else if (this.pizza_status.equalsIgnoreCase("Ready")) {
+			this.pizza_status = "Picked up";
+		}
+		
+		else if (this.pizza_status.equalsIgnoreCase("Picked up")){
+			// do nothing
+		}
+		
+		else {
+			System.out.println("Error in changePizzaStatus");
+		}
+	}
+	
 	public void setPizza_status(String pizza_status) {
 		this.pizza_status = pizza_status;
 	}
@@ -112,7 +135,7 @@ public class Order {
 	public String toString() {
 		return "order_id= " + order_id + "\n" +
 				"pizza_size= " + pizza_size + "\n" +
-				"customer_email= " + customer_email + "\n" +
+				"customer_phone= " + customer_phone + "\n" +
 				"order_time= " + order_time + "\n" +
 				"pizza_topping_0= " + pizza_topping_0 + "\n" +
 				"pizza_topping_1= " + pizza_topping_1 + "\n" +

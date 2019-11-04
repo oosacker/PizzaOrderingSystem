@@ -269,50 +269,50 @@ public class DBInterface {
 	 * Find customer on database based on id; return null if not found
 	 * @return
 	 */
-	public Customer findCustomer(int customer_id_input) {
-		
-		try {
-			
-			openDB(url, dbUser, usrPass);
-
-			
-			Customer myCustomer = null;
-			
-			//stmt = con.createStatement();
-			String sql = "Select * from customers where customers.id = ?";
-			PreparedStatement prep = con.prepareStatement(sql);
-			
-			prep.setInt(1, customer_id_input);
-			
-			ResultSet rs = prep.executeQuery();
-			
-			if(rs.next()){
-				
-				int customer_id = rs.getInt("customers.id");
-				String customer_name = rs.getString("customers.name");
-				String customer_address = rs.getString("customers.address");
-				int customer_phone = rs.getInt("customers.cellphone");
-				String customer_email = rs.getString("customers.email");
-				int customer_discount_code = rs.getInt("customers.discount_code");
-				
-				myCustomer = new Customer(customer_id, customer_name, customer_address, customer_phone, customer_email, customer_discount_code);
-				
-			}
-
-			rs.close();
-			//stmt.close();
-			closeDB();
-			return myCustomer;
-			
-			
-		}
-		catch(Exception ex) {
-			System.out.println("Error reading from database");
-			ex.printStackTrace();
-			closeDB();
-			return null;
-		}
-	}
+//	public Customer findCustomer(int customer_id_input) {
+//		
+//		try {
+//			
+//			openDB(url, dbUser, usrPass);
+//
+//			
+//			Customer myCustomer = null;
+//			
+//			//stmt = con.createStatement();
+//			String sql = "Select * from customers where customers.id = ?";
+//			PreparedStatement prep = con.prepareStatement(sql);
+//			
+//			prep.setInt(1, customer_id_input);
+//			
+//			ResultSet rs = prep.executeQuery();
+//			
+//			if(rs.next()){
+//				
+//				int customer_id = rs.getInt("customers.id");
+//				String customer_name = rs.getString("customers.name");
+//				String customer_address = rs.getString("customers.address");
+//				int customer_phone = rs.getInt("customers.cellphone");
+//				String customer_email = rs.getString("customers.email");
+//				int customer_discount_code = rs.getInt("customers.discount_code");
+//				
+//				myCustomer = new Customer(customer_id, customer_name, customer_address, customer_phone, customer_email, customer_discount_code);
+//				
+//			}
+//
+//			rs.close();
+//			//stmt.close();
+//			closeDB();
+//			return myCustomer;
+//			
+//			
+//		}
+//		catch(Exception ex) {
+//			System.out.println("Error reading from database");
+//			ex.printStackTrace();
+//			closeDB();
+//			return null;
+//		}
+//	}
 	
 	
 	/**
@@ -396,7 +396,7 @@ public class DBInterface {
 			
 			openDB(url, dbUser, usrPass);
 			
-			if ( orderExists(order) ) {	
+			///if ( orderExists(order) ) {	
 				
 				order.setPizza_status(newStatus);
 				
@@ -412,11 +412,11 @@ public class DBInterface {
 				
 				closeDB();
 				return true;
-			}
-			else {
-				closeDB();
-				return false;
-			}
+			//}
+			//else {
+			//	closeDB();
+			//	return false;
+			//}
 		}
 		catch(Exception ex) {
 			ex.printStackTrace();
@@ -683,7 +683,7 @@ public class DBInterface {
 			while(rs.next()){
 				
 				int order_id = rs.getInt("orders.id");
-				String customer_email = rs.getString("orders.customer_email");
+				String customer_phone = rs.getString("orders.phone");
 				String pizza_status = rs.getString("orders.status");
 				String pizza_size = rs.getString("orders.size");
 				
@@ -705,7 +705,7 @@ public class DBInterface {
 						(
 							order_id, 
 							pizza_size, 
-							customer_email, 
+							customer_phone, 
 							order_time, 
 							toppingMap.get(pizza_topping_0_id).getName(), 
 							toppingMap.get(pizza_topping_1_id).getName(), 
@@ -739,58 +739,58 @@ public class DBInterface {
 	 * @return
 	 */
 	//public ArrayList<Customer> getAllCustomers() {
-	public HashMap<Integer, Customer> getAllCustomers() {
-		
-		try {
-			
-			openDB(url, dbUser, usrPass);
-			
-			Statement stmt = con.createStatement();
-			String sql = "Select * from customers";
-			ResultSet rs = stmt.executeQuery(sql);
-
-			//ArrayList<Customer> customers = new ArrayList<>();
-			HashMap<Integer, Customer> customers = new HashMap<>();
-			
-			while(rs.next()){
-				
-				int customer_id = rs.getInt("customers.id");
-				String customer_name = rs.getString("customers.name");
-				String customer_address = rs.getString("customers.address");
-				int customer_phone = rs.getInt("customers.cellphone");
-				String customer_email = rs.getString("customers.email");
-				int customer_discount_code = rs.getInt("customers.discount_code");
-				
-				Customer myCustomer = new Customer
-						(
-							customer_id, 
-							customer_name, 
-							customer_address, 
-							customer_phone, 
-							customer_email,
-							customer_discount_code
-						);
-				
-				//customers.add(myCustomer);
-				customers.put(customer_id, myCustomer);
-				
-			}
-			
-			rs.close();
-			stmt.close();
-			
-			closeDB();
-			
-			return customers;
-			
-		}
-		catch(Exception ex) {
-			System.out.println("Error reading from database");
-			ex.printStackTrace();
-			closeDB();
-			return null;
-		}
-	}
+//	public HashMap<Integer, Customer> getAllCustomers() {
+//		
+//		try {
+//			
+//			openDB(url, dbUser, usrPass);
+//			
+//			Statement stmt = con.createStatement();
+//			String sql = "Select * from customers";
+//			ResultSet rs = stmt.executeQuery(sql);
+//
+//			//ArrayList<Customer> customers = new ArrayList<>();
+//			HashMap<Integer, Customer> customers = new HashMap<>();
+//			
+//			while(rs.next()){
+//				
+//				int customer_id = rs.getInt("customers.id");
+//				String customer_name = rs.getString("customers.name");
+//				String customer_address = rs.getString("customers.address");
+//				int customer_phone = rs.getInt("customers.cellphone");
+//				String customer_email = rs.getString("customers.email");
+//				int customer_discount_code = rs.getInt("customers.discount_code");
+//				
+//				Customer myCustomer = new Customer
+//						(
+//							customer_id, 
+//							customer_name, 
+//							customer_address, 
+//							customer_phone, 
+//							customer_email,
+//							customer_discount_code
+//						);
+//				
+//				//customers.add(myCustomer);
+//				customers.put(customer_id, myCustomer);
+//				
+//			}
+//			
+//			rs.close();
+//			stmt.close();
+//			
+//			closeDB();
+//			
+//			return customers;
+//			
+//		}
+//		catch(Exception ex) {
+//			System.out.println("Error reading from database");
+//			ex.printStackTrace();
+//			closeDB();
+//			return null;
+//		}
+//	}
 
 
 	
@@ -1020,7 +1020,7 @@ public class DBInterface {
 		toppingMap = getAllToppings();
 		sauceMap = getAllSauces();
 		cheeseMap = getAllCheeses();
-		customerMap = getAllCustomers();
+		//customerMap = getAllCustomers();
 		orderMap = getAllOrders();	// this MUST be called after all 4 !!!!!
 		
 		

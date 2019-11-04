@@ -283,6 +283,7 @@ public class Production extends Application {
 		stage.show();
 	}
 
+	@SuppressWarnings("unchecked")
 	private void updateTables() {
 		
 		orderTable.getItems().clear();

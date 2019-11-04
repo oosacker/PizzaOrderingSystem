@@ -920,13 +920,13 @@ public class DBInterface {
 		printAllOrders(getAllOrders());
 		
 		
-		updateAllToppings(0);
+		updateAllToppings(100);
 		
 		
-		updateAllCheeses(0);
+		updateAllCheeses(100);
 		
 		
-		updateAllSauces(0);
+		updateAllSauces(100);
 		
 		closeDB();
 		

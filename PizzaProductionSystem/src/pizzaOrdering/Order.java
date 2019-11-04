@@ -17,7 +17,7 @@ public class Order {
 	private int pizza_cheese_0_id;
 	//private int pizza_cheese_1_id;
 	
-	private String pizza_status;
+	private String pizza_status;	// waiting, cooking, ready, picked up
 	
 	private double pizza_price;
 

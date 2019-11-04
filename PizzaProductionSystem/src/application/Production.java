@@ -68,19 +68,6 @@ public class Production extends Application {
 
 	public void Login(Stage primaryStage) throws Exception {
 
-//				String url = "jdbc:mysql://10.140.230.135:3306/pizza";
-//				String dbUser = "newuser";
-//				String usrPass = "12345";
-
-////				String url = "jdbc:mysql://10.140.230.135:3306/pizza";
-////				String dbUser = "newuser";
-////				String usrPass = "12345";
-
-
-////		String url = "jdbc:mysql://localhost:3306/pizza";
-////		String dbUser = "newuser";
-////		String usrPass = "1234";
-
 		DBInterface dbi = new DBInterface();
 
 		dbi.openDB(url, dbUser, usrPass);
@@ -252,7 +239,7 @@ public class Production extends Application {
 		
 
 		
-		orderTable.getColumns().addAll(customerIdCol, sizeCol, topping0Col,topping1Col,topping2Col, saucesCol, cheeseCol, timeCol, priceCol, statusCol);
+		orderTable.getColumns().addAll(customerIdCol, sizeCol, topping0Col, topping1Col, topping2Col, saucesCol, cheeseCol, timeCol, priceCol, statusCol);
 		
 		for (Map.Entry<Integer, Order> e : orderlist.entrySet()) { 
 			orderTable.getItems().add(e.getValue());

@@ -83,7 +83,7 @@ public class ProductionLine extends Application {
 
 		DBInterface dbi = new DBInterface();
 
-		dbi.openDB(url, dbUser, usrPass);
+		//dbi.openDB(url, dbUser, usrPass);
 		
 		orderlist = dbi.getAllOrders();
 		customerlist = dbi.getAllCustomers();

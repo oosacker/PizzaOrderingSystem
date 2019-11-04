@@ -659,7 +659,7 @@ public class DBInterface {
 	
 	
 	/**
-	 * Fetch the current orders from database
+	 * Fetch the current orders from database -- CALL AFTER constructor!!!!
 	 * @return
 	 */
 	//public ArrayList<Order> getOrders() {
@@ -673,7 +673,7 @@ public class DBInterface {
 			// ONLY DOWNLOAD IF STATUS IS 0
 			String sql = "Select * from orders where orders.status=?";
 			PreparedStatement prep = con.prepareStatement(sql);
-			prep.setString(1, "waiting");
+			prep.setString(1, "Waiting");
 			
 			ResultSet rs = prep.executeQuery();
 

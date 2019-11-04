@@ -25,6 +25,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -190,6 +191,19 @@ public class Production extends Application {
 		QTYCol.setCellValueFactory(new PropertyValueFactory<>("stock_level"));
 
 
+		stockTable.setRowFactory(tv -> {
+            TableRow<Ingredient> row = new TableRow<>();
+            row.setOnMouseClicked(event -> {
+                if (event.getClickCount() == 2 && (! row.isEmpty()) ) {
+                    Ingredient rowData = row.getItem();
+                    System.out.println("Double click on: "+rowData.getName());
+                }
+            });
+            return row ;
+        });
+		
+		
+		
 		TableColumn<String, Order> customerIdCol = new TableColumn<>("Customer name");
 		customerIdCol.setMinWidth(50);
 		customerIdCol.setCellValueFactory(new PropertyValueFactory<>("customer"));

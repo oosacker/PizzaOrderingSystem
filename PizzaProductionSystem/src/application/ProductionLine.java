@@ -107,7 +107,8 @@ public class ProductionLine extends Application {
 		TableColumn<String, Ingredient> IngredientsCol = new TableColumn<>("Ingredients");
 		IngredientsCol.setMinWidth(100);
 		IngredientsCol.setCellValueFactory(new PropertyValueFactory<>("name"));
-
+		
+		
 		
 		TableColumn<String, Ingredient> QTYCol = new TableColumn<>("QTY");
 		QTYCol.setMinWidth(100);

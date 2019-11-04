@@ -69,7 +69,7 @@ public class Login extends Application {
         final Text actiontarget = new Text();
         grid.add(actiontarget, 1, 6);
 
-        btn.setOnAction(e -> stage.setScene(scene1));
+        //btn.setOnAction(e -> stage.setScene(scene1));
         
 
 //            @Override

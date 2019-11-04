@@ -49,13 +49,13 @@ public class ProductionLine extends Application {
 				String dbUser = "newuser";
 				String usrPass = "12345";
 
-<<<<<<< HEAD
-				String url = "jdbc:mysql://10.140.230.135:3306/pizza";
-				String dbUser = "newuser";
-				String usrPass = "12345";
-
-=======
->>>>>>> refs/remotes/origin/Mohammad
+//<<<<<<< HEAD
+//				String url = "jdbc:mysql://10.140.230.135:3306/pizza";
+//				String dbUser = "newuser";
+//				String usrPass = "12345";
+//
+//=======
+//>>>>>>> refs/remotes/origin/Mohammad
 //		String url = "jdbc:mysql://localhost:3306/pizza";
 //		String dbUser = "newuser";
 //		String usrPass = "1234";

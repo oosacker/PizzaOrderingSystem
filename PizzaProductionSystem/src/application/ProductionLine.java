@@ -44,13 +44,13 @@ public class ProductionLine extends Application {
 	HashMap<Integer, Sauce> saucelist;
 	
 	
-	String url = "jdbc:mysql://10.140.230.135:3306/pizza";
+//	String url = "jdbc:mysql://10.140.230.135:3306/pizza";
+//	String dbUser = "newuser";
+//	String usrPass = "12345";
+
+	String url = "jdbc:mysql://localhost:3306/pizza";
 	String dbUser = "newuser";
 	String usrPass = "12345";
-
-//	String url = "jdbc:mysql://localhost:3306/pizza";
-//	String dbUser = "newuser";
-//	String usrPass = "1234";
 	
 	DBInterface dbi = new DBInterface();
 	
@@ -237,7 +237,7 @@ public class ProductionLine extends Application {
 		
 		TableColumn<String, Order> timeCol = new TableColumn<>("Time");
 		timeCol.setMinWidth(100);
-		timeCol.setCellValueFactory(new PropertyValueFactory<>("Time"));
+		timeCol.setCellValueFactory(new PropertyValueFactory<>("order_time"));
 
 		
 		TableColumn<String, Order> priceCol = new TableColumn<>("Price");

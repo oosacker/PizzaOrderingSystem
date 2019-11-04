@@ -1021,7 +1021,7 @@ public class DBInterface {
 		sauceMap = getAllSauces();
 		cheeseMap = getAllCheeses();
 		customerMap = getAllCustomers();
-		orderMap = getAllOrders();
+		orderMap = getAllOrders();	// this MUST be called after all 4 !!!!!
 		
 		
 		

@@ -16,20 +16,25 @@ import pizzaOrdering.Sauce;
 import pizzaOrdering.Topping;
 import javafx.scene.Group;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 
 
 public class ProductionLine extends Application {
 
+	Scene scene1, scene2;
+	
 	@SuppressWarnings("rawtypes")
 	private TableView orderTable = new TableView();
 	@SuppressWarnings("rawtypes")
 	private TableView stockTable = new TableView();
+	
 
 	public static void main(String[] args) {
 		launch(args);
@@ -39,11 +44,18 @@ public class ProductionLine extends Application {
 	@SuppressWarnings("unchecked")
 	@Override
 	public void start(Stage stage) {
-
+	
 				String url = "jdbc:mysql://10.140.230.135:3306/pizza";
 				String dbUser = "newuser";
 				String usrPass = "12345";
 
+<<<<<<< HEAD
+				String url = "jdbc:mysql://10.140.230.135:3306/pizza";
+				String dbUser = "newuser";
+				String usrPass = "12345";
+
+=======
+>>>>>>> refs/remotes/origin/Mohammad
 //		String url = "jdbc:mysql://localhost:3306/pizza";
 //		String dbUser = "newuser";
 //		String usrPass = "1234";
@@ -59,7 +71,7 @@ public class ProductionLine extends Application {
 
 		dbi.closeDB();
 
-		Scene scene = new Scene(new Group());
+		Scene scene1 = new Scene(new Group());
 		stage.setTitle("Production Line");
 		stage.setWidth(1100);
 		stage.setHeight(600);
@@ -72,6 +84,21 @@ public class ProductionLine extends Application {
 
 		final Label orders = new Label("Orders");
 		orders.setFont(new Font("Arial", 20));
+		
+//      Stock update button
+    	Button stockbtn = new Button();
+    	stockbtn.setText("Update Stock");
+    	stockbtn.setTextFill(Color.RED);
+    	stockbtn.setLayoutX(20);
+    	stockbtn.setLayoutY(100);
+    	
+//      Order update button
+    	Button orderbtn = new Button();
+    	orderbtn.setText("Update Oreder");
+    	orderbtn.setTextFill(Color.RED);
+//		btn.borderProperty();
+    	orderbtn.setLayoutX(20);
+    	orderbtn.setLayoutY(100);
 
 		orderTable.setEditable(true);
 		stockTable.setEditable(true);
@@ -151,16 +178,16 @@ public class ProductionLine extends Application {
 		final VBox stockbox = new VBox();
 		stockbox.setSpacing(5);
 		stockbox.setPadding(new Insets(10, 0, 0, 10));
-		stockbox.getChildren().addAll(stock, stockTable);
+		stockbox.getChildren().addAll(stock, stockTable, stockbtn);
 
 		final VBox ordersbox = new VBox();
 		ordersbox.setSpacing(5);
 		ordersbox.setPadding(new Insets(10, 0, 0, 300));
-		ordersbox.getChildren().addAll(orders, orderTable);
+		ordersbox.getChildren().addAll(orders, orderTable, orderbtn);
 
-		((Group) scene.getRoot()).getChildren().addAll(ordersbox, stockbox);
+		((Group) scene1.getRoot()).getChildren().addAll(ordersbox, stockbox);
 
-		stage.setScene(scene);
+		stage.setScene(scene1);
 
 		stage.show();
 	}

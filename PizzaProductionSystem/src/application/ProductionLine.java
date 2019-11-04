@@ -65,28 +65,24 @@ public class ProductionLine extends Application {
 
 	}
 	
-<<<<<<< HEAD
-	public void Login(Stage primaryStage) throws Exception {
-		
-		
-=======
-				String url = "jdbc:mysql://10.140.230.135:3306/pizza";
-				String dbUser = "newuser";
-				String usrPass = "12345";
 
-//<<<<<<< HEAD
+	public void Login(Stage primaryStage) throws Exception {
+
 //				String url = "jdbc:mysql://10.140.230.135:3306/pizza";
 //				String dbUser = "newuser";
 //				String usrPass = "12345";
-//
-//=======
-//>>>>>>> refs/remotes/origin/Mohammad
-//		String url = "jdbc:mysql://localhost:3306/pizza";
-//		String dbUser = "newuser";
-//		String usrPass = "1234";
+
+////				String url = "jdbc:mysql://10.140.230.135:3306/pizza";
+////				String dbUser = "newuser";
+////				String usrPass = "12345";
+
+
+////		String url = "jdbc:mysql://localhost:3306/pizza";
+////		String dbUser = "newuser";
+////		String usrPass = "1234";
 
 		DBInterface dbi = new DBInterface();
->>>>>>> refs/remotes/origin/nats
+
 		dbi.openDB(url, dbUser, usrPass);
 		
 		orderlist = dbi.getAllOrders();
@@ -95,7 +91,7 @@ public class ProductionLine extends Application {
 		cheeselist = dbi.getAllCheeses();
 		saucelist = dbi.getAllSauces();
 		
-		dbi.closeDB();
+		//dbi.closeDB();
 
 		
 		 primaryStage.setTitle("Staff Login");

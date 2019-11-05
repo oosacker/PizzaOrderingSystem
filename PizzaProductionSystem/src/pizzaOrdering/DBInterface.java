@@ -5,6 +5,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -28,16 +29,18 @@ public class DBInterface {
 //	String usrPass = "12345";
 	
 	// to return to the GUI
-	ObservableList<Order> orderList;
-	ObservableList<Topping> toppingList;
-	ObservableList<Sauce> sauceList;
-	ObservableList<Cheese> cheeseList;
+	ArrayList<Order> orderList = new ArrayList<>();
+	ArrayList<Topping> toppingList = new ArrayList<>();
+	ArrayList<Sauce> sauceList = new ArrayList<>();
+	ArrayList<Cheese> cheeseList = new ArrayList<>();
+	
+
 	
 	// lookup tables for the ingredients
-	HashMap<Integer, Order> orderMap;
-	HashMap<Integer, Topping> toppingMap;
-	HashMap<Integer, Sauce> sauceMap;
-	HashMap<Integer, Cheese> cheeseMap;
+	//HashMap<Integer, Order> orderMap;
+	//HashMap<Integer, Topping> toppingMap;
+	//HashMap<Integer, Sauce> sauceMap;
+	//HashMap<Integer, Cheese> cheeseMap;
 
 	
 	/**
@@ -543,7 +546,7 @@ public class DBInterface {
 	 * @return
 	 */
 	//public ArrayList<Order> getOrders() {
-	public HashMap<Integer, Order> getAllOrders() {
+	public ArrayList<Order> getAllOrders() {
 		
 		try {
 			//stmt = con.createStatement();
@@ -567,14 +570,14 @@ public class DBInterface {
 				String pizza_status = rs.getString("orders.status");
 				String pizza_size = rs.getString("orders.size");
 				
-				int pizza_topping_0_id = rs.getInt("orders.topping_0_id");
-				int pizza_topping_1_id = rs.getInt("orders.topping_1_id");
-				int pizza_topping_2_id = rs.getInt("orders.topping_0_id");
+				String pizza_topping_0 = rs.getString("orders.topping_0");
+				String pizza_topping_1 = rs.getString("orders.topping_1");
+				String pizza_topping_2 = rs.getString("orders.topping_0");
 				
-				int pizza_sauce_0_id = rs.getInt("orders.sauce_0_id");
+				String pizza_sauce_0 = rs.getString("orders.sauce_0");
 				//int pizza_sauce_1_id = rs.getInt("orders.sauce_1_id");
 				
-				int pizza_cheese_0_id = rs.getInt("orders.cheese_0_id");
+				String pizza_cheese_0 = rs.getString("orders.cheese_0");
 				//int pizza_cheese_1_id = rs.getInt("orders.cheese_1_id");
 				
 				String order_time = rs.getString("orders.date_time");
@@ -587,23 +590,24 @@ public class DBInterface {
 							pizza_size, 
 							customer_phone, 
 							order_time, 
-							toppingMap.get(pizza_topping_0_id).getName(), 
-							toppingMap.get(pizza_topping_1_id).getName(), 
-							toppingMap.get(pizza_topping_2_id).getName(), 
-							sauceMap.get(pizza_sauce_0_id).getName(), 
-							cheeseMap.get(pizza_cheese_0_id).getName(), 
+							pizza_topping_0, 
+							pizza_topping_1, 
+							pizza_topping_2, 
+							pizza_sauce_0, 
+							pizza_cheese_0, 
 							pizza_status, 
 							pizza_price
 						);
 				
 				//orders.add(myOrder);
-				orders.put(order_id, myOrder);
+				//orders.put(order_id, myOrder);
+				orderList.add(myOrder);
 				
 				}
 			
 			rs.close();
 			//stmt.close();
-			return orders;
+			return orderList;
 			
 		}
 		catch(Exception ex) {
@@ -618,11 +622,13 @@ public class DBInterface {
 	 * @return
 	 */
 	//public ArrayList<Order> getOrders() {
-	public HashMap<Integer, Topping> getAllToppings() {
+	public ArrayList<Topping> getAllToppings() {
 		
 		try {
 			
 			openDB(url, dbUser, usrPass);
+			
+			toppingList.clear();
 			
 			Statement stmt = con.createStatement();
 			String sql = "Select * from toppings";
@@ -645,7 +651,8 @@ public class DBInterface {
 						);
 				
 				//customers.add(myCustomer);
-				toppings.put(topping_id, myTopping);
+				//toppings.put(topping_id, myTopping);
+				toppingList.add(myTopping);
 				
 			}
 			
@@ -654,7 +661,7 @@ public class DBInterface {
 			
 			closeDB();
 			
-			return toppings;
+			return toppingList;
 			
 		}
 		catch(Exception ex) {
@@ -673,11 +680,13 @@ public class DBInterface {
 	 * @return
 	 */
 	//public ArrayList<Order> getOrders() {
-	public HashMap<Integer, Cheese> getAllCheeses() {
+	public ArrayList<Cheese> getAllCheeses() {
 		
 		try {
 			
 			openDB(url, dbUser, usrPass);
+			
+			cheeseList.clear();
 			
 			Statement stmt = con.createStatement();
 			String sql = "Select * from cheeses";
@@ -700,7 +709,8 @@ public class DBInterface {
 						);
 				
 				//customers.add(myCustomer);
-				cheeses.put(cheese_id, myCheese);
+				//cheeses.put(cheese_id, myCheese);
+				cheeseList.add(myCheese);
 				
 			}
 			
@@ -709,7 +719,7 @@ public class DBInterface {
 			
 			closeDB();
 			
-			return cheeses;
+			return cheeseList;
 			
 		}
 		catch(Exception ex) {
@@ -729,10 +739,12 @@ public class DBInterface {
 	 * Fetch all sauces from database
 	 * @return
 	 */
-	public HashMap<Integer, Sauce> getAllSauces() {
+	public ArrayList<Sauce> getAllSauces() {
 		
 		try {
 			openDB(url, dbUser, usrPass);
+			
+			sauceList.clear();
 			
 			Statement stmt = con.createStatement();
 			String sql = "Select * from sauces";
@@ -753,14 +765,15 @@ public class DBInterface {
 							sauce_stock_level
 						);
 				
-				sauces.put(sauce_id, mySauce);
+				//sauces.put(sauce_id, mySauce);
+				sauceList.add(mySauce);
 				
 			}
 			
 			rs.close();
 			stmt.close();
 			closeDB();
-			return sauces;
+			return sauceList;
 			
 		}
 		catch(Exception ex) {
@@ -773,48 +786,57 @@ public class DBInterface {
 	}
 
 	
-	private void printAllOrders(HashMap<Integer, Order> orders) {
-		System.out.println("~order list~");
-		for (Map.Entry<Integer, Order> e : orders.entrySet()) { 
-			System.out.println(e.getValue().toString());
-		} 
+//	private void printAllOrders(HashMap<Integer, Order> orders) {
+//		System.out.println("~order list~");
+//		for (Map.Entry<Integer, Order> e : orders.entrySet()) { 
+//			System.out.println(e.getValue().toString());
+//		} 
+//	}
+//	
+//	private void printAllToppings(HashMap<Integer, Topping> toppings) {
+//		System.out.println("~toppings list~");
+//		for (Map.Entry<Integer, Topping> e : toppings.entrySet()) { 
+//			System.out.println(e.getValue().toString());
+//		} 
+//	}
+//	
+//	private void printAllSauces(HashMap<Integer, Sauce> sauces) {
+//		System.out.println("~sauce list~");
+//		for (Map.Entry<Integer, Sauce> e : sauces.entrySet()) { 
+//			System.out.println(e.getValue().toString());
+//		} 
+//	}	
+//	
+//	private void printAllCheeses(HashMap<Integer, Cheese> cheeses) {
+//		System.out.println("~cheese list~");
+//		for (Map.Entry<Integer, Cheese> e : cheeses.entrySet()) { 
+//			System.out.println(e.getValue().toString());
+//		} 
+//	}	
+	
+
+	private void printToppings(ArrayList<Topping> mylist) {
+		for(Topping t : mylist) {
+			System.out.println(t.toString());
+		}
 	}
 	
-	private void printAllToppings(HashMap<Integer, Topping> toppings) {
-		System.out.println("~toppings list~");
-		for (Map.Entry<Integer, Topping> e : toppings.entrySet()) { 
-			System.out.println(e.getValue().toString());
-		} 
+	private void printCheeses(ArrayList<Cheese> mylist) {
+		for(Cheese c : mylist) {
+			System.out.println(c.toString());
+		}
 	}
 	
-	private void printAllSauces(HashMap<Integer, Sauce> sauces) {
-		System.out.println("~sauce list~");
-		for (Map.Entry<Integer, Sauce> e : sauces.entrySet()) { 
-			System.out.println(e.getValue().toString());
-		} 
-	}	
+	private void printSauces(ArrayList<Sauce> mylist) {
+		for(Sauce s : mylist) {
+			System.out.println(s.toString());
+		}
+	}
 	
-	private void printAllCheeses(HashMap<Integer, Cheese> cheeses) {
-		System.out.println("~cheese list~");
-		for (Map.Entry<Integer, Cheese> e : cheeses.entrySet()) { 
-			System.out.println(e.getValue().toString());
-		} 
-	}	
-	
-	
-	public ObservableList<Order> getOrderList(){
-		
-		ObservableList<Order> orderList = FXCollections.observableArrayList();
-		
-		for (Map.Entry<Integer, Order> e : orderMap.entrySet()) { 
-			
-			
-			
-		} 
-		
-		return orderList;
-		
-		
+	private void printOrders(ArrayList<Order> mylist) {
+		for(Order o : mylist) {
+			System.out.println(o.toString());
+		}
 	}
 	
 	
@@ -824,16 +846,19 @@ public class DBInterface {
 		//openDB(url, dbUser, usrPass);
 
 		
-		//orderList = FXCollections.observableArrayList();
-		//toppingList = FXCollections.observableArrayList();
-		//sauceList = FXCollections.observableArrayList();
-		//cheeseList = FXCollections.observableArrayList();
 		
-		toppingMap = getAllToppings();
-		sauceMap = getAllSauces();
-		cheeseMap = getAllCheeses();
+		
+		
+		
+		//printToppings(getAllToppings());
+		//printCheeses(getAllCheeses());
+		//printSauces(getAllSauces());
+		//printOrders(getAllOrders());
+		//toppingMap = getAllToppings();
+		//sauceMap = getAllSauces();
+		//cheeseMap = getAllCheeses();
 		//customerMap = getAllCustomers();
-		orderMap = getAllOrders();	// this MUST be called after all 4 !!!!!
+		//orderMap = getAllOrders();	// this MUST be called after all 4 !!!!!
 		
 		
 		

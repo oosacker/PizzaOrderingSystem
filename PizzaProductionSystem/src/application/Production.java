@@ -1,9 +1,11 @@
 package application;
 
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import javafx.application.Application;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -37,10 +39,15 @@ import javafx.scene.text.Text;
 
 public class Production extends Application {
 
-	private HashMap<Integer, Order> orderlist;
-	private HashMap<Integer, Topping> toppinglist;
-	private HashMap<Integer, Cheese> cheeselist;
-	private HashMap<Integer, Sauce> saucelist;
+//	private ObservableList<Order> orderlist;
+//	private ObservableList<Topping> toppinglist;
+//	private ObservableList<Cheese> cheeselist;
+//	private ObservableList<Sauce> saucelist;
+	
+	private ArrayList<Order> orderlist;
+	private ArrayList<Topping> toppinglist;
+	private ArrayList<Cheese> cheeselist;
+	private ArrayList<Sauce> saucelist;
 
 	private static DBInterface dbi = new DBInterface();
 
@@ -57,6 +64,7 @@ public class Production extends Application {
 
 	public void Login(Stage primaryStage) throws Exception {
 		dbi = new DBInterface();
+		
 		orderlist = dbi.getAllOrders();
 		toppinglist = dbi.getAllToppings();
 		cheeselist = dbi.getAllCheeses();
@@ -223,7 +231,7 @@ public class Production extends Application {
 
 
 		TableColumn<String, Order> timeCol = new TableColumn<>("Time");
-		timeCol.setMinWidth(100);
+		timeCol.setMinWidth(200);
 		timeCol.setCellValueFactory(new PropertyValueFactory<>("order_time"));
 
 
@@ -284,24 +292,27 @@ public class Production extends Application {
 	private void updateStockTable() {
 		
 		stockTable.getItems().clear();
-		
-		for (Map.Entry<Integer, Topping> e : toppinglist.entrySet()) { 
-			stockTable.getItems().add(e.getValue());
-		}
-		for (Map.Entry<Integer, Sauce> e : saucelist.entrySet()) { 
-			stockTable.getItems().add(e.getValue());
-		}
-		for (Map.Entry<Integer, Cheese> e : cheeselist.entrySet()) { 
-			stockTable.getItems().add(e.getValue());
-		}
+		stockTable.getItems().addAll(toppinglist);
+		stockTable.getItems().addAll(cheeselist);
+		stockTable.getItems().addAll(saucelist);
+//		for (Map.Entry<Integer, Topping> e : toppinglist.entrySet()) { 
+//			stockTable.getItems().add(e.getValue());
+//		}
+//		for (Map.Entry<Integer, Sauce> e : saucelist.entrySet()) { 
+//			stockTable.getItems().add(e.getValue());
+//		}
+//		for (Map.Entry<Integer, Cheese> e : cheeselist.entrySet()) { 
+//			stockTable.getItems().add(e.getValue());
+//		}
 	}
 	
 	@SuppressWarnings("unchecked")
 	private void updateOrderTable() {
 		orderTable.getItems().clear();
-		for (Map.Entry<Integer, Order> e : orderlist.entrySet()) { 
-			orderTable.getItems().add(e.getValue());
-		}
+		orderTable.getItems().addAll(orderlist);
+//		for (Map.Entry<Integer, Order> e : orderlist.entrySet()) { 
+//			orderTable.getItems().add(e.getValue());
+//		}
 	}
 
 	
@@ -328,10 +339,10 @@ public class Production extends Application {
 	}
 	
 	private void updateOrderState(Order ord) {
-		int order_id = ord.getOrder_id();
-		
-		orderlist.get(order_id).changePizzaStatus();
-		dbi.updateOrderState(ord, orderlist.get(order_id).getPizza_status());
+		//int order_id = ord.getOrder_id();
+		int index = orderlist.indexOf(ord);
+		orderlist.get(index).changePizzaStatus();
+		dbi.updateOrderState(ord, orderlist.get(index).getPizza_status());
 		
 		updateTables();
 	}

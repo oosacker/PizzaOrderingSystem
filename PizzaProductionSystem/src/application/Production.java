@@ -48,6 +48,11 @@ public class Production extends Application {
 	private ArrayList<Topping> toppinglist;
 	private ArrayList<Cheese> cheeselist;
 	private ArrayList<Sauce> saucelist;
+	
+	//HashMap<String, Order> orderMap = new HashMap<>();
+	HashMap<String, Topping> toppingMap = new HashMap<>();
+	HashMap<String, Sauce> sauceMap = new HashMap<>();
+	HashMap<String, Cheese> cheeseMap = new HashMap<>();
 
 	private static DBInterface dbi = new DBInterface();
 
@@ -66,10 +71,18 @@ public class Production extends Application {
 		dbi = new DBInterface();
 		
 		orderlist = dbi.getAllOrders();
+		
+		System.out.println("login "+orderlist);
+		
 		toppinglist = dbi.getAllToppings();
 		cheeselist = dbi.getAllCheeses();
 		saucelist = dbi.getAllSauces();
+		
 
+		toppingMap = dbi.getAllToppingsMap();
+		cheeseMap = dbi.getAllCheesesMap();
+		sauceMap = dbi.getAllSaucesMap();
+		
 		primaryStage.setTitle("Staff Login");
 		GridPane grid = new GridPane();
 		grid.setAlignment(Pos.CENTER);
@@ -99,7 +112,7 @@ public class Production extends Application {
 		hbBtn.getChildren().add(btn);
 		grid.add(hbBtn, 1, 4);
 
-		final Text actiontarget = new Text();
+		Text actiontarget = new Text();
 		grid.add(actiontarget, 1, 6);
 
 		btn.setOnAction(new EventHandler<ActionEvent>() {
@@ -132,6 +145,9 @@ public class Production extends Application {
 
 	@SuppressWarnings("unchecked")
 	public void start() {
+		//System.out.println("sart "+saucelist);
+		
+		
 		Stage stage = new Stage();
 
 		Scene scene = new Scene(new Group());
@@ -140,10 +156,10 @@ public class Production extends Application {
 		stage.setHeight(600);
 		stage.initStyle(StageStyle.DECORATED);
 
-		final Label stock = new Label("Stock");
+		Label stock = new Label("Stock");
 		stock.setFont(new Font("Arial", 20));
 
-		final Label orders = new Label("Orders");
+		Label orders = new Label("Orders");
 		orders.setFont(new Font("Arial", 20));
 
 		//      Stock update button
@@ -251,7 +267,13 @@ public class Production extends Application {
                 if (event.getClickCount() == 2 && (! row.isEmpty()) ) {
                 	Order rowData = row.getItem();
                 	
+                	
+                	
+                	
                 	updateOrderState(rowData);
+                	
+                	
+                	
                 	
                     System.out.println("Double click on: "+rowData.toString());
                 }
@@ -267,12 +289,12 @@ public class Production extends Application {
 		updateTables();
 
 
-		final VBox stockbox = new VBox();
+		VBox stockbox = new VBox();
 		stockbox.setSpacing(5);
 		stockbox.setPadding(new Insets(10, 0, 0, 10));
 		stockbox.getChildren().addAll(stock, stockTable, stockbtn);
 
-		final VBox ordersbox = new VBox();
+		VBox ordersbox = new VBox();
 		ordersbox.setSpacing(5);
 		ordersbox.setPadding(new Insets(10, 0, 0, 300));
 		ordersbox.getChildren().addAll(orders, orderTable, orderbtn);
@@ -290,10 +312,17 @@ public class Production extends Application {
 	
 	@SuppressWarnings("unchecked")
 	private void updateStockTable() {
+
 		
 		stockTable.getItems().clear();
+		
+		System.out.println(toppinglist);
 		stockTable.getItems().addAll(toppinglist);
+		
+		System.out.println(cheeselist);
 		stockTable.getItems().addAll(cheeselist);
+		
+		System.out.println(saucelist);
 		stockTable.getItems().addAll(saucelist);
 //		for (Map.Entry<Integer, Topping> e : toppinglist.entrySet()) { 
 //			stockTable.getItems().add(e.getValue());
@@ -326,6 +355,8 @@ public class Production extends Application {
 		}
 		
 		else if( ing instanceof Sauce ) {
+			System.out.println("instanceof "+saucelist);
+			
 			saucelist.get(ingredient_id).setStock_level(100);
 			dbi.updateIngredient(ing);
 		}
@@ -339,12 +370,35 @@ public class Production extends Application {
 	}
 	
 	private void updateOrderState(Order ord) {
-		//int order_id = ord.getOrder_id();
+
+		
 		int index = orderlist.indexOf(ord);
 		orderlist.get(index).changePizzaStatus();
 		dbi.updateOrderState(ord, orderlist.get(index).getPizza_status());
-		
+		consumeIngredients(ord);
 		updateTables();
+	}
+	
+	private void consumeIngredients(Order ord) {
+		
+		Topping topping_0 = toppingMap.get(ord.getPizza_topping_0());
+		Topping topping_1 = toppingMap.get(ord.getPizza_topping_0());
+		Topping topping_2 = toppingMap.get(ord.getPizza_topping_0());
+		Sauce sauce_0 = sauceMap.get(ord.getPizza_sauce_0());
+		Cheese cheese_0 = cheeseMap.get(ord.getPizza_cheese_0());
+		
+		
+		
+		dbi.consumeIngredient(topping_0);
+		dbi.consumeIngredient(topping_1);
+		dbi.consumeIngredient(topping_2);
+		dbi.consumeIngredient(sauce_0);
+		dbi.consumeIngredient(cheese_0);
+		
+		toppinglist = dbi.getAllToppings();
+		cheeselist = dbi.getAllCheeses();
+		saucelist = dbi.getAllSauces();
+		
 	}
 	
 	@Override

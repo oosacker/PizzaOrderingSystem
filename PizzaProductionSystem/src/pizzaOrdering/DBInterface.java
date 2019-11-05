@@ -500,44 +500,44 @@ public class DBInterface {
 	 * @param order
 	 * @return
 	 */
-	public boolean orderExists(Order order) {
-		try {
-			
-			openDB(url, dbUser, usrPass);
-			
-			boolean orderFound = false;
-			
-			//stmt = con.createStatement();
-			
-			String sql = "Select * from orders where orders.id=?";
-			
-			PreparedStatement prep = con.prepareStatement(sql);
-			
-			prep.setInt(1, order.getOrder_id());
-			
-			ResultSet rs = prep.executeQuery();
-			
-			if(rs.next()){
-				orderFound = true;
-				System.out.println("Order found");
-			}
-			
-			else if(!orderFound) {
-				System.out.println("Order not found");
-			}
-			
-			rs.close();
-			//stmt.close();
-			
-			closeDB();
-			return orderFound;
-		}
-		catch(Exception ex) {
-			ex.printStackTrace();
-			closeDB();
-			return false;
-		}
-	}
+//	public boolean orderExists(Order order) {
+//		try {
+//			
+//			openDB(url, dbUser, usrPass);
+//			
+//			boolean orderFound = false;
+//			
+//			//stmt = con.createStatement();
+//			
+//			String sql = "Select * from orders where orders.id=?";
+//			
+//			PreparedStatement prep = con.prepareStatement(sql);
+//			
+//			prep.setInt(1, order.getOrder_id());
+//			
+//			ResultSet rs = prep.executeQuery();
+//			
+//			if(rs.next()){
+//				orderFound = true;
+//				System.out.println("Order found");
+//			}
+//			
+//			else if(!orderFound) {
+//				System.out.println("Order not found");
+//			}
+//			
+//			rs.close();
+//			//stmt.close();
+//			
+//			closeDB();
+//			return orderFound;
+//		}
+//		catch(Exception ex) {
+//			ex.printStackTrace();
+//			closeDB();
+//			return false;
+//		}
+//	}
 	
 	
 	
@@ -550,6 +550,8 @@ public class DBInterface {
 		
 		try {
 			//stmt = con.createStatement();
+			
+			orderList.clear();
 			
 			openDB(url, dbUser, usrPass);
 			
@@ -850,10 +852,10 @@ public class DBInterface {
 		
 		
 		
-		//printToppings(getAllToppings());
-		//printCheeses(getAllCheeses());
-		//printSauces(getAllSauces());
-		//printOrders(getAllOrders());
+		printToppings(getAllToppings());
+		printCheeses(getAllCheeses());
+		printSauces(getAllSauces());
+		printOrders(getAllOrders());
 		//toppingMap = getAllToppings();
 		//sauceMap = getAllSauces();
 		//cheeseMap = getAllCheeses();

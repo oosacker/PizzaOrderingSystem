@@ -140,7 +140,7 @@ public class Order {
 				"pizza_sauce_0= " + pizza_sauce_0 + "\n" +
 				"pizza_cheese_0= " + pizza_cheese_0 + "\n" +
 				"pizza_status= " + pizza_status + "\n" +
-				"pizza_price= " + pizza_price;
+				"pizza_price= " + pizza_price + "\n";
 	}
 
 

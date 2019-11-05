@@ -19,14 +19,14 @@ public class DBInterface {
 	//private static Statement stmt;
 
 	/* For remote host */
-	//	String url = "jdbc:mysql://10.140.230.135:3306/pizza";
-	//	String dbUser = "newuser";
-	//	String usrPass = "12345";
-	//	
+		String url = "jdbc:mysql://10.140.230.135:3306/pizza";
+		String dbUser = "newuser";
+		String usrPass = "12345";
+		
 	/* For local host */
-	String url = "jdbc:mysql://localhost:3306/pizza";
-	String dbUser = "newuser";
-	String usrPass = "12345";
+//	String url = "jdbc:mysql://localhost:3306/pizza";
+//	String dbUser = "newuser";
+//	String usrPass = "12345";
 
 	// to return to the GUI
 //	ArrayList<Order> orderList = new ArrayList<>();
@@ -619,33 +619,46 @@ public class DBInterface {
 	 * For testing 
 	 * @param mylist
 	 */
-	private void printToppings(ArrayList<Topping> mylist) {
-		for(Topping t : mylist) {
-			System.out.println(t.toString());
+	private void printOrdersMap(HashMap<Integer, Order> orders) {
+		System.out.println("Orders:\n");
+		for (Map.Entry<Integer, Order> e : orders.entrySet()) { 
+			System.out.println(e.getValue().toString());
 		}
+		System.out.println("\n");
+	}
+	
+	private void printToppingsMap(HashMap<String, Topping> toppings) {
+		System.out.println("Toppings:\n");
+		for (Map.Entry<String, Topping> e : toppings.entrySet()) { 
+			System.out.println(e.getValue().toString());
+		}
+		System.out.println("\n");
 	}
 
-	private void printCheeses(ArrayList<Cheese> mylist) {
-		for(Cheese c : mylist) {
-			System.out.println(c.toString());
+	private void printCheesesMap(HashMap<String, Cheese> cheeses) {
+		System.out.println("Cheeses:\n");
+		for (Map.Entry<String, Cheese> e : cheeses.entrySet()) { 
+			System.out.println(e.getValue().toString());
 		}
+		System.out.println("\n");
 	}
-
-	private void printSauces(ArrayList<Sauce> mylist) {
-		for(Sauce s : mylist) {
-			System.out.println(s.toString());
+	
+	private void printSaucesMap(HashMap<String, Sauce> sauces) {
+		System.out.println("Sauces:\n");
+		for (Map.Entry<String, Sauce> e : sauces.entrySet()) { 
+			System.out.println(e.getValue().toString());
 		}
-	}
-
-	private void printOrders(ArrayList<Order> mylist) {
-		for(Order o : mylist) {
-			System.out.println(o.toString());
-		}
+		System.out.println("\n");
 	}
 
 
 	public DBInterface() {
-		// add code here for unit testing~~
+		
+		//printOrdersMap(getAllOrdersMap());
+		//printSaucesMap(getAllSaucesMap());
+		//printCheesesMap(getAllCheesesMap());
+		//printToppingsMap(getAllToppingsMap());
+		
 	}
 
 	public static void main(String[] args) {

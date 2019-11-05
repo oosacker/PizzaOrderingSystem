@@ -37,10 +37,10 @@ import javafx.scene.text.Text;
 
 public class Production extends Application {
 
-	HashMap<Integer, Order> orderMap = new HashMap<>();
-	HashMap<String, Topping> toppingMap = new HashMap<>();
-	HashMap<String, Sauce> sauceMap = new HashMap<>();
-	HashMap<String, Cheese> cheeseMap = new HashMap<>();
+	private static HashMap<Integer, Order> orderMap = new HashMap<>();
+	private static HashMap<String, Topping> toppingMap = new HashMap<>();
+	private static HashMap<String, Sauce> sauceMap = new HashMap<>();
+	private static HashMap<String, Cheese> cheeseMap = new HashMap<>();
 
 	private static DBInterface dbi = new DBInterface();
 
@@ -54,7 +54,11 @@ public class Production extends Application {
 		launch(args);
 	}
 
-
+	/**
+	 * Login screen for staff
+	 * @param primaryStage
+	 * @throws Exception
+	 */
 	public void Login(Stage primaryStage) throws Exception {
 		
 		dbi = new DBInterface();
@@ -123,7 +127,9 @@ public class Production extends Application {
 	}
 
 
-
+	/**
+	 * THe main app window
+	 */
 	@SuppressWarnings("unchecked")
 	public void start() {
 
@@ -132,7 +138,7 @@ public class Production extends Application {
 		Scene scene = new Scene(new Group());
 		stage.setTitle("Production Line");
 		stage.setWidth(1850);
-		stage.setHeight(700);
+		stage.setHeight(600);
 		stage.initStyle(StageStyle.DECORATED);
 
 		Label stock = new Label("Stock");
@@ -184,7 +190,7 @@ public class Production extends Application {
 		QTYCol.setMinWidth(100);
 		QTYCol.setCellValueFactory(new PropertyValueFactory<>("stock_level"));
 
-
+		// event handler for the ingredients table to increse stock level
 		stockTable.setRowFactory(tv -> {
             TableRow<Ingredient> row = new TableRow<>();
             row.setOnMouseClicked(event -> {
@@ -249,7 +255,7 @@ public class Production extends Application {
 		statusCol.setMinWidth(100);
 		statusCol.setCellValueFactory(new PropertyValueFactory<>("pizza_status"));
 
-
+		// event handler for the orders table to update order info
 		orderTable.setRowFactory(tv -> {
             TableRow<Order> row = new TableRow<>();
             row.setOnMouseClicked(event -> {
@@ -261,13 +267,11 @@ public class Production extends Application {
             return row;
         });
 		
-
-
 		orderTable.getColumns().addAll(corderIdCol, customerIdCol, sizeCol, topping0Col, topping1Col, topping2Col, saucesCol, cheeseCol, timeCol, priceCol, statusCol);
 		stockTable.getColumns().addAll(IngredientsCol, QTYCol);
 		
+		// fill the tables with new data from database
 		updateTables();
-
 
 		VBox stockbox = new VBox();
 		stockbox.setSpacing(5);
@@ -285,20 +289,27 @@ public class Production extends Application {
 		stage.show();
 	}
 
+	//. fetch new data from database
 	private void updateTables() {
 		updateStockTable();
 		updateOrderTable();
 	}
 	
+	/**
+	 * Update the ingredients table with new data
+	 */
 	@SuppressWarnings("unchecked")
 	private void updateStockTable() {
 
+		// clear current data
 		stockTable.getItems().clear();
 
+		// fetch new data
 		toppingMap = dbi.getAllToppingsMap();
 		cheeseMap = dbi.getAllCheesesMap();
 		sauceMap = dbi.getAllSaucesMap();
 		
+		// add new data
 		for (Map.Entry<String, Topping> e : toppingMap.entrySet()) { 
 			stockTable.getItems().add(e.getValue());
 		}
@@ -313,19 +324,29 @@ public class Production extends Application {
 		
 	}
 	
+	/**
+	 * Update the order table with new data
+	 */
 	@SuppressWarnings("unchecked")
 	private void updateOrderTable() {
 		
+		// clear current data
 		orderTable.getItems().clear();
+		
+		// fetch new data
 		orderMap = dbi.getAllOrdersMap();
 		
+		// add new data
 		for (Map.Entry<Integer, Order> e : orderMap.entrySet()) { 
 			orderTable.getItems().add(e.getValue());
 		}
 
 	}
 
-	
+	/**
+	 * Sets the stock_level of specified ingredient to 100 in hash map and database
+	 * @param ing
+	 */
 	private void restockIngredient(Ingredient ing) {
 		
 		String ingredient_name = ing.getName();
@@ -333,7 +354,6 @@ public class Production extends Application {
 		if ( ing instanceof Topping ) {
 			toppingMap.get(ingredient_name).setStock_level(100);
 			dbi.updateIngredient(ing);
-			
 		}
 		
 		else if( ing instanceof Sauce ) {
@@ -349,28 +369,36 @@ public class Production extends Application {
 		updateTables();
 	}
 	
+	/**
+	 * Change the status of order and consume ingredients (reduce stock_level) that are required to cook it
+	 * @param ord
+	 */
 	private void updateOrderState(Order ord) {
 		
+		// only consume ingredients when changing from Waiting to Cooking!!!
 		String current_status = ord.getPizza_status();
-		
-		// only consume ingredients first time!!!
 		if(current_status.equalsIgnoreCase("Waiting")) {
 			consumeIngredients(ord);
 		}
 		
+		// switches the order's status Waiting > Cooking > Ready > Picked up > Removed
 		ord.changePizzaStatus();
+		
+		// update the order status on the database
 		dbi.updateOrderState(ord, ord.getPizza_status());
 
+		// update the tables on the screen
 		updateTables();
 		
 	}
 	
+	/**
+	 * Reduces stock_levels of ingredients depending on pizza_size
+	 * @param ord
+	 */
 	private void consumeIngredients(Order ord) {
 		
-		if(ord == null) {
-			System.out.println("null order!!!!!");
-		}
-		
+		// find out the ingredients required for the order
 		Topping topping_0 = toppingMap.get(ord.getPizza_topping_0());
 		Topping topping_1 = toppingMap.get(ord.getPizza_topping_1());
 		Topping topping_2 = toppingMap.get(ord.getPizza_topping_2());
@@ -380,12 +408,14 @@ public class Production extends Application {
 		// pizza size = large then drops by 3 units, medium = 3, small = 1
 		String pizza_size = ord.getPizza_size();
 		
+		// reduce the stock_level on the database for each ingredient
 		dbi.consumeIngredient(topping_0, pizza_size);
 		dbi.consumeIngredient(topping_1, pizza_size);
 		dbi.consumeIngredient(topping_2, pizza_size);
 		dbi.consumeIngredient(sauce_0, pizza_size);
 		dbi.consumeIngredient(cheese_0, pizza_size);
 		
+		// update the hash maps
 		toppingMap = dbi.getAllToppingsMap();
 		cheeseMap = dbi.getAllCheesesMap();
 		sauceMap = dbi.getAllSaucesMap();

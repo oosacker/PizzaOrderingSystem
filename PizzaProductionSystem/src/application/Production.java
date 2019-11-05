@@ -107,7 +107,6 @@ public class Production extends Application {
 				boolean verified =  dbi.verifyStaffLogin(name, pass);
 				if (verified) {
 					start();
-
 					System.out.println("login successful");
 					primaryStage.close();
 					
@@ -276,12 +275,9 @@ public class Production extends Application {
 		stage.show();
 	}
 
-	@SuppressWarnings("unchecked")
 	private void updateTables() {
-		
 		updateStockTable();
 		updateOrderTable();
-		
 	}
 	
 	@SuppressWarnings("unchecked")

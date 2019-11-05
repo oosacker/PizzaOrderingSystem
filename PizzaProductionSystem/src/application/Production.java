@@ -1,11 +1,9 @@
 package application;
 
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import javafx.application.Application;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -39,17 +37,7 @@ import javafx.scene.text.Text;
 
 public class Production extends Application {
 
-//	private ObservableList<Order> orderlist;
-//	private ObservableList<Topping> toppinglist;
-//	private ObservableList<Cheese> cheeselist;
-//	private ObservableList<Sauce> saucelist;
-	
-	private ArrayList<Order> orderlist;
-	private ArrayList<Topping> toppinglist;
-	private ArrayList<Cheese> cheeselist;
-	private ArrayList<Sauce> saucelist;
-	
-	//HashMap<String, Order> orderMap = new HashMap<>();
+	HashMap<Integer, Order> orderMap = new HashMap<>();
 	HashMap<String, Topping> toppingMap = new HashMap<>();
 	HashMap<String, Sauce> sauceMap = new HashMap<>();
 	HashMap<String, Cheese> cheeseMap = new HashMap<>();
@@ -68,17 +56,10 @@ public class Production extends Application {
 
 
 	public void Login(Stage primaryStage) throws Exception {
+		
 		dbi = new DBInterface();
-		
-		orderlist = dbi.getAllOrders();
-		
-		System.out.println("login "+orderlist);
-		
-		toppinglist = dbi.getAllToppings();
-		cheeselist = dbi.getAllCheeses();
-		saucelist = dbi.getAllSauces();
-		
 
+		orderMap = dbi.getAllOrdersMap();
 		toppingMap = dbi.getAllToppingsMap();
 		cheeseMap = dbi.getAllCheesesMap();
 		sauceMap = dbi.getAllSaucesMap();
@@ -145,9 +126,7 @@ public class Production extends Application {
 
 	@SuppressWarnings("unchecked")
 	public void start() {
-		//System.out.println("sart "+saucelist);
-		
-		
+
 		Stage stage = new Stage();
 
 		Scene scene = new Scene(new Group());
@@ -169,24 +148,26 @@ public class Production extends Application {
 		stockbtn.setLayoutX(20);
 		stockbtn.setLayoutY(100);
 		stockbtn.setOnAction(e->{
+			
+			// update the database info
 			dbi.updateAllToppings();
 			dbi.updateAllCheeses();
 			dbi.updateAllSauces();
+			
+			// update the tableview
 			updateStockTable();
 			
 		});
 
-		//      Order update button
 		Button orderbtn = new Button();
-		orderbtn.setText("Clear completed orders");
+		orderbtn.setText("Fetch new orders");
 		orderbtn.setTextFill(Color.RED);
 		
 		orderbtn.setOnAction(e->{
-			updateOrderTable();
-			System.out.println("clicked");
+			// 
+			updateOrderTable();	
 		});
 		
-		//		btn.borderProperty();
 		orderbtn.setLayoutX(20);
 		orderbtn.setLayoutY(100);
 
@@ -208,11 +189,10 @@ public class Production extends Application {
             TableRow<Ingredient> row = new TableRow<>();
             row.setOnMouseClicked(event -> {
                 if (event.getClickCount() == 2 && (! row.isEmpty()) ) {
+                	
                     Ingredient rowData = row.getItem();
-                    
                     restockIngredient(rowData);
                     
-                    System.out.println("Double click on: "+rowData.toString());
                 }
             });
             return row ;
@@ -273,16 +253,7 @@ public class Production extends Application {
             row.setOnMouseClicked(event -> {
                 if (event.getClickCount() == 2 && (! row.isEmpty()) ) {
                 	Order rowData = row.getItem();
-                	
-                	
-                	
-                	
                 	updateOrderState(rowData);
-                	
-                	
-                	
-                	
-                    System.out.println("Double click on: "+rowData.toString());
                 }
             });
             return row;
@@ -320,60 +291,56 @@ public class Production extends Application {
 	@SuppressWarnings("unchecked")
 	private void updateStockTable() {
 
-		
-		toppinglist = dbi.getAllToppings();
-		cheeselist = dbi.getAllCheeses();
-		saucelist = dbi.getAllSauces();
-		
 		stockTable.getItems().clear();
+
+		toppingMap = dbi.getAllToppingsMap();
+		cheeseMap = dbi.getAllCheesesMap();
+		sauceMap = dbi.getAllSaucesMap();
 		
-		System.out.println(toppinglist);
-		stockTable.getItems().addAll(toppinglist);
+		for (Map.Entry<String, Topping> e : toppingMap.entrySet()) { 
+			stockTable.getItems().add(e.getValue());
+		}
 		
-		System.out.println(cheeselist);
-		stockTable.getItems().addAll(cheeselist);
+		for (Map.Entry<String, Sauce> e : sauceMap.entrySet()) { 
+			stockTable.getItems().add(e.getValue());
+		}
 		
-		System.out.println(saucelist);
-		stockTable.getItems().addAll(saucelist);
-//		for (Map.Entry<Integer, Topping> e : toppinglist.entrySet()) { 
-//			stockTable.getItems().add(e.getValue());
-//		}
-//		for (Map.Entry<Integer, Sauce> e : saucelist.entrySet()) { 
-//			stockTable.getItems().add(e.getValue());
-//		}
-//		for (Map.Entry<Integer, Cheese> e : cheeselist.entrySet()) { 
-//			stockTable.getItems().add(e.getValue());
-//		}
+		for (Map.Entry<String, Cheese> e : cheeseMap.entrySet()) { 
+			stockTable.getItems().add(e.getValue());
+		}
+		
 	}
 	
 	@SuppressWarnings("unchecked")
 	private void updateOrderTable() {
+		
 		orderTable.getItems().clear();
-		orderTable.getItems().addAll(orderlist);
-//		for (Map.Entry<Integer, Order> e : orderlist.entrySet()) { 
-//			orderTable.getItems().add(e.getValue());
-//		}
+		orderMap = dbi.getAllOrdersMap();
+		
+		for (Map.Entry<Integer, Order> e : orderMap.entrySet()) { 
+			orderTable.getItems().add(e.getValue());
+		}
+
 	}
 
 	
 	private void restockIngredient(Ingredient ing) {
-		int ingredient_id = ing.getId();
+		
+		String ingredient_name = ing.getName();
 				
 		if ( ing instanceof Topping ) {
-			toppinglist.get(ingredient_id).setStock_level(100);
+			toppingMap.get(ingredient_name).setStock_level(100);
 			dbi.updateIngredient(ing);
 			
 		}
 		
 		else if( ing instanceof Sauce ) {
-			System.out.println("instanceof "+saucelist);
-			
-			saucelist.get(ingredient_id).setStock_level(100);
+			sauceMap.get(ingredient_name).setStock_level(100);
 			dbi.updateIngredient(ing);
 		}
 		
 		else if( ing instanceof Cheese ) {
-			cheeselist.get(ingredient_id).setStock_level(100);
+			cheeseMap.get(ingredient_name).setStock_level(100);
 			dbi.updateIngredient(ing);
 		}
 		
@@ -381,13 +348,19 @@ public class Production extends Application {
 	}
 	
 	private void updateOrderState(Order ord) {
-
 		
-		int index = orderlist.indexOf(ord);
-		orderlist.get(index).changePizzaStatus();
-		dbi.updateOrderState(ord, orderlist.get(index).getPizza_status());
-		consumeIngredients(ord);
+		String current_status = ord.getPizza_status();
+		
+		// only consume ingredients first time!!!
+		if(current_status.equalsIgnoreCase("Waiting")) {
+			consumeIngredients(ord);
+		}
+		
+		ord.changePizzaStatus();
+		dbi.updateOrderState(ord, ord.getPizza_status());
+
 		updateTables();
+		
 	}
 	
 	private void consumeIngredients(Order ord) {
@@ -402,17 +375,11 @@ public class Production extends Application {
 		Sauce sauce_0 = sauceMap.get(ord.getPizza_sauce_0());
 		Cheese cheese_0 = cheeseMap.get(ord.getPizza_cheese_0());
 		
-		
-		
 		dbi.consumeIngredient(topping_0);
 		dbi.consumeIngredient(topping_1);
 		dbi.consumeIngredient(topping_2);
 		dbi.consumeIngredient(sauce_0);
 		dbi.consumeIngredient(cheese_0);
-		
-		toppinglist = dbi.getAllToppings();
-		cheeselist = dbi.getAllCheeses();
-		saucelist = dbi.getAllSauces();
 		
 		toppingMap = dbi.getAllToppingsMap();
 		cheeseMap = dbi.getAllCheesesMap();
@@ -422,8 +389,6 @@ public class Production extends Application {
 	
 	@Override
 	public void start(Stage primaryStage) throws Exception {
-		// TODO Auto-generated method stub
-
 		Login(primaryStage);
 
 	}

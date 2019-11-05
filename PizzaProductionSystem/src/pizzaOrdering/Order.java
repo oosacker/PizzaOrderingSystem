@@ -115,12 +115,9 @@ public class Order {
 		}
 		
 		else if (this.pizza_status.equalsIgnoreCase("Picked up")){
-			// do nothing
+			this.pizza_status = "Removed";	// state for removing from list
 		}
 		
-		else {
-			System.out.println("Error in changePizzaStatus");
-		}
 	}
 	
 	public void setPizza_status(String pizza_status) {

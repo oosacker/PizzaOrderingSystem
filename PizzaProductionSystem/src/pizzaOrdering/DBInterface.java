@@ -202,11 +202,11 @@ public class DBInterface {
 	}
 
 	/**
-	 * Reduces the stock_level of specified ingredient by 1 on the database
+	 * Reduces the stock_level of specified ingredient by 3, 2, 1 (depending on pizza size) on the database
 	 * @param ingredient
 	 * @return
 	 */
-	public boolean consumeIngredient(Ingredient ingredient) {
+	public boolean consumeIngredient(Ingredient ingredient, String pizza_size) {
 
 		try {
 
@@ -217,21 +217,33 @@ public class DBInterface {
 			openDB(url, dbUser, usrPass);
 
 			String ingredient_name = ingredient.getName();
+			
+			int consume_amt = 0;
+			
+			if (pizza_size.equalsIgnoreCase("Large"))
+				consume_amt = 3;
+			else if (pizza_size.equalsIgnoreCase("Medium"))
+				consume_amt = 2;
+			else if(pizza_size.equalsIgnoreCase("Small"))
+				consume_amt = 1;
+			else
+				System.out.println("Error in consumeIngredient");
+			
 
 			System.out.println("select ingredient "+ingredient.toString());
 
 			String sql = "";
 
 			if(ingredient instanceof Topping) {
-				sql = "UPDATE `pizza`.`toppings` SET `stock_level` = `stock_level` - 1 where `name` = \""+ingredient_name+"\";";
+				sql = "UPDATE `pizza`.`toppings` SET `stock_level` = `stock_level` - " +consume_amt+ " where `name` = \""+ingredient_name+"\";";
 			}
 
 			else if(ingredient instanceof Sauce) {
-				sql = "UPDATE `pizza`.`sauces` SET `stock_level` = `stock_level` - 1 where `name` = \""+ingredient_name+"\";";
+				sql = "UPDATE `pizza`.`sauces` SET `stock_level` = `stock_level` - " +consume_amt+ " where `name` = \""+ingredient_name+"\";";
 			}
 
 			else if(ingredient instanceof Cheese) {
-				sql = "UPDATE `pizza`.`cheeses` SET `stock_level` = `stock_level` - 1 where `name` = \""+ingredient_name+"\";";
+				sql = "UPDATE `pizza`.`cheeses` SET `stock_level` = `stock_level` - " +consume_amt+ " where `name` = \""+ingredient_name+"\";";
 			}
 			System.out.println(sql);
 			Statement stmt = con.createStatement();

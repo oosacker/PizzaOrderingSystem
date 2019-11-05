@@ -131,8 +131,8 @@ public class Production extends Application {
 
 		Scene scene = new Scene(new Group());
 		stage.setTitle("Production Line");
-		stage.setWidth(1500);
-		stage.setHeight(600);
+		stage.setWidth(1850);
+		stage.setHeight(700);
 		stage.initStyle(StageStyle.DECORATED);
 
 		Label stock = new Label("Stock");
@@ -176,7 +176,7 @@ public class Production extends Application {
 
 
 		TableColumn<String, Ingredient> IngredientsCol = new TableColumn<>("Ingredients");
-		IngredientsCol.setMinWidth(100);
+		IngredientsCol.setMinWidth(150);
 		IngredientsCol.setCellValueFactory(new PropertyValueFactory<>("name"));
 
 
@@ -198,7 +198,9 @@ public class Production extends Application {
             return row ;
         });
 		
-		
+		TableColumn<String, Order> corderIdCol = new TableColumn<>("Order ID");
+		corderIdCol.setMinWidth(80);
+		corderIdCol.setCellValueFactory(new PropertyValueFactory<>("order_id"));
 		
 		TableColumn<String, Order> customerIdCol = new TableColumn<>("Customer phone");
 		customerIdCol.setMinWidth(150);
@@ -211,25 +213,25 @@ public class Production extends Application {
 
 
 		TableColumn<String, Order> topping0Col = new TableColumn<>("Topping 0");
-		topping0Col.setMinWidth(100);
+		topping0Col.setMinWidth(150);
 		topping0Col.setCellValueFactory(new PropertyValueFactory<>("pizza_topping_0"));
 
 		TableColumn<String, Order> topping1Col = new TableColumn<>("Topping 1");
-		topping1Col.setMinWidth(100);
+		topping1Col.setMinWidth(150);
 		topping1Col.setCellValueFactory(new PropertyValueFactory<>("pizza_topping_1"));
 
 		TableColumn<String, Order> topping2Col = new TableColumn<>("Topping 2");
-		topping2Col.setMinWidth(100);
+		topping2Col.setMinWidth(150);
 		topping2Col.setCellValueFactory(new PropertyValueFactory<>("pizza_topping_2"));
 
 
-		TableColumn<String, Order> saucesCol = new TableColumn<>("Sauces");
-		saucesCol.setMinWidth(100);
+		TableColumn<String, Order> saucesCol = new TableColumn<>("Sauce");
+		saucesCol.setMinWidth(150);
 		saucesCol.setCellValueFactory(new PropertyValueFactory<>("pizza_sauce_0"));
 
 
 		TableColumn<String, Order> cheeseCol = new TableColumn<>("Cheese");
-		cheeseCol.setMinWidth(100);
+		cheeseCol.setMinWidth(150);
 		cheeseCol.setCellValueFactory(new PropertyValueFactory<>("pizza_cheese_0"));
 
 
@@ -261,7 +263,7 @@ public class Production extends Application {
 		
 
 
-		orderTable.getColumns().addAll(customerIdCol, sizeCol, topping0Col, topping1Col, topping2Col, saucesCol, cheeseCol, timeCol, priceCol, statusCol);
+		orderTable.getColumns().addAll(corderIdCol, customerIdCol, sizeCol, topping0Col, topping1Col, topping2Col, saucesCol, cheeseCol, timeCol, priceCol, statusCol);
 		stockTable.getColumns().addAll(IngredientsCol, QTYCol);
 		
 		updateTables();
@@ -375,11 +377,14 @@ public class Production extends Application {
 		Sauce sauce_0 = sauceMap.get(ord.getPizza_sauce_0());
 		Cheese cheese_0 = cheeseMap.get(ord.getPizza_cheese_0());
 		
-		dbi.consumeIngredient(topping_0);
-		dbi.consumeIngredient(topping_1);
-		dbi.consumeIngredient(topping_2);
-		dbi.consumeIngredient(sauce_0);
-		dbi.consumeIngredient(cheese_0);
+		// pizza size = large then drops by 3 units, medium = 3, small = 1
+		String pizza_size = ord.getPizza_size();
+		
+		dbi.consumeIngredient(topping_0, pizza_size);
+		dbi.consumeIngredient(topping_1, pizza_size);
+		dbi.consumeIngredient(topping_2, pizza_size);
+		dbi.consumeIngredient(sauce_0, pizza_size);
+		dbi.consumeIngredient(cheese_0, pizza_size);
 		
 		toppingMap = dbi.getAllToppingsMap();
 		cheeseMap = dbi.getAllCheesesMap();

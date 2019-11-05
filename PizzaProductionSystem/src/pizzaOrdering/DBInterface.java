@@ -216,6 +216,10 @@ public class DBInterface {
 		
 		try {
 		
+			if(ingredient == null) {
+				System.out.println("null ingredient!!!!!");
+			}
+			
 			openDB(url, dbUser, usrPass);
 			
 			String ingredient_name = ingredient.getName();
@@ -241,6 +245,8 @@ public class DBInterface {
 			
 			int rs = stmt.executeUpdate(sql);
 			
+			System.out.println("consumed "+ingredient_name);
+			
 			closeDB();
 			return true;
 			
@@ -256,7 +262,7 @@ public class DBInterface {
 	}
 	
 	
-	public boolean updateAllToppings(int new_stock_level) {
+	public boolean updateAllToppings() {
 		
 		try {
 			
@@ -281,7 +287,7 @@ public class DBInterface {
 	
 					PreparedStatement prep = con.prepareStatement(query);
 					
-					prep.setInt(1, new_stock_level);
+					prep.setInt(1, 100);
 					prep.setInt(2, i);
 					
 					int res = prep.executeUpdate();
@@ -305,7 +311,7 @@ public class DBInterface {
 	
 	
 	
-	public boolean updateAllSauces(int new_stock_level) {
+	public boolean updateAllSauces() {
 		
 		try {
 			openDB(url, dbUser, usrPass);
@@ -329,7 +335,7 @@ public class DBInterface {
 	
 					PreparedStatement prep = con.prepareStatement(query);
 					
-					prep.setInt(1, new_stock_level);
+					prep.setInt(1, 100);
 					prep.setInt(2, i);
 					
 					int res = prep.executeUpdate();
@@ -353,7 +359,7 @@ public class DBInterface {
 	
 	
 	
-	public boolean updateAllCheeses(int new_stock_level) {
+	public boolean updateAllCheeses() {
 		
 		try {
 			
@@ -378,7 +384,7 @@ public class DBInterface {
 	
 					PreparedStatement prep = con.prepareStatement(query);
 					
-					prep.setInt(1, new_stock_level);
+					prep.setInt(1, 100);
 					prep.setInt(2, i);
 					
 					int res = prep.executeUpdate();
@@ -399,54 +405,7 @@ public class DBInterface {
 			return false;
 		}
 	}
-	
-	
-	
-	/**
-	 * Check if an order exists in the database
-	 * @param order
-	 * @return
-	 */
-//	public boolean orderExists(Order order) {
-//		try {
-//			
-//			openDB(url, dbUser, usrPass);
-//			
-//			boolean orderFound = false;
-//			
-//			//stmt = con.createStatement();
-//			
-//			String sql = "Select * from orders where orders.id=?";
-//			
-//			PreparedStatement prep = con.prepareStatement(sql);
-//			
-//			prep.setInt(1, order.getOrder_id());
-//			
-//			ResultSet rs = prep.executeQuery();
-//			
-//			if(rs.next()){
-//				orderFound = true;
-//				System.out.println("Order found");
-//			}
-//			
-//			else if(!orderFound) {
-//				System.out.println("Order not found");
-//			}
-//			
-//			rs.close();
-//			//stmt.close();
-//			
-//			closeDB();
-//			return orderFound;
-//		}
-//		catch(Exception ex) {
-//			ex.printStackTrace();
-//			closeDB();
-//			return false;
-//		}
-//	}
-	
-	
+
 	
 	/**
 	 * Fetch the current orders from database -- CALL AFTER constructor!!!!

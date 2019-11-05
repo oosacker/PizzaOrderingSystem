@@ -164,10 +164,17 @@ public class Production extends Application {
 
 		//      Stock update button
 		Button stockbtn = new Button();
-		stockbtn.setText("Update Stock");
+		stockbtn.setText("Replenish all");
 		stockbtn.setTextFill(Color.RED);
 		stockbtn.setLayoutX(20);
 		stockbtn.setLayoutY(100);
+		stockbtn.setOnAction(e->{
+			dbi.updateAllToppings();
+			dbi.updateAllCheeses();
+			dbi.updateAllSauces();
+			updateStockTable();
+			
+		});
 
 		//      Order update button
 		Button orderbtn = new Button();
@@ -314,6 +321,10 @@ public class Production extends Application {
 	private void updateStockTable() {
 
 		
+		toppinglist = dbi.getAllToppings();
+		cheeselist = dbi.getAllCheeses();
+		saucelist = dbi.getAllSauces();
+		
 		stockTable.getItems().clear();
 		
 		System.out.println(toppinglist);
@@ -381,9 +392,13 @@ public class Production extends Application {
 	
 	private void consumeIngredients(Order ord) {
 		
+		if(ord == null) {
+			System.out.println("null order!!!!!");
+		}
+		
 		Topping topping_0 = toppingMap.get(ord.getPizza_topping_0());
-		Topping topping_1 = toppingMap.get(ord.getPizza_topping_0());
-		Topping topping_2 = toppingMap.get(ord.getPizza_topping_0());
+		Topping topping_1 = toppingMap.get(ord.getPizza_topping_1());
+		Topping topping_2 = toppingMap.get(ord.getPizza_topping_2());
 		Sauce sauce_0 = sauceMap.get(ord.getPizza_sauce_0());
 		Cheese cheese_0 = cheeseMap.get(ord.getPizza_cheese_0());
 		
@@ -398,6 +413,10 @@ public class Production extends Application {
 		toppinglist = dbi.getAllToppings();
 		cheeselist = dbi.getAllCheeses();
 		saucelist = dbi.getAllSauces();
+		
+		toppingMap = dbi.getAllToppingsMap();
+		cheeseMap = dbi.getAllCheesesMap();
+		sauceMap = dbi.getAllSaucesMap();
 		
 	}
 	

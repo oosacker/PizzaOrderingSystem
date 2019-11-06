@@ -26,10 +26,12 @@ import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.Image;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import javafx.scene.paint.Paint;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
@@ -68,15 +70,21 @@ public class Production extends Application {
 		cheeseMap = dbi.getAllCheesesMap();
 		sauceMap = dbi.getAllSaucesMap();
 		
-		primaryStage.setTitle("Staff Login");
+		primaryStage.setTitle("Pizza Production System");
+		
+		// disable window maximize button
+		primaryStage.resizableProperty().setValue(Boolean.FALSE);
+		
 		GridPane grid = new GridPane();
 		grid.setAlignment(Pos.CENTER);
 		grid.setHgap(10);
 		grid.setVgap(10);
 		grid.setPadding(new Insets(25, 25, 25, 25));
+		
+		grid.setStyle("-fx-background-color: #fff5c2;");
 
 		Text scenetitle = new Text("Staff Login");
-		scenetitle.setFont(Font.font("Tahoma", FontWeight.NORMAL, 20));
+		scenetitle.setFont(Font.font("Tahoma", FontWeight.BOLD, 20));
 		grid.add(scenetitle, 0, 0, 2, 1);
 
 		Label userName = new Label("User Name:");
@@ -91,16 +99,18 @@ public class Production extends Application {
 		PasswordField pwBox = new PasswordField();
 		grid.add(pwBox, 1, 2);
 
-		Button btn = new Button("Sign in");
+		Button signinBtn = new Button("Sign in");
+		//signinBtn.setStyle("-fx-background-color: #f1f1f1 linear-gradient(#fcfcfc, #f3f3f3), linear-gradient(#f2f2f2 0%, #ebebeb 49%, #dddddd 50%, #cfcfcf 100%);; -fx-border-color: black; -fx-text-fill: black;");
+		
 		HBox hbBtn = new HBox(10);
 		hbBtn.setAlignment(Pos.BOTTOM_RIGHT);
-		hbBtn.getChildren().add(btn);
+		hbBtn.getChildren().add(signinBtn);
 		grid.add(hbBtn, 1, 4);
 
 		Text actiontarget = new Text();
 		grid.add(actiontarget, 1, 6);
 
-		btn.setOnAction(new EventHandler<ActionEvent>() {
+		signinBtn.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
 
@@ -124,6 +134,8 @@ public class Production extends Application {
 		});
 
 		Scene scene = new Scene(grid, 400, 400);
+		
+		primaryStage.getIcons().add(new Image("file:icon.png"));
 		primaryStage.setScene(scene);
 		primaryStage.show();
 	}
@@ -138,16 +150,21 @@ public class Production extends Application {
 		Stage stage = new Stage();
 		Scene scene = new Scene(new Group());
 		
-		stage.setTitle("Pizza Production Application");
-		stage.setWidth(1850);
-		stage.setHeight(600);
+		stage.setTitle("Pizza Production System");
+		stage.setWidth(1800);
+		stage.setHeight(550);
 		stage.initStyle(StageStyle.DECORATED);
+		
+		// disable window maximize button
+		stage.resizableProperty().setValue(Boolean.FALSE);
 
 		Label stock = new Label("Stock");
 		stock.setFont(new Font("Arial", 20));
+		stock.setFont(Font.font("Tahoma", FontWeight.BOLD, 20));
 
 		Label orders = new Label("Orders");
 		orders.setFont(new Font("Arial", 20));
+		orders.setFont(Font.font("Tahoma", FontWeight.BOLD, 20));
 
 		//      Stock update button
 		Button stockbtn = new Button();
@@ -158,7 +175,7 @@ public class Production extends Application {
 		stockbtn.setLayoutX(20);
 		stockbtn.setLayoutY(100);
 		
-		stockbtn.setStyle("-fx-background-color: #f1f1f1; -fx-text-fill: red;");
+		//stockbtn.setStyle("-fx-background-color: #f1f1f1 linear-gradient(#fcfcfc, #f3f3f3), linear-gradient(#f2f2f2 0%, #ebebeb 49%, #dddddd 50%, #cfcfcf 100%);; -fx-border-color: black; -fx-text-fill: black;");
 		
 		stockbtn.setOnAction(e->{
 			
@@ -177,7 +194,7 @@ public class Production extends Application {
 		
 		//orderbtn.setTextFill(Color.RED);
 		
-		orderbtn.setStyle("-fx-background-color: #f1f1f1; -fx-text-fill: red;");
+		//orderbtn.setStyle("-fx-background-color: #f1f1f1 linear-gradient(#fcfcfc, #f3f3f3), linear-gradient(#f2f2f2 0%, #ebebeb 49%, #dddddd 50%, #cfcfcf 100%);; -fx-border-color: black; -fx-text-fill: black;");
 		
 		orderbtn.setOnAction(e->{
 			updateOrderTable();	
@@ -196,7 +213,7 @@ public class Production extends Application {
 
 
 		TableColumn<String, Ingredient> QTYCol = new TableColumn<>("QTY");
-		QTYCol.setMinWidth(100);
+		QTYCol.setMinWidth(80);
 		QTYCol.setCellValueFactory(new PropertyValueFactory<>("stock_level"));
 
 		// event handler for the ingredients table to increse stock level
@@ -251,12 +268,12 @@ public class Production extends Application {
 
 
 		TableColumn<String, Order> timeCol = new TableColumn<>("Time");
-		timeCol.setMinWidth(200);
+		timeCol.setMinWidth(180);
 		timeCol.setCellValueFactory(new PropertyValueFactory<>("order_time"));
 
 
 		TableColumn<String, Order> priceCol = new TableColumn<>("Price");
-		priceCol.setMinWidth(100);
+		priceCol.setMinWidth(80);
 		priceCol.setCellValueFactory(new PropertyValueFactory<>("pizza_price"));
 
 
@@ -294,6 +311,9 @@ public class Production extends Application {
 
 		((Group) scene.getRoot()).getChildren().addAll(ordersbox, stockbox);
 
+		scene.setFill(Color.web("fff5c2"));
+		
+		stage.getIcons().add(new Image("file:icon.png"));
 		stage.setScene(scene);
 		stage.show();
 	}

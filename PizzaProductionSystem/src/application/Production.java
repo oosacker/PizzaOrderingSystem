@@ -105,7 +105,7 @@ public class Production extends Application {
 			public void handle(ActionEvent event) {
 
 				actiontarget.setFill(Color.FIREBRICK);
-				actiontarget.setText("Sign in button pressed");
+				
 
 				String name = userName.getText();
 				String pass = pwBox.getText();
@@ -113,9 +113,11 @@ public class Production extends Application {
 				boolean verified =  dbi.verifyStaffLogin(name, pass);
 				if (verified) {
 					start();
-					System.out.println("login successful");
+					actiontarget.setText("Login succeeded");
 					primaryStage.close();
-					
+				}
+				else {
+					actiontarget.setText("Login failed");
 				}
 
 			}
@@ -134,9 +136,9 @@ public class Production extends Application {
 	public void start() {
 
 		Stage stage = new Stage();
-
 		Scene scene = new Scene(new Group());
-		stage.setTitle("Production Line");
+		
+		stage.setTitle("Pizza Production Application");
 		stage.setWidth(1850);
 		stage.setHeight(600);
 		stage.initStyle(StageStyle.DECORATED);
@@ -150,9 +152,14 @@ public class Production extends Application {
 		//      Stock update button
 		Button stockbtn = new Button();
 		stockbtn.setText("Replenish all");
-		stockbtn.setTextFill(Color.RED);
+		
+		//stockbtn.setTextFill(Color.RED);
+		
 		stockbtn.setLayoutX(20);
 		stockbtn.setLayoutY(100);
+		
+		stockbtn.setStyle("-fx-background-color: #f1f1f1; -fx-text-fill: red;");
+		
 		stockbtn.setOnAction(e->{
 			
 			// update the database info
@@ -167,10 +174,12 @@ public class Production extends Application {
 
 		Button orderbtn = new Button();
 		orderbtn.setText("Fetch new orders");
-		orderbtn.setTextFill(Color.RED);
+		
+		//orderbtn.setTextFill(Color.RED);
+		
+		orderbtn.setStyle("-fx-background-color: #f1f1f1; -fx-text-fill: red;");
 		
 		orderbtn.setOnAction(e->{
-			// 
 			updateOrderTable();	
 		});
 		
@@ -201,7 +210,7 @@ public class Production extends Application {
                     
                 }
             });
-            return row ;
+            return row;
         });
 		
 		TableColumn<String, Order> corderIdCol = new TableColumn<>("Order ID");

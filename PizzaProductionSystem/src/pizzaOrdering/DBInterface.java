@@ -28,14 +28,7 @@ public class DBInterface {
 //	String dbUser = "newuser";
 //	String usrPass = "12345";
 
-	// to return to the GUI
-//	ArrayList<Order> orderList = new ArrayList<>();
-//	ArrayList<Topping> toppingList = new ArrayList<>();
-//	ArrayList<Sauce> sauceList = new ArrayList<>();
-//	ArrayList<Cheese> cheeseList = new ArrayList<>();
-
-
-
+		
 	// lookup tables for the ingredients
 	HashMap<Integer, Order> orderMap = new HashMap<>();
 	HashMap<String, Topping> toppingMap = new HashMap<>();

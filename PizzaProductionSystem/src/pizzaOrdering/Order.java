@@ -4,33 +4,15 @@ public class Order {
 
 	private int order_id;		// auto generated
 	private String pizza_size; 	// small, medium, large
-	
 	private String customer_phone;	// auto generated
-	
 	private String order_time;	// 
-	
-	//private int pizza_topping_0_id;
-	//private int pizza_topping_1_id;
-	//private int pizza_topping_2_id;
-	
 	private String pizza_topping_0;
 	private String pizza_topping_1;
 	private String pizza_topping_2;
-	
-	//private int pizza_sauce_0_id;
-	//private int pizza_sauce_1_id;
-	
 	private String pizza_sauce_0;
-	
-	//private int pizza_cheese_0_id;
-	//private int pizza_cheese_1_id;
 	private String pizza_cheese_0;
-	
-	
 	private String pizza_status;	// waiting, cooking, ready, picked up
-	
 	private double pizza_price;
-
 
 	public Order(
 				int order_id, 

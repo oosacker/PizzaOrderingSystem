@@ -647,10 +647,23 @@ public class DBInterface {
 
 	public DBInterface() {
 		
-		//printOrdersMap(getAllOrdersMap());
-		//printSaucesMap(getAllSaucesMap());
-		//printCheesesMap(getAllCheesesMap());
-		//printToppingsMap(getAllToppingsMap());
+//		updateAllCheeses();
+//		updateAllSauces();
+//		updateAllToppings();
+//		
+//		printOrdersMap(getAllOrdersMap());
+//		printSaucesMap(getAllSaucesMap());
+//		printCheesesMap(getAllCheesesMap());
+//		printToppingsMap(getAllToppingsMap());
+//		
+//		// Order(int order_id, String pizza_size, String customer_phone, String order_time, String pizza_topping_0, String pizza_topping_1, String pizza_topping_2, String pizza_sauce_0, String pizza_cheese_0, String pizza_status, double pizza_price)
+//		Order testorder = new Order(0, "Large", "12345", "monday", "Pineapple", "Pineapple", "Pineapple", "Tomato", "Mozzarella", "Waiting", 0);
+//		consumeIngredient(toppingMap.get(testorder.getPizza_topping_0()), testorder.getPizza_size());
+//		
+//		printSaucesMap(getAllSaucesMap());
+//		printCheesesMap(getAllCheesesMap());
+//		printToppingsMap(getAllToppingsMap());
+		
 		
 	}
 

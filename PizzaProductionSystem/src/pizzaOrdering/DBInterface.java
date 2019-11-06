@@ -428,7 +428,7 @@ public class DBInterface {
 				String pizza_size = rs.getString("orders.size");
 				String pizza_topping_0 = rs.getString("orders.topping_0");
 				String pizza_topping_1 = rs.getString("orders.topping_1");
-				String pizza_topping_2 = rs.getString("orders.topping_0");
+				String pizza_topping_2 = rs.getString("orders.topping_2");
 				String pizza_sauce_0 = rs.getString("orders.sauce_0");
 				String pizza_cheese_0 = rs.getString("orders.cheese_0");
 				String order_time = rs.getString("orders.date_time");

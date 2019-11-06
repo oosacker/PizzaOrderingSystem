@@ -133,7 +133,7 @@ public class Production extends Application {
 			}
 		});
 
-		Scene scene = new Scene(grid, 400, 400);
+		Scene scene = new Scene(grid, 400, 300);
 		
 		primaryStage.getIcons().add(new Image("file:icon.png"));
 		primaryStage.setScene(scene);
@@ -231,7 +231,7 @@ public class Production extends Application {
         });
 		
 		TableColumn<String, Order> corderIdCol = new TableColumn<>("Order ID");
-		corderIdCol.setMinWidth(80);
+		corderIdCol.setMinWidth(100);
 		corderIdCol.setCellValueFactory(new PropertyValueFactory<>("order_id"));
 		
 		TableColumn<String, Order> customerIdCol = new TableColumn<>("Customer phone");
